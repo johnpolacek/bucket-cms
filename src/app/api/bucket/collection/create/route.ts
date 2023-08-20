@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { initializeS3Client } from "../../s3/util"
-import { PutObjectCommand } from "@aws-sdk/client-s3"
+import { PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3"
 import { Collection } from "@/app/components/bucket/types"
 
 export async function POST(req: NextRequest) {
@@ -9,7 +9,39 @@ export async function POST(req: NextRequest) {
   if (req.method === "POST") {
     try {
       const data: Collection = await req.json()
+
+      // Validation: Check if collectionName is empty
+      if (!data.name.trim()) {
+        return NextResponse.json({ error: "Collection name cannot be empty" }, { status: 400 })
+      }
+
+      // Validation: Ensure data adheres to Collection type (basic checks)
+      if (typeof data.name !== "string" || !Array.isArray(data.layout)) {
+        return NextResponse.json({ error: "Data is not formatted properly" }, { status: 400 })
+      }
+
       const collectionName = data.name
+
+      // Check if the file already exists
+      const headCommand = new HeadObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `collections/${collectionName}.json`,
+      })
+
+      try {
+        await s3.send(headCommand)
+        return NextResponse.json({ error: "A collection with this name already exists" }, { status: 409 })
+      } catch (headError) {
+        if (typeof headError === "object" && headError !== null && "code" in headError && headError.code === "NotFound") {
+          // File does not exist, and we can proceed
+        } else if (typeof headError === "object" && headError !== null && "code" in headError) {
+          // If error has a code property and it's not 404 (not found), then return the error.
+          return NextResponse.json({ error: `S3 error: ${headError.code}` }, { status: 500 })
+        } else {
+          // Any other error
+          return NextResponse.json({ error: `An unknown error occurred while checking if the collection exists: ${String(headError)}` }, { status: 500 })
+        }
+      }
 
       // Convert the data to a JSON string
       const fileContent = JSON.stringify(data)
@@ -22,7 +54,6 @@ export async function POST(req: NextRequest) {
         ContentType: "application/json",
       })
       const result = await s3.send(command)
-      console.log("Uploaded to S3", { result })
       return NextResponse.json({ success: true }, { status: 200 })
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })

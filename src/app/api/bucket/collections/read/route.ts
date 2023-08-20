@@ -12,11 +12,8 @@ export async function GET(req: NextRequest) {
     })
     const response = await s3.send(command)
 
-    // Log the response for debugging
-    console.log("S3 Response:", response)
-
     // Extract file names (keys) from the response
-    const collectionNames = response.Contents?.map((item) => item.Key?.replace(".json", "")) || []
+    const collectionNames = response.Contents?.map((item) => item.Key?.replace("collections/", "").replace(".json", "")) || []
 
     return NextResponse.json({ collectionNames }, { status: 200 })
   } catch (error) {

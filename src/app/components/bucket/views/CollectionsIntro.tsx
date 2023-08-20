@@ -5,6 +5,7 @@ import { Button } from "../../ui/Button"
 function CollectionsIntro({ onCreateCollection }: { onCreateCollection: () => void }) {
   return (
     <>
+      <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome!</h1>
       <p className="text-xl text-gray-600 mb-6 text-center">
         You haven't created any collections yet.
         <br />

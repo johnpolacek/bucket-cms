@@ -1,20 +1,24 @@
+"use client"
 import React, { useState } from "react"
 import { Button } from "../../ui/Button"
 import { Input } from "../../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
-import { CollectionRow } from "../types"
+import { Collection, CollectionRow } from "../types"
 
 type ErrorState = {
   name?: string
   components?: string[]
+  errorMessage?: string
 }
 
 const availableComponents = ["RichText", "Image", "Video"]
 
-function CreateCollection() {
-  const [collectionName, setCollectionName] = useState<string>("")
-  const [layout, setLayout] = useState<CollectionRow[]>([{ components: [{ name: "", type: "" }] }])
+function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
+  const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
+  const [layout, setLayout] = useState<CollectionRow[]>(collection ? collection.layout : [{ components: [{ name: "", type: "" }] }])
   const [errors, setErrors] = useState<ErrorState>({})
+
+  const isEditMode = Boolean(collection)
 
   const addRow = () => {
     setLayout((prevLayout) => [...prevLayout, { components: [{ name: "", type: "" }] }])
@@ -84,14 +88,36 @@ function CreateCollection() {
     setLayout(updatedLayout)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
-      const collectionData = {
+      const collectionData: Collection = {
         name: collectionName,
         layout: layout,
       }
-      console.log(collectionData)
-      // Handle saving the collection configuration (e.g., to your backend or S3)
+      const endpoint = isEditMode ? "/api/bucket/collection/update" : "/api/bucket/collection/create"
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(collectionData),
+        })
+
+        if (response.ok) {
+          const result = await response.json()
+          onComplete()
+        } else {
+          const errorData = await response.json()
+          setErrors({
+            errorMessage: errorData.error,
+          })
+        }
+      } catch (error) {
+        setErrors({
+          errorMessage: (error as Error).message || "Sorry, there was an error.",
+        })
+      }
     }
   }
 
@@ -164,6 +190,11 @@ function CreateCollection() {
           </div>
         ))}
       </div>
+
+      <div className="text-center">
+        <Button onClick={addRow}>+ Add Row</Button>
+      </div>
+
       {errors.components && (
         <div className="flex flex-col gap-1">
           {errors.components.map((error, index) => (
@@ -174,12 +205,10 @@ function CreateCollection() {
         </div>
       )}
 
-      <div className="text-center">
-        <Button onClick={addRow}>+ Add Row</Button>
-      </div>
+      {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
       <div className="flex justify-end gap-4 mt-4">
-        <Button variant="ghost" onClick={handleSubmit}>
+        <Button variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
         <Button onClick={handleSubmit}>Save Collection</Button>
@@ -188,4 +217,4 @@ function CreateCollection() {
   )
 }
 
-export default CreateCollection
+export default CollectionForm
