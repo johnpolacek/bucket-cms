@@ -1,10 +1,11 @@
 "use client"
 import React, { useState } from "react"
 import CollectionsList from "./CollectionsList"
+import ItemForm from "./ItemForm"
 
 function CollectionsAdmin({ collectionNames }: { collectionNames: string[] }) {
   const [manageCollection, setManageCollection] = useState("")
-  const [isCreatingItem, setIsCreatingItem] = useState(false)
+  const [createItemInCollection, setCreateItemInCollection] = useState("")
 
   return (
     <div className="min-w-[420px]">
@@ -12,18 +13,10 @@ function CollectionsAdmin({ collectionNames }: { collectionNames: string[] }) {
         <div>Manage {manageCollection}</div>
       ) : (
         <>
-          {isCreatingItem ? (
-            <>
-              <h3 className="text-center font-semibold text-xl">Create Item</h3>
-            </>
+          {createItemInCollection ? (
+            <ItemForm collectionName={createItemInCollection} onCancel={() => setCreateItemInCollection("")} onComplete={() => setCreateItemInCollection("")} />
           ) : (
-            <CollectionsList
-              collectionNames={collectionNames}
-              onCreate={() => {
-                setIsCreatingItem(true)
-              }}
-              onManage={setManageCollection}
-            />
+            <CollectionsList collectionNames={collectionNames} onCreate={setCreateItemInCollection} onManage={setManageCollection} />
           )}
         </>
       )}
