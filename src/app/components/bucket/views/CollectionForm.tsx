@@ -3,7 +3,8 @@ import React, { useState } from "react"
 import { Button } from "../../ui/Button"
 import { Input } from "../../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
-import { Collection, CollectionRow } from "../types"
+import { Collection, CollectionRowDraft, ComponentData } from "../types"
+import componentRegistry from "../components/registry"
 
 type ErrorState = {
   name?: string
@@ -11,28 +12,27 @@ type ErrorState = {
   errorMessage?: string
 }
 
-const availableComponents = ["RichText", "Image", "Video"]
-
-function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
+function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection<ComponentData> | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
-  const [layout, setLayout] = useState<CollectionRow[]>(collection ? collection.layout : [{ components: [{ name: "", type: "" }] }])
+  const [layout, setLayout] = useState<CollectionRowDraft<ComponentData>[]>(collection ? collection.layout : [{ columns: [undefined] }])
   const [errors, setErrors] = useState<ErrorState>({})
-
   const isEditMode = Boolean(collection)
 
+  const availableComponents = Object.keys(componentRegistry)
+
   const addRow = () => {
-    setLayout((prevLayout) => [...prevLayout, { components: [{ name: "", type: "" }] }])
+    setLayout((prevLayout) => [...prevLayout, { columns: [undefined] }])
   }
 
   const handleColumnChange = (rowIndex: number, columns: number) => {
     const updatedLayout = [...layout]
     const currentRow = updatedLayout[rowIndex]
 
-    if (currentRow.components.length > columns) {
-      currentRow.components.length = columns // Truncate array if reducing columns
+    if (currentRow.columns.length > columns) {
+      currentRow.columns.length = columns // Truncate array if reducing columns
     } else {
-      while (currentRow.components.length < columns) {
-        currentRow.components.push({ name: "", type: "" }) // Add default component items if increasing columns
+      while (currentRow.columns.length < columns) {
+        currentRow.columns.push(undefined) // Add default component items if increasing columns
       }
     }
 
@@ -41,11 +41,22 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
 
   const handleComponentChange = (rowIndex: number, colIndex: number, componentType: string) => {
     const updatedLayout = [...layout]
-    if (!updatedLayout[rowIndex].components[colIndex]) {
-      updatedLayout[rowIndex].components[colIndex] = { name: componentType, type: componentType }
-    } else {
-      updatedLayout[rowIndex].components[colIndex].type = componentType
+    const newComponent = componentRegistry[componentType]
+
+    // Ensure the row exists
+    if (!updatedLayout[rowIndex]) {
+      updatedLayout[rowIndex] = { columns: [] }
     }
+
+    if (!updatedLayout[rowIndex].columns[colIndex]) {
+      updatedLayout[rowIndex].columns[colIndex] = {
+        name: "",
+        component: newComponent,
+      }
+    } else {
+      updatedLayout[rowIndex].columns[colIndex]!.component = newComponent
+    }
+
     setLayout(updatedLayout)
   }
 
@@ -59,8 +70,8 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     // Validate if all selects have a component chosen
     const componentErrors = layout
       .map((row, index) => {
-        const unsetComponentTypes = row.components.filter((component) => !component.type).length
-        const unsetComponentNames = row.components.filter((component) => !component.name).length
+        const unsetComponentTypes = row.columns.filter((column) => !column?.name).length
+        const unsetComponentNames = row.columns.filter((column) => !column?.component).length
 
         if (unsetComponentTypes > 0 && unsetComponentNames > 0) {
           return `Row #${index + 1}: Please select component types and set names`
@@ -90,10 +101,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
 
   const handleSubmit = async () => {
     if (validateForm()) {
-      const collectionData: Collection = {
-        name: collectionName,
-        layout: layout,
-      }
       const endpoint = isEditMode ? "/api/bucket/collection/update" : "/api/bucket/collection/create"
       try {
         const response = await fetch(endpoint, {
@@ -101,7 +108,10 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(collectionData),
+          body: JSON.stringify({
+            name: collectionName,
+            layout: layout,
+          }),
         })
 
         if (response.ok) {
@@ -140,7 +150,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
               )}
               <div className="flex items-center gap-2 mb-3 grow justify-end">
                 <div className="text-sm">Layout: </div>
-                <Select value={row.components.length.toString()} onValueChange={(value) => handleColumnChange(rowIndex, parseInt(value))}>
+                <Select value={row.columns.length.toString()} onValueChange={(value) => handleColumnChange(rowIndex, parseInt(value))}>
                   <SelectTrigger className="w-[120px]">
                     <SelectValue placeholder="Select Layout" />
                   </SelectTrigger>
@@ -153,39 +163,57 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
               </div>
             </div>
             <div className="flex w-full gap-2">
-              {row.components.map((component, colIndex) => (
-                <div key={colIndex} className="flex flex-col items-center grow gap-2 px-2 py-4 bg-gray-50 border-2 border-dashed rounded justify-center">
-                  <Input
-                    className={`w-[240px] text-sm py-1 px-2 ${errors.components && !component.name ? "border-red-500" : ""}`}
-                    type="text"
-                    value={component.name || ""}
-                    onChange={(e) => {
-                      const updatedLayout = [...layout]
-                      updatedLayout[rowIndex].components[colIndex].name = e.target.value
-                      setLayout(updatedLayout)
-                    }}
-                    placeholder="Component Name"
-                  />
+              {row.columns.map((column, colIndex) => {
+                if (!column) return null // Or handle differently if you prefer
 
-                  <Select
-                    onValueChange={(value) => {
-                      handleComponentChange(rowIndex, colIndex, value) // Update the layout with the selected component
-                    }}
-                    value={component.type || undefined}
-                  >
-                    <SelectTrigger className={`w-[240px] bg-white ${errors.components && !component.type ? "border-red-500" : ""}`}>
-                      <SelectValue placeholder="Select Component" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableComponents.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              ))}
+                return (
+                  <div key={colIndex} className="flex flex-col items-center grow gap-2 px-2 py-4 bg-gray-50 border-2 border-dashed rounded justify-center">
+                    <Input
+                      className={`w-[240px] text-sm py-1 px-2 ${errors.components && !column.name ? "border-red-500" : ""}`}
+                      type="text"
+                      value={column.name || ""}
+                      onChange={(e) => {
+                        const updatedLayout = [...layout]
+
+                        // Ensure the row exists
+                        if (!updatedLayout[rowIndex]) {
+                          updatedLayout[rowIndex] = { columns: [] }
+                        }
+
+                        // Ensure the column exists in the row
+                        if (!updatedLayout[rowIndex].columns[colIndex]) {
+                          updatedLayout[rowIndex].columns[colIndex] = {
+                            name: e.target.value,
+                            component: undefined,
+                          }
+                        } else {
+                          updatedLayout[rowIndex].columns[colIndex]!.name = e.target.value
+                        }
+
+                        setLayout(updatedLayout)
+                      }}
+                      placeholder="Component Name"
+                    />
+                    <Select
+                      onValueChange={(value) => {
+                        handleComponentChange(rowIndex, colIndex, value) // Update the layout with the selected component
+                      }}
+                      value={column?.component?.type}
+                    >
+                      <SelectTrigger className={`w-[240px] bg-white ${errors.components ? "border-red-500" : ""}`}>
+                        <SelectValue placeholder="Select Component" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableComponents.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )
+              })}
             </div>
           </div>
         ))}

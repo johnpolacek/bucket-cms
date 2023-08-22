@@ -1,22 +1,27 @@
 "use client"
 import React, { useState } from "react"
 import CollectionsList from "./CollectionsList"
+import CollectionManage from "./CollectionManage"
+import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
 
 function CollectionsAdmin({ collectionNames }: { collectionNames: string[] }) {
   const [manageCollection, setManageCollection] = useState("")
   const [createItemInCollection, setCreateItemInCollection] = useState("")
+  const [isCreatingCollection, setIsCreatingCollection] = useState(false)
 
   return (
     <div className="min-w-[420px]">
       {manageCollection ? (
-        <div>Manage {manageCollection}</div>
+        <CollectionManage onFinish={() => setManageCollection("")} collectionName={manageCollection} />
       ) : (
         <>
           {createItemInCollection ? (
             <ItemForm collectionName={createItemInCollection} onCancel={() => setCreateItemInCollection("")} onComplete={() => setCreateItemInCollection("")} />
+          ) : isCreatingCollection ? (
+            <CollectionForm onCancel={() => setIsCreatingCollection(false)} onComplete={() => setIsCreatingCollection(false)} />
           ) : (
-            <CollectionsList collectionNames={collectionNames} onCreate={setCreateItemInCollection} onManage={setManageCollection} />
+            <CollectionsList collectionNames={collectionNames} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
           )}
         </>
       )}
