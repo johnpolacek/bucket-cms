@@ -164,7 +164,11 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
             </div>
             <div className="flex w-full gap-2">
               {row.columns.map((column, colIndex) => {
-                if (!column) return null // Or handle differently if you prefer
+                if (!column) {
+                  column = {
+                    name: "",
+                  }
+                }
 
                 return (
                   <div key={colIndex} className="flex flex-col items-center grow gap-2 px-2 py-4 bg-gray-50 border-2 border-dashed rounded justify-center">
