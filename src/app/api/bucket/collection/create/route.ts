@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
 import { initializeS3Client } from "../../s3/util"
 import { PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3"
-import { Collection } from "@/app/components/bucket/types"
+import { Collection, ComponentData } from "@/app/components/bucket/types"
 
 export async function POST(req: NextRequest) {
   const s3 = initializeS3Client()
 
   if (req.method === "POST") {
     try {
-      const data: Collection = await req.json()
+      const data: Collection<ComponentData> = await req.json()
 
       // Validation: Check if collectionName is empty
       if (!data.name.trim()) {
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
         await s3.send(headCommand)
         return NextResponse.json({ error: "A collection with this name already exists" }, { status: 409 })
       } catch (headError) {
+        console.log({ headError })
         if (typeof headError === "object" && headError !== null && "code" in headError && headError.code === "NotFound") {
           // File does not exist, and we can proceed
         } else if (typeof headError === "object" && headError !== null && "code" in headError) {

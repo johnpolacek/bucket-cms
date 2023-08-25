@@ -17,7 +17,7 @@ function CollectionsList({
       <h3 className="text-center font-semibold text-xl">Your Collections</h3>
       <div className="my-8 border-t">
         {collectionNames.map((collectionName: string) => (
-          <div className="flex justify-between items-center border-b py-4 px-8">
+          <div key={collectionName} className="flex justify-between items-center border-b py-4 px-8">
             <div>{collectionName}</div>
             <div className="flex gap-3">
               <Button onClick={() => onCreateItem(collectionName)} className="text-green-600" variant="outline">
