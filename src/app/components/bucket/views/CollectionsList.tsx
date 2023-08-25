@@ -15,20 +15,22 @@ function CollectionsList({
   return (
     <>
       <h3 className="text-center font-semibold text-xl">Your Collections</h3>
-      <div className="my-8 border-t">
-        {collectionNames.map((collectionName: string) => (
-          <div key={collectionName} className="flex justify-between items-center border-b py-4 px-8">
-            <div>{collectionName}</div>
-            <div className="flex gap-3">
-              <Button onClick={() => onCreateItem(collectionName)} className="text-green-600" variant="outline">
-                + New
-              </Button>
-              <Button onClick={() => onManage(collectionName)} className="text-blue-600 -mr-12" variant="outline">
-                Manage
-              </Button>
+      <div className="my-8 bg-white p-8">
+        <div className="border-t">
+          {collectionNames.map((collectionName: string) => (
+            <div key={collectionName} className="flex justify-between items-center border-b py-4 px-8">
+              <div>{collectionName}</div>
+              <div className="flex gap-3">
+                <Button onClick={() => onCreateItem(collectionName)} className="text-green-600" variant="outline">
+                  + New
+                </Button>
+                <Button onClick={() => onManage(collectionName)} className="text-blue-600" variant="outline">
+                  Manage
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <div className="flex justify-center">
         <Button className="text-lg py-3 h-auto bg-green-600" onClick={onCreateCollection} size="lg">

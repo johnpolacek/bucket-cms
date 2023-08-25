@@ -30,18 +30,10 @@ export async function POST(req: NextRequest) {
 
       try {
         await s3.send(headCommand)
+        // If we get to this line without an error, it means the collection already exists
         return NextResponse.json({ error: "A collection with this name already exists" }, { status: 409 })
-      } catch (headError) {
-        console.log({ headError })
-        if (typeof headError === "object" && headError !== null && "code" in headError && headError.code === "NotFound") {
-          // File does not exist, and we can proceed
-        } else if (typeof headError === "object" && headError !== null && "code" in headError) {
-          // If error has a code property and it's not 404 (not found), then return the error.
-          return NextResponse.json({ error: `S3 error: ${headError.code}` }, { status: 500 })
-        } else {
-          // Any other error
-          return NextResponse.json({ error: `An unknown error occurred while checking if the collection exists: ${String(headError)}` }, { status: 500 })
-        }
+      } catch (error) {
+        // error is expected
       }
 
       // Convert the data to a JSON string
@@ -55,6 +47,7 @@ export async function POST(req: NextRequest) {
         ContentType: "application/json",
       })
       const result = await s3.send(command)
+      console.log("Create Collection result", { result })
       return NextResponse.json({ success: true }, { status: 200 })
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })

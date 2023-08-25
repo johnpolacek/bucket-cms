@@ -1,5 +1,7 @@
+"use client"
 import ReactQuill from "react-quill"
-import { BaseComponent } from "../types"
+import "react-quill/dist/quill.snow.css"
+import { BaseComponent } from "../../types"
 import DOMPurify from "dompurify"
 
 interface RichTextComponentData {
@@ -13,7 +15,7 @@ const RichText: BaseComponent<RichTextComponentData> = {
     return <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />
   },
   renderAdmin: (data, setData) => {
-    return <ReactQuill value={data.content} onChange={(value) => setData({ content: value })} />
+    return <ReactQuill theme="snow" value={data.content || ""} onChange={(value) => setData({ content: value })} />
   },
   validate: (data) => {
     return typeof data.content === "string"

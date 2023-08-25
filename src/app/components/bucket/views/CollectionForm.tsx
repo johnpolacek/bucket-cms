@@ -16,6 +16,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
   const [layout, setLayout] = useState<CollectionRowDraft<ComponentData>[]>(collection ? collection.layout : [{ columns: [undefined] }])
   const [errors, setErrors] = useState<ErrorState>({})
+  const [submit, setSubmit] = useState(false)
   const isEditMode = Boolean(collection)
 
   const availableComponents = Object.keys(componentRegistry)
@@ -100,6 +101,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   }
 
   const handleSubmit = async () => {
+    setSubmit(true)
     if (validateForm()) {
       const endpoint = isEditMode ? "/api/bucket/collection/update" : "/api/bucket/collection/create"
       try {
@@ -122,11 +124,13 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           setErrors({
             errorMessage: errorData.error,
           })
+          setSubmit(false)
         }
       } catch (error) {
         setErrors({
           errorMessage: (error as Error).message || "Sorry, there was an error.",
         })
+        setSubmit(false)
       }
     }
   }
@@ -240,10 +244,12 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
       {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
       <div className="flex justify-end gap-4 mt-4">
-        <Button variant="ghost" onClick={onCancel}>
+        <Button disabled={!submit} variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
-        <Button onClick={handleSubmit}>Save Collection</Button>
+        <Button disabled={!submit} onClick={handleSubmit}>
+          Save Collection
+        </Button>
       </div>
     </div>
   )

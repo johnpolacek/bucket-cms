@@ -32,7 +32,7 @@ function ItemForm({ collectionName, onCancel, onComplete }: { collectionName: st
           setFormData({
             name: collectionName,
             rows: data.layout.map((row) => ({
-              components: row.components.map((component) => ({ name: component.name, value: "" })),
+              components: row.columns.map((component) => ({ name: component.name, value: "" })),
             })),
           })
         })
@@ -57,19 +57,22 @@ function ItemForm({ collectionName, onCancel, onComplete }: { collectionName: st
       <div className="flex flex-col gap-8">
         {formData?.rows.map((row, rowIndex) =>
           row.components.map((component, colIndex) => {
-            const componentType = collection?.layout[rowIndex]?.components[colIndex]?.component?.type
+            const componentType = collection?.layout[rowIndex]?.columns[colIndex]?.component?.type
             if (!componentType) return null // Handle the case where componentType is undefined
 
-            const ComponentFromRegistry = componentRegistry[componentType]
+            const componentFromRegistry = componentRegistry[componentType]
+            console.log({ componentFromRegistry })
             return (
               <div key={`row-${rowIndex}-col-${colIndex}`} className="flex flex-col gap-2">
                 <label className="block text-gray-700 font-medium">{component.name}</label>
-                {ComponentFromRegistry &&
-                  ComponentFromRegistry.renderAdmin({ value: component.value }, (updatedData) => {
+                {componentFromRegistry &&
+                  componentFromRegistry.renderAdmin({ value: component.value }, (updatedData) => {
                     // Update the formData based on changes in the component's admin UI
+                    console.log({ updatedData })
                     setFormData((prev) => {
                       if (!prev) return null
                       const newData = { ...prev }
+                      console.log({ newData })
                       newData.rows[rowIndex].components[colIndex].value = updatedData.value
                       return newData
                     })

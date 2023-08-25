@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 import { Readable } from "stream"
 import { initializeS3Client } from "../../s3/util"
-import { Collection } from "@/app/components/bucket/types"
+import { Collection, ComponentData } from "@/app/components/bucket/types"
 
 export async function GET(req: NextRequest) {
   const s3 = initializeS3Client()
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
         Body.on("error", reject)
       })
 
-      const jsonData: Collection = JSON.parse(data)
+      const jsonData: Collection<ComponentData> = JSON.parse(data)
       return NextResponse.json(jsonData, { status: 200 })
     }
 
