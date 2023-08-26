@@ -4,8 +4,9 @@ import CollectionsList from "./CollectionsList"
 import CollectionManage from "./CollectionManage"
 import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
+import { CollectionData } from "../types"
 
-function CollectionsAdmin({ collectionNames }: { collectionNames: string[] }) {
+function CollectionsAdmin({ collections }: { collections: CollectionData[] }) {
   const [manageCollection, setManageCollection] = useState("")
   const [createItemInCollection, setCreateItemInCollection] = useState("")
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
@@ -21,7 +22,7 @@ function CollectionsAdmin({ collectionNames }: { collectionNames: string[] }) {
           ) : isCreatingCollection ? (
             <CollectionForm onCancel={() => setIsCreatingCollection(false)} onComplete={() => setIsCreatingCollection(false)} />
           ) : (
-            <CollectionsList collectionNames={collectionNames} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
+            <CollectionsList collections={collections} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
           )}
         </>
       )}

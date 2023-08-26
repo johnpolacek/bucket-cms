@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from "react"
 import CollectionsIntro from "./CollectionsIntro"
 import EnvironmentStatus from "./EnvironmentStatus"
-import { ConfigValidation } from "../types"
+import { ConfigValidation, CollectionData } from "../types"
 import CollectionsAdmin from "./CollectionsAdmin"
 
 function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
   const [configValidation, setConfigValidation] = useState<undefined | ConfigValidation>(undefined)
-  const [collectionNames, setCollectionNames] = useState<undefined | string[]>(undefined)
+  const [collections, setCollections] = useState<undefined | CollectionData[]>(undefined)
   const isConfigured = configValidation?.hasAWSSecret && configValidation?.hasAWSRegion && configValidation?.hasAWSBucket
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
   const getCollections = async () => {
     const response = await fetch("/api/bucket/collections/read")
     const responseData = await response.json()
-    setCollectionNames(responseData.collectionNames)
+    setCollections(responseData.collections)
   }
 
   return (
@@ -37,9 +37,9 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
       {configValidation && (
         <>
           {isConfigured ? (
-            collectionNames ? (
-              collectionNames.length ? (
-                <CollectionsAdmin collectionNames={collectionNames} />
+            collections ? (
+              collections.length ? (
+                <CollectionsAdmin collections={collections} />
               ) : (
                 <CollectionsIntro onCreateCollection={onCreateCollection} />
               )

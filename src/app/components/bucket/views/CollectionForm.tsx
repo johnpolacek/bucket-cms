@@ -146,7 +146,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
         {layout.map((row, rowIndex) => (
           <div key={rowIndex}>
             <div className="flex justify-between items-center">
-              <div className="text-sm text-gray-500 mb-2">Row #{rowIndex + 1}</div>
+              <div className="text-sm opacity-50 mb-2">Row #{rowIndex + 1}</div>
               {layout.length > 1 && (
                 <Button className="ml-4 text-xs mt-1 mb-3 px-2 py-1 h-auto" variant="outline" onClick={() => handleDeleteRow(rowIndex)}>
                   × Delete

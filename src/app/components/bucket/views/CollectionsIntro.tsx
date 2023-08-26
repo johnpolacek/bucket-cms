@@ -5,8 +5,8 @@ import { Button } from "../../ui/Button"
 function CollectionsIntro({ onCreateCollection }: { onCreateCollection: () => void }) {
   return (
     <>
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome!</h1>
-      <p className="text-xl text-gray-600 mb-6 text-center">
+      <h1 className="text-3xl font-bold opacity-80 mb-4">Welcome!</h1>
+      <p className="text-xl opacity-60 mb-6 text-center">
         You haven't created any collections yet.
         <br />
         Start by creating your first collection to organize and manage your content.
@@ -17,15 +17,15 @@ function CollectionsIntro({ onCreateCollection }: { onCreateCollection: () => vo
       </Button>
 
       <div className="bg-white p-12 rounded-lg shadow-md max-w-3xl mx-auto mt-16">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">What is a Collection?</h2>
-        <p className="text-gray-600 mb-4">
+        <h2 className="text-3xl font-bold opacity-80 mb-6">What is a Collection?</h2>
+        <p className="opacity-60 mb-4">
           A <strong className="font-semibold">Collection</strong> represents a curated set of content, structured and organized for a specific purpose or theme. Think of it as a customizable container
           where you can group various components together, arrange them in a specific layout, and present them cohesively.
         </p>
 
-        <h3 className="text-2xl font-semibold text-gray-700 mt-6 mb-4">Key Aspects of a Collection:</h3>
+        <h3 className="text-2xl font-semibold opacity-70 mt-6 mb-4">Key Aspects of a Collection:</h3>
 
-        <ul className="list-disc pl-5 text-gray-600">
+        <ul className="list-disc pl-5 opacity-60">
           <li className="mb-3">
             <strong>Components:</strong> A collection is composed of individual components, such as blocks of rich text content, images, videos, or even custom elements like brand headers. Each
             component has its own unique properties and data requirements, ensuring flexibility in content presentation.
