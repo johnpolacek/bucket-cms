@@ -74,12 +74,8 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
         const unsetComponentTypes = row.columns.filter((column) => !column?.name).length
         const unsetComponentNames = row.columns.filter((column) => !column?.component).length
 
-        if (unsetComponentTypes > 0 && unsetComponentNames > 0) {
-          return `Row #${index + 1}: Please select component types and set names`
-        } else if (unsetComponentTypes > 0) {
-          return `Row #${index + 1}: Please select component types`
-        } else if (unsetComponentNames > 0) {
-          return `Row #${index + 1}: Please set names`
+        if (unsetComponentTypes > 0 || unsetComponentNames > 0) {
+          return `Row #${index + 1}: Please complete selecting component types and names`
         }
 
         return null
@@ -91,6 +87,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     }
 
     setErrors(newErrors)
+    setSubmit(false)
     return !newErrors.name && componentErrors.length === 0
   }
 
@@ -117,7 +114,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
         })
 
         if (response.ok) {
-          const result = await response.json()
           onComplete()
         } else {
           const errorData = await response.json()
@@ -244,10 +240,10 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
       {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
       <div className="flex justify-end gap-4 mt-4">
-        <Button disabled={!submit} variant="ghost" onClick={onCancel}>
+        <Button disabled={submit} variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
-        <Button disabled={!submit} onClick={handleSubmit}>
+        <Button disabled={submit} onClick={handleSubmit}>
           Save Collection
         </Button>
       </div>

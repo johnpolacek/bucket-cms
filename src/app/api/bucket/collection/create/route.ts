@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
         ContentType: "application/json",
       })
       const result = await s3.send(command)
-      console.log("Create Collection result", { result })
       return NextResponse.json({ success: true }, { status: 200 })
     } catch (error) {
       return NextResponse.json({ error }, { status: 500 })

@@ -177,7 +177,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
             )}
           </div>
           <div className="pl-8">
-            <h3 className="-mt-2 font-medium italic pb-2 opacity-50 text-center">Preview</h3>
+            <h3 className="-mt-8 font-medium italic pb-2 opacity-50 text-center">Preview</h3>
             <div className="flex flex-col gap-4 border">
               {formData?.rows.map((row, rowIndex) => (
                 <div key={`preview-row-${rowIndex}`} className="flex p-4 gap-4">

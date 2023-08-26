@@ -37,8 +37,6 @@ function CollectionManage({ collectionName, onFinish }: { collectionName: string
     fetchItems() // Refresh the items list after editing
   }
 
-  console.log(JSON.stringify(editItem))
-
   return (
     <>
       <div className="flex justify-center">

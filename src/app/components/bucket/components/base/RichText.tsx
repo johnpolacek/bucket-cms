@@ -18,12 +18,9 @@ const RichText: BaseComponent<RichTextComponentData> = {
     return <div dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />
   },
   renderAdmin: (data: RichTextComponentData, setData) => {
-    console.log("RichText data", data)
-    console.log("RichText defaultValue", data.content || "")
     return <ReactQuill theme="snow" defaultValue={data.content || ""} onChange={(value) => setData({ content: value })} />
   },
   validate: (data) => {
-    console.log("validate data", data)
     const result = RichTextComponentDataSchema.safeParse(data)
     if (result.success) {
       return { isValid: true }

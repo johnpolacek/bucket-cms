@@ -8,6 +8,7 @@ import CollectionsAdmin from "./CollectionsAdmin"
 function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
   const [configValidation, setConfigValidation] = useState<undefined | ConfigValidation>(undefined)
   const [collections, setCollections] = useState<undefined | CollectionData[]>(undefined)
+  const [isLoading, setIsLoading] = useState(true)
   const isConfigured = configValidation?.hasAWSSecret && configValidation?.hasAWSRegion && configValidation?.hasAWSBucket
 
   useEffect(() => {
@@ -27,9 +28,11 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
   }
 
   const getCollections = async () => {
+    setIsLoading(true)
     const response = await fetch("/api/bucket/collections/read")
     const responseData = await response.json()
     setCollections(responseData.collections)
+    setIsLoading(false)
   }
 
   return (
@@ -39,7 +42,9 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
           {isConfigured ? (
             collections ? (
               collections.length ? (
-                <CollectionsAdmin collections={collections} />
+                isLoading ? null : (
+                  <CollectionsAdmin collections={collections} onCreateCollection={getCollections} />
+                )
               ) : (
                 <CollectionsIntro onCreateCollection={onCreateCollection} />
               )

@@ -8,9 +8,18 @@ function Admin() {
   return (
     <main className="flex flex-col items-center bg-gray-100 py-12">
       {isCreatingCollection ? (
-        <CollectionForm onCancel={() => setIsCreatingCollection(false)} onComplete={() => setIsCreatingCollection(false)} />
+        <CollectionForm
+          onCancel={() => setIsCreatingCollection(false)}
+          onComplete={() => {
+            setIsCreatingCollection(false)
+          }}
+        />
       ) : (
-        <Welcome onCreateCollection={() => setIsCreatingCollection(true)} />
+        <Welcome
+          onCreateCollection={() => {
+            setIsCreatingCollection(true)
+          }}
+        />
       )}
     </main>
   )
