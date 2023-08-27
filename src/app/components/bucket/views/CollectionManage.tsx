@@ -37,6 +37,26 @@ function CollectionManage({ collectionName, onFinish }: { collectionName: string
     fetchItems() // Refresh the items list after editing
   }
 
+  const handleDeleteItem = async (itemId: string) => {
+    if (window.confirm("Are you sure you want to delete this item? This action cannot be undone.")) {
+      try {
+        const response = await fetch(`/api/bucket/item/delete?itemId=${itemId}&collectionName=${collectionName}`, {
+          method: "DELETE",
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to delete item")
+        }
+
+        // Refresh items list after successful deletion
+        fetchItems()
+      } catch (error: any) {
+        console.error(error)
+        alert("An error occurred while trying to delete the item. Please try again.")
+      }
+    }
+  }
+
   return (
     <>
       <div className="flex justify-center">
@@ -53,7 +73,14 @@ function CollectionManage({ collectionName, onFinish }: { collectionName: string
             {items.map((item) => (
               <div key={item.itemId} className="flex justify-between items-center border-b py-4 px-8">
                 {item.itemName}
-                <Button onClick={() => setEditItem(item)}>edit</Button>
+                <div>
+                  <Button variant="outline" className="text-blue-600" onClick={() => setEditItem(item)}>
+                    edit
+                  </Button>
+                  <Button aria-label={`Delete ${item.itemName}`} variant="ghost" className="text-xl ml-2 p-2 -mr-8 text-red-500 hover:text-red-700" onClick={() => handleDeleteItem(item.itemId)}>
+                    ×
+                  </Button>
+                </div>
               </div>
             ))}
             {items.length === 0 && <div className="p-8 w-full text-center text-lg italic opacity-60 border-b mb-4">This collection is empty...</div>}

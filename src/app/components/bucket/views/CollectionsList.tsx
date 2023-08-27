@@ -56,9 +56,14 @@ function CollectionsList({
                     Manage
                   </Button>
                   {collection.itemCount === 0 && (
-                    <button className="scale-150 ml-2 -mr-8 text-red-500 hover:text-red-700" onClick={() => handleDeleteCollection(collection.collectionName)}>
+                    <Button
+                      aria-label={`Delete ${collection.collectionName}`}
+                      variant="ghost"
+                      className="text-2xl px-2 -mr-[43px] text-red-500 hover:text-red-700"
+                      onClick={() => handleDeleteCollection(collection.collectionName)}
+                    >
                       ×
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
