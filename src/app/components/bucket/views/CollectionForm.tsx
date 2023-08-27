@@ -1,9 +1,6 @@
 "use client"
 import React, { useState } from "react"
-import { Button } from "@/app/components/ui/button"
-import { Input } from "@/app/components/ui/input"
-import { Label } from "@/app/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select"
+import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui"
 import { Collection, Field, AvailableFieldType } from "../types"
 import * as FieldTypes from "../field-types"
 
