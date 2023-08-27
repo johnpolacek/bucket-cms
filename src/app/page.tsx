@@ -1,5 +1,4 @@
-import Link from 'next/link'
-import { Button } from './components/ui/Button'
+import Link from "next/link"
 
 export default function Home() {
   return (
@@ -7,7 +6,9 @@ export default function Home() {
       <p>Sometimes you don’t need a CMS. How about a Bucket?</p>
       <div className="text-center">
         <p className="pb-4">Try the admin interface</p>
-        <Link href="/admin"><Button>Go to Demo</Button></Link>
+        <Link className="text-blue-700 underline" href="/admin">
+          Go to Demo
+        </Link>
       </div>
     </main>
   )

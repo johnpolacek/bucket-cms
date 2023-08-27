@@ -2,7 +2,8 @@
 import { signOut } from "next-auth/react"
 import React from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Button } from "../ui/Button"
+import { Button } from "@/app/components/ui/button"
+import Link from "next/link"
 import Admin from "../bucket/Admin"
 
 function Demo({ user }: { user: string }) {
@@ -17,7 +18,9 @@ function Demo({ user }: { user: string }) {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="flex justify-between items-center w-full px-8 py-4 border-b bg-white">
-        <div>Your App</div>
+        <div>
+          <Link href="/">Your App</Link>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <div className="w-10 h-10 flex items-center justify-center rounded-full border">{getInitials(user)}</div>
