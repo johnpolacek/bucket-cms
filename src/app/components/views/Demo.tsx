@@ -2,7 +2,7 @@
 import { signOut } from "next-auth/react"
 import React from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Button } from "../components/ui"
+import { Button } from "../bucket/components/ui"
 import Link from "next/link"
 import Admin from "../bucket/Admin"
 

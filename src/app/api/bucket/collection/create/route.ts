@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { initializeS3Client } from "../../s3/util"
 import { PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3"
-import { Collection, ComponentData } from "@/app/components/bucket/types"
+import { Collection } from "@/app/components/bucket/types"
 
 export async function POST(req: NextRequest) {
   const s3 = initializeS3Client()
