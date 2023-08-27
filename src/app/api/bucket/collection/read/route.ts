@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
         Body.on("error", reject)
       })
 
-      const jsonData: Collection<ComponentData> = JSON.parse(data)
+      const jsonData: Collection = JSON.parse(data)
       return NextResponse.json(jsonData, { status: 200 })
     }
 

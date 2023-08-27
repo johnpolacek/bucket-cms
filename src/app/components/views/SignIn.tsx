@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { Button } from "../ui/Button"
+import { Button } from "@/app/components/ui/button"
 import { signIn } from "next-auth/react"
 
 function SignIn() {

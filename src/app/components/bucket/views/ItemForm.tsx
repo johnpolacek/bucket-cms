@@ -1,15 +1,15 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Button } from "../../ui/Button"
-import componentRegistry from "../components/registry"
-import { Collection, ComponentData, CollectionItemData, ItemFormData } from "../types"
+import { Button } from "@/app/components/ui/button"
+import { Collection, CollectionFetch, ComponentData, CollectionItemData, Field, ItemFormData } from "../types"
+import * as FieldTypes from "../field-types"
 
 function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
-  const [collection, setCollection] = useState<Collection<ComponentData> | null>(null)
+  const [collection, setCollection] = useState<Collection | null>(null)
   const [itemName, setItemName] = useState("")
-  const [formData, setFormData] = useState<ItemFormData | null>({ collectionName, rows: [] })
+  const [formData, setFormData] = useState<ItemFormData | null>({ collectionName, fields: [] })
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})
-  const [componentErrors, setComponentErrors] = useState<string[][]>([])
+  const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
@@ -17,29 +17,43 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       if (collectionName) {
         try {
           const response = await fetch(`/api/bucket/collection/read?collectionName=${collectionName}`)
-          const collectionData: Collection<ComponentData> = await response.json()
+          const collectionData: CollectionFetch = await response.json()
+
+          // collection data had a typeName reference to a key of FieldTypes
+          // we can use that to assign the FieldType to each field
+          const typedFields: Field[] = collectionData.fields.map((field) => {
+            const fieldTypeKey = field.typeName as keyof typeof FieldTypes
+            const fieldType = FieldTypes[fieldTypeKey]
+            return {
+              ...field,
+              type: fieldType,
+            }
+          })
+          const typedCollection: Collection = {
+            ...collectionData,
+            fields: typedFields,
+          }
 
           let initialFormData = {
             collectionName,
-            rows: collectionData.layout.map((row) => ({
-              components: row.columns.map((component) => ({ name: component.name, data: {} })),
+            fields: collectionData.fields.map((field) => ({
+              name: field.name,
+              data: {},
             })),
           }
 
           if (itemToEdit) {
             initialFormData = {
               collectionName,
-              rows: collectionData.layout.map((row) => ({
-                components: row.columns.map((component) => ({
-                  name: component.name,
-                  data: itemToEdit.data[component.name] || {},
-                })),
+              fields: collectionData.fields.map((field) => ({
+                name: field.name,
+                data: itemToEdit.data[field.name] || {},
               })),
             }
             setItemName(itemToEdit.itemName)
           }
 
-          setCollection(collectionData)
+          setCollection(typedCollection)
           setFormData(initialFormData)
         } catch (error: any) {
           setErrors({ errorMessage: error.message || "Failed to load collection data" })
@@ -62,31 +76,28 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
     }
 
     let allComponentsValid = true
-    const newComponentErrors: string[][] = []
+    const newErrors: string[] = []
 
-    formData.rows.forEach((row, rowIndex) => {
-      const rowErrors: string[] = []
-      row.components.forEach((component, colIndex) => {
-        const componentType = collection?.layout[rowIndex]?.columns[colIndex]?.component?.type
-        if (!componentType) {
-          allComponentsValid = false
-          rowErrors[colIndex] = "Some components are missing."
-          return
-        }
+    formData.fields.forEach((field, index) => {
+      const fieldType = collection?.fields[index]?.type
+      console.log("fieldType", fieldType)
 
-        const componentFromRegistry = componentRegistry[componentType]
-        const validationResult = componentFromRegistry.validate(component.data)
-        if (!validationResult.isValid) {
-          allComponentsValid = false
-          rowErrors[colIndex] = validationResult.errorMessage || `Validation failed for ${component.name}`
-        } else {
-          rowErrors[colIndex] = "" // No error for this component
-        }
-      })
-      newComponentErrors[rowIndex] = rowErrors
+      if (!fieldType) {
+        allComponentsValid = false
+        newErrors[index] = "Some fields are missing."
+        return
+      }
+
+      try {
+        console.log(`Field: ${field.name}`, { fieldType }, JSON.stringify(fieldType.schema))
+        fieldType.schema.parse(field.data)
+      } catch (error: any) {
+        allComponentsValid = false
+        newErrors[index] = error.message || `Validation failed for ${field.name}`
+      }
     })
 
-    setComponentErrors(newComponentErrors)
+    setFieldErrors(newErrors)
 
     if (!allComponentsValid) {
       setErrors({ errorMessage: "Please fix the errors before submitting." })
@@ -98,18 +109,15 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
     // Create the data payload for the POST request
     const payload = {
       collectionName: formData.collectionName,
-      itemName, // Add this line
-      data: formData.rows.reduce((accumulatedData: any, row) => {
-        row.components.forEach((component) => {
-          accumulatedData[component.name] = component.data
-        })
+      itemName,
+      data: formData.fields.reduce((accumulatedData: any, field) => {
+        accumulatedData[field.name] = field.data
         return accumulatedData
       }, {}),
     }
 
     const apiEndpoint = itemToEdit ? "/api/bucket/item/update" : "/api/bucket/item/create"
 
-    // POST the data to the API route
     try {
       const response = await fetch(apiEndpoint, {
         method: "POST",
@@ -136,6 +144,8 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
     }
   }
 
+  console.log({ collection, formData })
+
   return (
     <div className="p-8 bg-white rounded-lg shadow-md w-[1200px]">
       <h3 className="uppercase opacity-50 text-sm pb-1">{collectionName}</h3>
@@ -143,7 +153,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
       {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
-      {collection && formData?.rows && (
+      {collection && formData?.fields && (
         <div className="grid grid-cols-2 divide-x gap-8">
           <div className="flex flex-col gap-8">
             <div className="mb-6">
@@ -151,30 +161,36 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
               <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} className="border rounded p-2 w-full" placeholder="Enter item name..." />
             </div>
 
-            {formData?.rows.map((row, rowIndex) =>
-              row.components.map((component, colIndex) => {
-                const componentType = collection?.layout[rowIndex]?.columns[colIndex]?.component?.type
-                if (!componentType) return null // Handle the case where componentType is undefined
+            {formData?.fields.map((field, index) => {
+              const fieldTypeKey = collection.fields[index].typeName as keyof typeof FieldTypes
+              const fieldType = FieldTypes[fieldTypeKey]
 
-                const componentFromRegistry = componentRegistry[componentType]
+              if (!fieldType) {
                 return (
-                  <div key={`row-${rowIndex}-col-${colIndex}`} className="flex flex-col gap-2">
-                    <label className="block opacity-70 font-medium">{component.name}</label>
-                    {componentFromRegistry &&
-                      componentFromRegistry.renderAdmin({ ...component.data }, (updatedData: ComponentData) => {
-                        // Update the formData based on changes in the component's admin UI
-                        setFormData((prev) => {
-                          if (!prev) return null
-                          const newData = { ...prev }
-                          newData.rows[rowIndex].components[colIndex].data = updatedData
-                          return newData
-                        })
-                      })}
-                    {componentErrors[rowIndex] && componentErrors[rowIndex][colIndex] && <div className="text-red-500 text-sm">{componentErrors[rowIndex][colIndex]}</div>}
+                  <div key={`field-${index}`} className="text-red-500">
+                    Field type not found!
                   </div>
                 )
-              })
-            )}
+              }
+
+              return (
+                <div key={`field-${index}`} className="flex flex-col gap-2">
+                  <label className="block opacity-70 font-medium">{field.name}</label>
+                  {fieldType.renderAdmin({
+                    data: field.data as any, // type checking and validation occurs during submit
+                    setData: (updatedData: ComponentData) => {
+                      setFormData((prev) => {
+                        if (!prev) return null
+                        const newData = { ...prev }
+                        newData.fields[index].data = updatedData
+                        return newData
+                      })
+                    },
+                  })}
+                  {fieldErrors[index] && <div className="text-red-500 text-sm">{fieldErrors[index]}</div>}
+                </div>
+              )
+            })}
           </div>
           <div className="pl-8">
             <h3 className="-mt-8 font-medium italic pb-2 opacity-50 text-center">Preview</h3>
@@ -182,9 +198,8 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
               {formData?.rows.map((row, rowIndex) => (
                 <div key={`preview-row-${rowIndex}`} className="flex p-4 gap-4">
                   {row.components.map((component, colIndex) => {
-                    const componentType = collection.layout[rowIndex].columns[colIndex].component.type
-                    const componentFromRegistry = componentRegistry[componentType]
-                    return <div key={`preview-row-${rowIndex}-col-${colIndex}`}>{componentFromRegistry && componentFromRegistry.render(component.data)}</div>
+                    const fieldType = collection.fields[colIndex].type
+                    return <div key={`preview-row-${rowIndex}-col-${colIndex}`}>{fieldType && fieldType.render({ data: component.data })}</div>
                   })}
                 </div>
               ))}
@@ -195,7 +210,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
               Cancel
             </Button>
             <Button className="w-[140px] text-center" onClick={handleSubmit} disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save Collection"}
+              {isSubmitting ? "Saving..." : "Save Item"}
             </Button>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import ItemForm from "./ItemForm"
-import { Button } from "../../ui/Button"
+import { Button } from "@/app/components/ui/button"
 import { CollectionItemData } from "../types"
 
 function CollectionManage({ collectionName, onFinish }: { collectionName: string; onFinish: () => void }) {
@@ -45,7 +45,7 @@ function CollectionManage({ collectionName, onFinish }: { collectionName: string
         </Button>
       </div>
 
-      {!editItem && items.length > 0 && (
+      {!editItem && !loading && (
         <div className="my-8 bg-white p-8 rounded-xl shadow">
           <h3 className="text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
           <h4 className="text-center font-semibold text-4xl pb-6">{collectionName}</h4>
@@ -56,6 +56,7 @@ function CollectionManage({ collectionName, onFinish }: { collectionName: string
                 <Button onClick={() => setEditItem(item)}>edit</Button>
               </div>
             ))}
+            {items.length === 0 && <div className="p-8 w-full text-center text-lg italic opacity-60 border-b mb-4">This collection is empty...</div>}
             {error && <p className="text-red-500">{error}</p>}
             {!loading && !error && <ul></ul>}
           </div>

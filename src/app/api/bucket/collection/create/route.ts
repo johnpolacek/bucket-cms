@@ -8,16 +8,10 @@ export async function POST(req: NextRequest) {
 
   if (req.method === "POST") {
     try {
-      const data: Collection<ComponentData> = await req.json()
+      const data: Collection = await req.json()
 
-      // Validation: Check if collectionName is empty
       if (!data.name.trim()) {
         return NextResponse.json({ error: "Collection name cannot be empty" }, { status: 400 })
-      }
-
-      // Validation: Ensure data adheres to Collection type (basic checks)
-      if (typeof data.name !== "string" || !Array.isArray(data.layout)) {
-        return NextResponse.json({ error: "Data is not formatted properly" }, { status: 400 })
       }
 
       const collectionName = data.name

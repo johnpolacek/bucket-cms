@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { ReactElement } from "react"
 
 export interface ConfigValidation {
   hasAWSAccess: boolean
@@ -18,34 +19,45 @@ export interface CollectionData {
 
 export type SetDataFunction<T extends ComponentData> = (data: Partial<T>) => void
 
-export interface BaseComponent<T extends ComponentData> {
-  type: string
-  render: (data: T) => JSX.Element
-  renderAdmin: (data: T, setData: SetDataFunction<T>) => JSX.Element
-  validate: (data: ComponentData) => { isValid: boolean; errorMessage?: string }
-  defaultData: ComponentData
+export interface FieldType<T> {
+  schema: z.ZodType<T, any, any>
+  renderAdmin: ({ data, setData, Component }: FieldTypeProps<T>) => ReactElement
+  render: ({ data, Component }: FieldTypeProps<T>) => ReactElement
+  validate: (data: T) => { isValid: boolean; errorMessage?: string }
 }
-export interface Collection<T extends ComponentData> {
+
+export interface FieldTypes {
+  [key: string]: FieldType<any>
+}
+
+export interface FieldTypeProps<T> {
+  data: T
+  setData?: SetDataFunction<T>
+  Component?: React.FC<{ data: T; setData?: SetDataFunction<T> }>
+}
+
+export interface AvailableFieldType<T> {
   name: string
-  layout: CollectionRow<T>[]
+  component: FieldType<T>
 }
 
-export interface CollectionRow<T extends ComponentData> {
-  columns: CollectionItem<T>[]
-}
-
-export interface CollectionRowDraft<T extends ComponentData> {
-  columns: (CollectionItemDraft<T> | undefined)[]
-}
-
-export interface CollectionItem<T extends ComponentData> {
+export interface Collection<T = any> {
   name: string
-  component: BaseComponent<T>
+  fields: Field<T>[]
 }
 
-export interface CollectionItemDraft<T extends ComponentData> {
-  name?: string
-  component?: BaseComponent<T>
+export interface CollectionFetch {
+  name: string
+  fields: {
+    name: string
+    typeName: string
+  }[]
+}
+
+export interface Field<T = any> {
+  name: string
+  type: FieldType<T>
+  typeName: string
 }
 
 export interface CollectionItemData {
@@ -54,16 +66,12 @@ export interface CollectionItemData {
   data: ComponentData
 }
 
-export interface ItemFormDataComponent {
-  name: string
-  data: ComponentData
-}
-
-export interface ItemFormDataRow {
-  components: ItemFormDataComponent[]
-}
-
 export interface ItemFormData {
   collectionName: string
-  rows: ItemFormDataRow[]
+  fields: ItemFormFieldData[]
+}
+
+export interface ItemFormFieldData {
+  name: string
+  data: ComponentData
 }

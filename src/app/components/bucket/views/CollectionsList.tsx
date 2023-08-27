@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Button } from "../../ui/Button"
+import { Button } from "@/app/components/ui/button"
 import { CollectionData } from "../types"
 
 function CollectionsList({
@@ -66,7 +66,7 @@ function CollectionsList({
         </div>
       </div>
       <div className="flex justify-center">
-        <Button className="text-lg py-3 h-auto bg-green-600" onClick={onCreateCollection} size="lg">
+        <Button className="text-lg py-3 h-auto bg-green-600 hover:bg-green-600 hover:scale-105 transition-all" onClick={onCreateCollection} size="lg">
           + Create New Collection
         </Button>
       </div>
