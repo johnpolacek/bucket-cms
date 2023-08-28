@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react"
-import { Button } from "../ui"
+import { Button } from "../../ui"
 import CollectionForm from "./CollectionForm"
 
 function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection: () => void }) {

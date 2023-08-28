@@ -1,8 +1,8 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Button } from "../ui"
-import { Collection, CollectionFetch, ComponentData, CollectionItemData, Field, ItemFormData } from "../types"
-import * as FieldTypes from "../field-types"
+import { Button } from "../../ui"
+import { Collection, CollectionFetch, ComponentData, CollectionItemData, Field, ItemFormData } from "../../types"
+import * as FieldTypes from "../../field-types"
 
 function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
   const [collection, setCollection] = useState<Collection | null>(null)

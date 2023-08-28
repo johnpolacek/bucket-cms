@@ -1,9 +1,9 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import CollectionsIntro from "./CollectionsIntro"
-import EnvironmentStatus from "./EnvironmentStatus"
+import CollectionsIntro from "./admin/CollectionsIntro"
+import EnvironmentStatus from "./admin/EnvironmentStatus"
 import { ConfigValidation, CollectionData } from "../types"
-import CollectionsAdmin from "./CollectionsAdmin"
+import AdminHome from "./admin/AdminHome"
 import { Button } from "../ui"
 
 function Home() {
@@ -52,7 +52,7 @@ function Home() {
                           Go to Dev View
                           <span className="opacity-60 text-3xl font-thin relative ml-px left-1 -top-[2px]">»</span>
                         </Button>
-                        <CollectionsAdmin collections={collections} onCreateCollection={refreshCollections} />
+                        <AdminHome collections={collections} onCreateCollection={refreshCollections} />
                       </>
                     )}
                     {view === "DEV" && (

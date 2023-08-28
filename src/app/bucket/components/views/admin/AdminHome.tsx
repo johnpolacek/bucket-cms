@@ -4,9 +4,9 @@ import CollectionsList from "./CollectionsList"
 import CollectionManage from "./CollectionManage"
 import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
-import { CollectionData } from "../types"
+import { CollectionData } from "../../types"
 
-function CollectionsAdmin({ collections, onCreateCollection }: { collections: CollectionData[]; onCreateCollection: () => void }) {
+function AdminHome({ collections, onCreateCollection }: { collections: CollectionData[]; onCreateCollection: () => void }) {
   const [manageCollection, setManageCollection] = useState("")
   const [createItemInCollection, setCreateItemInCollection] = useState("")
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
@@ -36,4 +36,4 @@ function CollectionsAdmin({ collections, onCreateCollection }: { collections: Co
   )
 }
 
-export default CollectionsAdmin
+export default AdminHome

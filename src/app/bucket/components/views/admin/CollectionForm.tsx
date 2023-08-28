@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from "react"
-import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui"
-import { Collection, Field, AvailableFieldType } from "../types"
-import * as FieldTypes from "../field-types"
+import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui"
+import { Collection, Field, AvailableFieldType } from "../../types"
+import * as FieldTypes from "../../field-types"
 
 type ErrorState = {
   name?: string

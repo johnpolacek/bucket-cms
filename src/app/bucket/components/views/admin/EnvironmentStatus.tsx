@@ -1,6 +1,6 @@
 import React from "react"
 
-import { ConfigValidation } from "../types"
+import { ConfigValidation } from "../../types"
 
 const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValidation }) => {
   const hostname = typeof window !== "undefined" ? window.location.hostname : "unknown"
