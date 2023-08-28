@@ -7,7 +7,7 @@ function Admin() {
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
 
   return (
-    <main className="flex flex-col items-center bg-gray-100 py-12">
+    <main className="flex flex-col items-center bg-gray-100 py-12 relative w-full">
       {isCreatingCollection ? (
         <CollectionForm
           onCancel={() => setIsCreatingCollection(false)}
