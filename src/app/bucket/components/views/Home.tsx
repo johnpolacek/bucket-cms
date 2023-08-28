@@ -6,7 +6,7 @@ import { ConfigValidation, CollectionData } from "../types"
 import CollectionsAdmin from "./CollectionsAdmin"
 import { Button } from "../ui"
 
-function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
+function Home() {
   const [configValidation, setConfigValidation] = useState<undefined | ConfigValidation>(undefined)
   const [collections, setCollections] = useState<undefined | CollectionData[]>(undefined)
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +19,7 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
 
   useEffect(() => {
     if (isConfigured) {
-      getCollections()
+      refreshCollections()
     }
   }, [isConfigured])
 
@@ -29,7 +29,7 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
     setConfigValidation(configValidationResponseData)
   }
 
-  const getCollections = async () => {
+  const refreshCollections = async () => {
     setIsLoading(true)
     const response = await fetch("/api/bucket/collections/read")
     const responseData = await response.json()
@@ -38,7 +38,7 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
   }
 
   return (
-    <>
+    <main className="flex flex-col grow items-center bg-gray-100 py-12 relative w-full h-full">
       {configValidation && (
         <>
           {isConfigured ? (
@@ -52,7 +52,7 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
                           Go to Dev View
                           <span className="opacity-60 text-3xl font-thin relative ml-px left-1 -top-[2px]">»</span>
                         </Button>
-                        <CollectionsAdmin collections={collections} onCreateCollection={getCollections} />
+                        <CollectionsAdmin collections={collections} onCreateCollection={refreshCollections} />
                       </>
                     )}
                     {view === "DEV" && (
@@ -67,7 +67,7 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
                   </>
                 )
               ) : (
-                <CollectionsIntro onCreateCollection={onCreateCollection} />
+                <CollectionsIntro onCreateFirstCollection={refreshCollections} />
               )
             ) : null
           ) : (
@@ -75,8 +75,8 @@ function Welcome({ onCreateCollection }: { onCreateCollection: () => void }) {
           )}
         </>
       )}
-    </>
+    </main>
   )
 }
 
-export default Welcome
+export default Home

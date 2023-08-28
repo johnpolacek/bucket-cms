@@ -4,7 +4,7 @@ import React from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
 import Link from "next/link"
-import Admin from "../../../bucket/admin"
+import { Bucket } from "@/app/bucket"
 
 function Demo({ user }: { user: string }) {
   const getInitials = (name: string): string =>
@@ -35,7 +35,7 @@ function Demo({ user }: { user: string }) {
         </DropdownMenu>
       </header>
       <main className="flex flex-col items-center justify-center py-12">
-        <Admin />
+        <Bucket />
       </main>
     </div>
   )
