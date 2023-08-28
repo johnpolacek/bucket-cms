@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import Welcome from "./views/Welcome"
-import CollectionForm from "./views/CollectionForm"
+import Welcome from "./Welcome"
+import CollectionForm from "./CollectionForm"
 
 function Admin() {
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)

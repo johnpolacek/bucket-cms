@@ -2,9 +2,9 @@
 import { signOut } from "next-auth/react"
 import React from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Button } from "../bucket/components/ui"
+import { Button } from "../ui/button"
 import Link from "next/link"
-import Admin from "../bucket/Admin"
+import Admin from "../../bucket/admin"
 
 function Demo({ user }: { user: string }) {
   const getInitials = (name: string): string =>

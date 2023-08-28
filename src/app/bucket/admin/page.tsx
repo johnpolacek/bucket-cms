@@ -1,5 +1,5 @@
-import Demo from "../components/views/Demo"
-import SignIn from "../components/views/SignIn"
+import Demo from "../../components/views/Demo"
+import SignIn from "../../components/views/SignIn"
 import { getServerSession } from "next-auth/next"
 import { options } from "./options"
 

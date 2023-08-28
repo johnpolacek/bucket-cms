@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Button } from "../components/ui"
+import { Button } from "../ui"
 import { CollectionData } from "../types"
 
 function CollectionsList({

@@ -2,7 +2,7 @@
 import React, { ReactElement } from "react"
 import { FieldType, FieldTypeProps } from "../types"
 import { z } from "zod"
-import { Input } from "../components/ui"
+import { Input } from "../ui"
 
 const textSchema = z.object({
   value: z.string().min(1, "Text cannot be empty"),

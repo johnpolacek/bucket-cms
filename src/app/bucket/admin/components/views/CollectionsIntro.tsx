@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { Button } from "../components/ui"
+import { Button } from "../ui"
 
 function CollectionsIntro({ onCreateCollection }: { onCreateCollection: () => void }) {
   return (

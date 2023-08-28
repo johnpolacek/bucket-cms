@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import ItemForm from "./ItemForm"
-import { Button } from "../components/ui"
+import { Button } from "../ui"
 import { CollectionItemData } from "../types"
 
 function CollectionManage({ collectionName, onFinish }: { collectionName: string; onFinish: () => void }) {
