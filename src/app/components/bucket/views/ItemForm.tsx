@@ -106,8 +106,14 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
     setIsSubmitting(true)
 
-    // Create the data payload for the POST request
-    const payload = {
+    type ItemPayload = {
+      collectionName: string
+      itemName: string
+      data: any
+      itemId?: string
+    }
+
+    const payload: ItemPayload = {
       collectionName: formData.collectionName,
       itemName,
       data: formData.fields.reduce((accumulatedData: any, field) => {
@@ -116,11 +122,25 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       }, {}),
     }
 
-    const apiEndpoint = itemToEdit ? "/api/bucket/item/update" : "/api/bucket/item/create"
+    // If we are updating, add the itemId to the payload
+    if (itemToEdit) {
+      payload.itemId = itemToEdit.itemId
+    }
+
+    let apiEndpoint
+    let requestMethod
+
+    if (itemToEdit) {
+      apiEndpoint = "/api/bucket/item/update"
+      requestMethod = "PUT"
+    } else {
+      apiEndpoint = "/api/bucket/item/create"
+      requestMethod = "POST"
+    }
 
     try {
       const response = await fetch(apiEndpoint, {
-        method: "POST",
+        method: requestMethod,
         headers: {
           "Content-Type": "application/json",
         },
@@ -128,10 +148,11 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       })
 
       if (!response.ok) {
+        console.log({ response })
         throw new Error("Failed to save the item")
       }
-
       const responseData = await response.json()
+
       if (responseData.success) {
         onComplete()
       } else {
