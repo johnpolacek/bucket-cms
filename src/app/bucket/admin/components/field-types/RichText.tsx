@@ -1,10 +1,16 @@
 "use client"
+import dynamic from "next/dynamic"
 import React, { ReactElement } from "react"
-import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import DOMPurify from "dompurify"
 import { FieldType, FieldTypeProps } from "../types"
 import { z } from "zod"
+
+// Dynamically import Quill, but only on the client side
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false, // This will prevent Quill from being imported during SSR
+  loading: () => <p>Loading editor...</p>,
+})
 
 const richTextSchema = z.object({
   value: z.string().min(1, "Content cannot be empty"),
@@ -17,7 +23,7 @@ export const RichText: FieldType<RichTextData> = {
     if (Component) {
       return <Component data={data} setData={setData} />
     }
-    return <ReactQuill theme="snow" defaultValue={data?.value || ""} onChange={(value) => setData && setData({ value })} />
+    return typeof window !== "undefined" ? <ReactQuill theme="snow" defaultValue={data?.value || ""} onChange={(value) => setData && setData({ value })} /> : <></>
   },
   render: ({ data, Component }: FieldTypeProps<RichTextData>): ReactElement => {
     if (Component) {

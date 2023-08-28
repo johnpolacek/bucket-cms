@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react"
 import Welcome from "./Welcome"
 import CollectionForm from "./CollectionForm"
