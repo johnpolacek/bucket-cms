@@ -7,7 +7,7 @@ export default function Home() {
       <p>Bucket is the world’s first portable drop-in CMS, no database required.</p>
       <div className="text-center">
         <p className="pb-4">Try the admin interface</p>
-        <Link className="text-blue-700 underline" href="/bucket/admin">
+        <Link className="text-blue-700 underline" href="/demo">
           Go to Demo
         </Link>
       </div>
