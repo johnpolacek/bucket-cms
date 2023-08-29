@@ -1,1 +1,1 @@
-export { default as Bucket } from "./components/views/Home"
+export { default as Bucket } from "./src/views/Home"
