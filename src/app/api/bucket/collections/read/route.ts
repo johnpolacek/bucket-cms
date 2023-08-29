@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
-import { ListObjectsV2Command } from "@aws-sdk/client-s3"
+import { ListObjectsV2Command, GetObjectCommand } from "@aws-sdk/client-s3"
+import { Readable } from "stream"
 import { initializeS3Client } from "../../s3/util"
+import { Collection } from "../../../../bucket/components/types"
 
 export async function GET(req: NextRequest) {
   const s3 = initializeS3Client()
@@ -12,25 +14,36 @@ export async function GET(req: NextRequest) {
     })
     const response = await s3.send(command)
 
-    // Extract file names (keys) from the response
-    const collectionNames = response.Contents?.map((item) => item.Key?.replace("collections/", "").replace(".json", "")) || []
+    const collectionKeys = response.Contents?.map((item) => item.Key) || []
 
-    // Fetch item counts for each collection
-    const collectionsWithCounts = await Promise.all(
-      collectionNames.map(async (collectionName) => {
-        const itemCommand = new ListObjectsV2Command({
+    // Fetch the content of each collection file
+    const collections = await Promise.all(
+      collectionKeys.map(async (collectionKey) => {
+        const getCommand = new GetObjectCommand({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
-          Prefix: `items/${collectionName}/`,
+          Key: collectionKey,
         })
-        const itemResponse = await s3.send(itemCommand)
-        const itemCount = itemResponse.KeyCount || 0
-        return { collectionName, itemCount }
+
+        const { Body } = await s3.send(getCommand)
+
+        if (Body instanceof Readable) {
+          const data = await new Promise<string>((resolve, reject) => {
+            const chunks: any[] = []
+            Body.on("data", (chunk) => chunks.push(chunk))
+            Body.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
+            Body.on("error", reject)
+          })
+
+          return JSON.parse(data) as Collection
+        }
+
+        throw new Error(`Failed to retrieve collection data for key ${collectionKey}`)
       })
     )
 
-    return NextResponse.json({ collections: collectionsWithCounts }, { status: 200 })
-  } catch (error) {
+    return NextResponse.json({ collections }, { status: 200 })
+  } catch (error: any) {
     console.error("Error fetching collections from S3:", error) // Log the error for debugging
-    return NextResponse.json({ error }, { status: 500 }) // Return the error message
+    return NextResponse.json({ error: error.message || "Failed to fetch collections" }, { status: 500 }) // Return the error message
   }
 }

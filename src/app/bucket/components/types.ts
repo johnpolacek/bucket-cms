@@ -22,7 +22,6 @@ export type SetDataFunction<T extends ComponentData> = (data: Partial<T>) => voi
 export interface FieldType<T> {
   schema: z.ZodType<T, any, any>
   renderAdmin: ({ data, setData, Component }: FieldTypeProps<T>) => ReactElement
-  render: ({ data, Component }: FieldTypeProps<T>) => ReactElement
   validate: (data: T) => { isValid: boolean; errorMessage?: string }
 }
 

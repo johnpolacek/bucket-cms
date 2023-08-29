@@ -4,6 +4,7 @@ import CollectionsIntro from "./admin/CollectionsIntro"
 import EnvironmentStatus from "./admin/EnvironmentStatus"
 import { ConfigValidation, CollectionData } from "../types"
 import AdminHome from "./admin/AdminHome"
+import DevHome from "./dev/DevHome"
 import { Button } from "../ui"
 
 function Home() {
@@ -31,7 +32,7 @@ function Home() {
 
   const refreshCollections = async () => {
     setIsLoading(true)
-    const response = await fetch("/api/bucket/collections/read")
+    const response = await fetch("/api/bucket/collections/count")
     const responseData = await response.json()
     setCollections(responseData.collections)
     setIsLoading(false)
@@ -61,7 +62,7 @@ function Home() {
                           <span className="opacity-60 text-3xl font-thin relative ml-px right-1 -top-[2px]">«</span>
                           Go to Admin View
                         </Button>
-                        <div>Dev View</div>
+                        <DevHome />
                       </>
                     )}
                   </>

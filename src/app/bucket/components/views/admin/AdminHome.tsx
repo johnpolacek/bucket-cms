@@ -6,7 +6,7 @@ import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
 import { CollectionData } from "../../types"
 
-function AdminHome({ collections, onCreateCollection }: { collections: CollectionData[]; onCreateCollection: () => void }) {
+function AdminHome({ collections, onUpdateCollection }: { collections: CollectionData[]; onUpdateCollection: () => void }) {
   const [manageCollection, setManageCollection] = useState("")
   const [createItemInCollection, setCreateItemInCollection] = useState("")
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
@@ -24,8 +24,9 @@ function AdminHome({ collections, onCreateCollection }: { collections: Collectio
               onCancel={() => setIsCreatingCollection(false)}
               onComplete={() => {
                 setIsCreatingCollection(false)
-                onCreateCollection()
+                onUpdateCollection()
               }}
+              onDelete={onUpdateCollection}
             />
           ) : (
             <CollectionsList collections={collections} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />

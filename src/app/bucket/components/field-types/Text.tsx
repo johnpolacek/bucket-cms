@@ -17,12 +17,6 @@ export const Text: FieldType<TextData> = {
     }
     return <Input type="text" defaultValue={data?.value || ""} onChange={(e) => setData && setData({ value: e.target.value })} />
   },
-  render: ({ data, Component }: FieldTypeProps<TextData>): ReactElement => {
-    if (Component) {
-      return <Component data={data} />
-    }
-    return <span>{data.value}</span>
-  },
   validate: (data: TextData) => {
     const schema = z.object({
       value: z.string().min(1, "Text cannot be empty"),

@@ -10,7 +10,7 @@ type ErrorState = {
   errorMessage?: string
 }
 
-function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
+function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void; onDelete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
   const [fields, setFields] = useState<Field[]>(collection ? collection.fields : [{ name: "", type: {} as any, typeName: "" }])
   const [errors, setErrors] = useState<ErrorState>({})
@@ -44,6 +44,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     updatedFields.splice(index, 1)
     setErrors({})
     setFields(updatedFields)
+    onDelete()
   }
 
   const validateForm = () => {
