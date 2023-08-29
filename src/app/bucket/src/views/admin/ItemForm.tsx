@@ -80,7 +80,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
     formData.fields.forEach((field, index) => {
       const fieldType = collection?.fields[index]?.type
-      console.log("fieldType", fieldType)
 
       if (!fieldType) {
         allComponentsValid = false
@@ -89,7 +88,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       }
 
       try {
-        console.log(`Field: ${field.name}`, { fieldType }, JSON.stringify(fieldType.schema))
         fieldType.schema.parse(field.data)
       } catch (error: any) {
         allComponentsValid = false
@@ -148,7 +146,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       })
 
       if (!response.ok) {
-        console.log({ response })
         throw new Error("Failed to save the item")
       }
       const responseData = await response.json()
@@ -164,8 +161,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       setIsSubmitting(false)
     }
   }
-
-  console.log({ collection, formData })
 
   return (
     <div className="p-8 bg-white rounded-lg shadow-md w-[1200px]">

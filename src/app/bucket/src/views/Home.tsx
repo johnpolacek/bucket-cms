@@ -39,7 +39,7 @@ function Home() {
   }
 
   return (
-    <main className="flex flex-col grow items-center bg-gray-100 py-12 relative w-full h-full">
+    <main className="flex flex-col grow items-center relative w-full h-full">
       {configValidation && (
         <>
           {isConfigured ? (
@@ -48,17 +48,17 @@ function Home() {
                 isLoading ? null : (
                   <>
                     {view === "ADMIN" && (
-                      <>
-                        <Button onClick={() => setView("DEV")} variant="outline" className="absolute top-0 right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100">
+                      <div className="min-h-screen w-full bg-gray-50">
+                        <Button onClick={() => setView("DEV")} variant="outline" className="absolute top-4 right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100">
                           Go to Dev View
                           <span className="opacity-60 text-3xl font-thin relative ml-px left-1 -top-[2px]">»</span>
                         </Button>
-                        <AdminHome collections={collections} onCreateCollection={refreshCollections} />
-                      </>
+                        <AdminHome collections={collections} onUpdateCollection={refreshCollections} />
+                      </div>
                     )}
                     {view === "DEV" && (
                       <>
-                        <Button onClick={() => setView("ADMIN")} variant="outline" className="absolute top-0 right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100">
+                        <Button onClick={() => setView("ADMIN")} variant="outline" className="absolute top-4 right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100">
                           <span className="opacity-60 text-3xl font-thin relative ml-px right-1 -top-[2px]">«</span>
                           Go to Admin View
                         </Button>

@@ -1,12 +1,14 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { CollectionFetch } from "../../types"
-import CollectionData from "./CollectionData"
+import DevHomeNav from "./DevHomeNav"
+import Docs from "./Docs"
 
 function DevHome() {
-  const [loading, setLoading] = useState(true)
   const [collections, setCollections] = useState<CollectionFetch[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [activeSection, setActiveSection] = useState("")
+  const scrollableDivRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -15,35 +17,68 @@ function DevHome() {
         if (!response.ok) {
           throw new Error("Failed to fetch collections")
         }
-
         const data = await response.json()
         setCollections(data.collections)
-        setLoading(false)
       } catch (error: any) {
         setError(error.message)
       }
     }
-
     fetchCollections()
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollableDivRef.current) {
+        const scrollDiv = scrollableDivRef.current
+        const sections = scrollDiv.querySelectorAll("section[id]")
+
+        let currentSectionId = ""
+
+        if (Math.abs(sections[0].getBoundingClientRect().top - scrollDiv.getBoundingClientRect().top) < 100) {
+          // Using a threshold of 100 pixels
+          // The first section is at the top of the scrollable container
+          currentSectionId = sections[0].id
+        } else {
+          sections.forEach((section) => {
+            const rect = section.getBoundingClientRect()
+            const scrollDivRect = scrollDiv.getBoundingClientRect()
+
+            if (rect.top >= scrollDivRect.top && rect.bottom <= scrollDivRect.bottom) {
+              // The entire section is in view
+              currentSectionId = section.id
+            } else if (rect.top <= scrollDivRect.bottom / 2 && rect.bottom >= scrollDivRect.top / 2) {
+              // Middle of the section is in view
+              currentSectionId = section.id
+            }
+          })
+        }
+
+        if (currentSectionId) {
+          setActiveSection(currentSectionId)
+        }
+      }
+    }
+
+    const scrollDiv = scrollableDivRef.current
+    if (scrollDiv) {
+      scrollDiv.addEventListener("scroll", handleScroll)
+      return () => {
+        scrollDiv.removeEventListener("scroll", handleScroll)
+      }
+    }
+  }, [scrollableDivRef?.current])
+
+  console.log({ activeSection })
+
   return (
-    <div className="min-w-[420px]">
-      {!loading && (
-        <div>
-          {collections.length === 0 ? (
-            <p>No collections found.</p>
-          ) : (
-            <>
-              <h3 className="text-center font-semibold text-3xl pb-8">Your Collections</h3>
-              {collections.map((collection) => (
-                <CollectionData collection={collection} />
-              ))}
-            </>
-          )}
+    <div className="flex w-full h-screen overflow-auto">
+      <DevHomeNav collections={collections} activeSection={activeSection} />
+      <div className="grow min-h-screen overflow-auto scroll-smooth" ref={scrollableDivRef}>
+        <div className="py-8 max-w-[960px] mx-auto">
+          <Docs collections={collections} />
+          {error && <div className="text-red-500">{error}</div>}
         </div>
-      )}
-      {error && <div className="text-red-500">{error}</div>}
+      </div>
     </div>
   )
 }

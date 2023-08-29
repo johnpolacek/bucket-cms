@@ -16,7 +16,7 @@ function Demo({ user }: { user: string }) {
       .toUpperCase()
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen">
       <header className="flex justify-between items-center w-full px-8 py-4 border-b bg-white">
         <div>
           <Link href="/">Your App</Link>
@@ -34,9 +34,7 @@ function Demo({ user }: { user: string }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
-      <main className="flex flex-col items-center justify-center py-12">
-        <Bucket />
-      </main>
+      <Bucket />
     </div>
   )
 }

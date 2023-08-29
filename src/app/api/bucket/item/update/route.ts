@@ -11,13 +11,11 @@ export async function PUT(req: NextRequest) {
 
       // Validate the itemName
       if (!itemName || typeof itemName !== "string" || !itemName.trim()) {
-        console.log("Item name is required and should be a non-empty string.")
         return NextResponse.json({ error: "Item name is required and should be a non-empty string." }, { status: 400 })
       }
 
       // Validate itemId
       if (!itemId || typeof itemId !== "string" || !itemId.trim()) {
-        console.log("Item ID is required for updating.")
         return NextResponse.json({ error: "Item ID is required for updating." }, { status: 400 })
       }
 

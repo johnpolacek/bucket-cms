@@ -35,39 +35,41 @@ function CollectionsList({
   }
 
   return (
-    <>
+    <div className="flex flex-col">
       <h3 className="text-center font-semibold text-3xl">Your Collections</h3>
-      <div className="my-8 bg-white p-8 rounded-xl shadow">
-        <div className="border-t">
-          {deleteError && <div className="text-red-500">{deleteError}</div>}
-          {collections
-            .filter((col) => !deletedCollections.includes(col.collectionName))
-            .map((collection: CollectionData) => (
-              <div key={collection.collectionName} className="flex justify-between items-center border-b py-4 px-8">
-                <div className="sm:min-w-[240px]">
-                  {collection.collectionName}
-                  {collection.itemCount > 0 && <span className="ml-1 font-mono text-sm opacity-60">({collection.itemCount})</span>}
-                </div>
-                <div className="flex gap-3 pr-4">
-                  <Button onClick={() => onCreateItem(collection.collectionName)} className="text-green-600" variant="outline">
-                    + New
-                  </Button>
-                  <Button onClick={() => onManage(collection.collectionName)} className="text-blue-600" variant="outline">
-                    Manage
-                  </Button>
-                  {collection.itemCount === 0 && (
-                    <Button
-                      aria-label={`Delete ${collection.collectionName}`}
-                      variant="ghost"
-                      className="text-2xl px-2 -mr-[43px] text-red-500 hover:text-red-700"
-                      onClick={() => handleDeleteCollection(collection.collectionName)}
-                    >
-                      ×
+      <div className="flex justify-center">
+        <div className="my-8 bg-white p-8 rounded-xl shadow">
+          <div className="border-t">
+            {deleteError && <div className="text-red-500">{deleteError}</div>}
+            {collections
+              .filter((col) => !deletedCollections.includes(col.collectionName))
+              .map((collection: CollectionData) => (
+                <div key={collection.collectionName} className="flex justify-between items-center border-b py-4 px-8">
+                  <div className="sm:min-w-[240px]">
+                    {collection.collectionName}
+                    {collection.itemCount > 0 && <span className="ml-1 font-mono text-sm opacity-60">({collection.itemCount})</span>}
+                  </div>
+                  <div className="flex gap-3 pr-4">
+                    <Button onClick={() => onCreateItem(collection.collectionName)} className="text-green-600" variant="outline">
+                      + New
                     </Button>
-                  )}
+                    <Button onClick={() => onManage(collection.collectionName)} className="text-blue-600" variant="outline">
+                      Manage
+                    </Button>
+                    {collection.itemCount === 0 && (
+                      <Button
+                        aria-label={`Delete ${collection.collectionName}`}
+                        variant="ghost"
+                        className="text-2xl px-2 -mr-[43px] text-red-500 hover:text-red-700"
+                        onClick={() => handleDeleteCollection(collection.collectionName)}
+                      >
+                        ×
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
       </div>
       <div className="flex justify-center">
@@ -75,7 +77,7 @@ function CollectionsList({
           + Create New Collection
         </Button>
       </div>
-    </>
+    </div>
   )
 }
 

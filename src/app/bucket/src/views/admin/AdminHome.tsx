@@ -12,7 +12,7 @@ function AdminHome({ collections, onUpdateCollection }: { collections: Collectio
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
 
   return (
-    <div className="min-w-[420px]">
+    <div className="py-16">
       {manageCollection ? (
         <CollectionManage onFinish={() => setManageCollection("")} collectionName={manageCollection} />
       ) : (
