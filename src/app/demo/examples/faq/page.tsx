@@ -1,9 +1,7 @@
 import { readCollectionItems } from "@/app/api/bucket/s3/util"
 
 async function getData() {
-  const items = await readCollectionItems("FAQs")
-  console.log("faq page getData", items)
-  return items
+  return await readCollectionItems("FAQs")
 }
 
 interface FAQItem {
@@ -17,9 +15,6 @@ interface FAQItem {
 
 export default async function FAQDemo() {
   const data: FAQItem[] = await getData()
-
-  console.log("FAQDemo data", data)
-
   return (
     <main className="py-16 w-full max-w-[1200px] mx-auto gap-x-8">
       <h1 className="text-4xl pb-8">Frequently Asked Questions</h1>
