@@ -10,9 +10,14 @@ type ErrorState = {
   errorMessage?: string
 }
 
+type FieldBlank = {
+  name: string
+  typeName: string
+}
+
 function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void; onDelete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
-  const [fields, setFields] = useState<Field[]>(collection ? collection.fields : [{ name: "", type: {} as any, typeName: "" }])
+  const [fields, setFields] = useState<(Field | FieldBlank)[]>(collection ? collection.fields : [{ name: "", typeName: "" }])
   const [errors, setErrors] = useState<ErrorState>({})
   const [submit, setSubmit] = useState(false)
   const isEditMode = Boolean(collection)
@@ -24,7 +29,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
 
   const addField = () => {
     setErrors({})
-    setFields([...fields, { name: "", type: {} as any, typeName: "" }])
+    setFields([...fields, { name: "", typeName: "" }])
   }
 
   const handleFieldTypeChange = (index: number, typeName: string) => {
@@ -32,7 +37,6 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
     const matchingFieldType = availableFieldTypes.find((ft) => ft.name === typeName)
 
     if (matchingFieldType) {
-      updatedFields[index].type = matchingFieldType.component
       updatedFields[index].typeName = matchingFieldType.name
     }
     setErrors({})
@@ -108,8 +112,8 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
   }
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-[640px] flex flex-col gap-2">
-      <h1 className="text-3xl font-bold pb-4">Create a New Collection</h1>
+    <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-[640px] flex flex-col gap-2 mx-auto mt-8">
+      <h1 className="text-3xl font-semibold pb-8">Create a New Collection</h1>
 
       <Label htmlFor="collectionName">Collection Name</Label>
       <Input name="collectionName" type="text" value={collectionName} onChange={(e) => setCollectionName(e.target.value)} placeholder="Enter collection name" />

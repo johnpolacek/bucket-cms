@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { initializeS3Client, readCollectionItem } from "../../s3/util"
+import { CollectionItemData } from "../../../../bucket/src/types"
 
 export async function GET(req: NextRequest) {
   const s3 = initializeS3Client()
@@ -13,7 +14,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const itemData = await readCollectionItem(collectionName, itemId)
+    const itemData: CollectionItemData = await readCollectionItem(collectionName, itemId)
     return NextResponse.json(itemData, { status: 200 })
   } catch (error) {
     if (typeof error === "object" && error !== null && "code" in error && error.code === "NoSuchKey") {

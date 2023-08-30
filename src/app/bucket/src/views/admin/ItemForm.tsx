@@ -163,14 +163,14 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   }
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md w-[1200px]">
+    <div className="p-8 bg-white rounded-lg shadow-md max-w-[960px] mx-auto">
       <h3 className="uppercase opacity-50 text-sm pb-1">{collectionName}</h3>
       <h2 className="text-3xl pb-8">{itemToEdit ? "Edit Item" : "Create New Item"}</h2>
 
       {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
       {collection && formData?.fields && (
-        <div className="grid grid-cols-2 divide-x gap-8">
+        <div className="">
           <div className="flex flex-col gap-8">
             <div className="mb-6">
               <label className="block opacity-70 font-medium">Item Name</label>

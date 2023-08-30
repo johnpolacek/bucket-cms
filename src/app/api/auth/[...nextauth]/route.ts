@@ -1,6 +1,6 @@
-import { options } from "@/app/admin/options";
-import NextAuth from "next-auth";
+import { options } from "../../../demo/options"
+import NextAuth from "next-auth"
 
-const handler = NextAuth(options);
+const handler = NextAuth(options)
 
-export {handler as GET,handler as POST}
+export { handler as GET, handler as POST }

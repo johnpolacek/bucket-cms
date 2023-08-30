@@ -31,8 +31,8 @@ export interface FieldTypes {
 
 export interface FieldTypeProps<T> {
   data: T
-  setData?: SetDataFunction<T>
-  Component?: React.FC<{ data: T; setData?: SetDataFunction<T> }>
+  setData: SetDataFunction<T extends ComponentData>
+  Component: React.FC<{ data: T; setData?: SetDataFunction<T extends ComponentData> }>
 }
 
 export interface AvailableFieldType<T> {
@@ -55,8 +55,7 @@ export interface CollectionFetch {
 
 export interface Field<T = any> {
   name: string
-  type: FieldType<T>
-  typeName: string
+  typeName: keyof FieldType<T>
 }
 
 export interface CollectionItemData {

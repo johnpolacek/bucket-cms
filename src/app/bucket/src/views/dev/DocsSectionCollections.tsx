@@ -4,20 +4,19 @@ import DocsSection from "./DocsSection"
 function DocsSectionCollections() {
   return (
     <DocsSection id="collections" title="Collections">
+      <p>A Collection is a set of related Items. Think of it as a table in a database. Each Collection has a defined schema that is determined by the Fields added by the admin user.</p>
+      <p>Examples of collections would be Case Studies, Team Members, FAQs, Product Listings, Job Postings, Customer Testimonials or Portfolio Work Samples.</p>
+      <p>Collections in Bucket CMS are structured based on the following interface format:</p>
+      <pre className="-mt-3">
+        <code>{`export interface Collection<T = any> {
+  name: string;
+  fields: Field<T>[];
+}`}</code>
+      </pre>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultrices gravida dictum fusce ut placerat. Sed enim ut sem viverra
-        aliquet eget. Fermentum et sollicitudin ac orci phasellus egestas tellus.
-      </p>
-      <p>
-        Lobortis elementum nibh tellus molestie. Justo eget magna fermentum iaculis eu non diam phasellus vestibulum. Elit at imperdiet dui accumsan sit amet nulla facilisi. Ultrices vitae auctor eu
-        augue ut. Amet aliquam id diam maecenas ultricies. Semper risus in hendrerit gravida rutrum quisque non. Leo a diam sollicitudin tempor. Donec et odio pellentesque diam volutpat commodo sed
-        egestas egestas. Commodo ullamcorper a lacus vestibulum sed arcu non odio euismod. Luctus venenatis lectus magna fringilla urna porttitor.
-      </p>
-      <p>
-        At elementum eu facilisis sed. Blandit turpis cursus in hac habitasse platea dictumst quisque. Lacinia quis vel eros donec ac odio tempor. In eu mi bibendum neque egestas congue quisque
-        egestas diam. Id diam maecenas ultricies mi eget mauris pharetra et. Sed velit dignissim sodales ut eu sem. Imperdiet dui accumsan sit amet nulla facilisi morbi. Sed viverra ipsum nunc aliquet
-        bibendum enim. Varius duis at consectetur lorem donec massa sapien. Ornare suspendisse sed nisi lacus sed. Sit amet porttitor eget dolor. Morbi tincidunt augue interdum velit euismod in
-        pellentesque massa. Tempus urna et pharetra pharetra massa. Imperdiet nulla malesuada pellentesque elit eget gravida cum sociis.
+        This format denotes that each Collection possesses a <code>name</code> and an array of <code>fields</code>. By navigating to the <strong>Collections</strong> tab and selecting{" "}
+        <strong>Create Collection</strong>, administrators can introduce various Fields that define the Collection's schema. Once satisfied, saving the Collection ensures that its schema is securely
+        stored within the S3 bucket as a JSON file.
       </p>
     </DocsSection>
   )

@@ -1,4 +1,4 @@
-import { readCollectionItems } from "@/app/api/bucket/s3/util"
+import { readCollectionItems } from "../../../../app/api/bucket/s3/util"
 
 async function getData() {
   return await readCollectionItems("FAQs")
@@ -16,9 +16,9 @@ interface FAQItem {
 export default async function FAQDemo() {
   const data: FAQItem[] = await getData()
   return (
-    <main className="py-16 w-full max-w-[1200px] mx-auto gap-x-8">
+    <main className="py-16 w-full max-w-[1280px] mx-auto">
       <h1 className="text-4xl pb-8">Frequently Asked Questions</h1>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 gap-x-16">
         {data?.map((item: FAQItem) => {
           return (
             <div>

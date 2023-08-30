@@ -23,7 +23,19 @@ export const RichText: FieldType<RichTextData> = {
     if (Component) {
       return <Component data={data} setData={setData} />
     }
-    return typeof window !== "undefined" ? <ReactQuill theme="snow" defaultValue={data?.value || ""} onChange={(value) => setData && setData({ value })} /> : <></>
+    return typeof window !== "undefined" ? (
+      <ReactQuill
+        theme="snow"
+        defaultValue={data?.value || ""}
+        onChange={(value) => {
+          // Sanitize the value with DOMPurify before setting it
+          const sanitizedValue = DOMPurify.sanitize(value)
+          setData && setData({ value: sanitizedValue })
+        }}
+      />
+    ) : (
+      <></>
+    )
   },
   validate: (data: RichTextData) => {
     const validationResult = richTextSchema.safeParse(data)

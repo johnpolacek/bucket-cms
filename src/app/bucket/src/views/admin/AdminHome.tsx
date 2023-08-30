@@ -14,7 +14,14 @@ function AdminHome({ collections, onUpdateCollection }: { collections: Collectio
   return (
     <div className="py-16">
       {manageCollection ? (
-        <CollectionManage onFinish={() => setManageCollection("")} collectionName={manageCollection} />
+        <CollectionManage
+          onCreateItem={(collectionName) => {
+            setManageCollection("")
+            setCreateItemInCollection(collectionName)
+          }}
+          onFinish={() => setManageCollection("")}
+          collectionName={manageCollection}
+        />
       ) : (
         <>
           {createItemInCollection ? (

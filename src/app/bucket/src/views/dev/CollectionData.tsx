@@ -7,9 +7,8 @@ import CollectionDataFetch from "./CollectionDataFetch"
 function CollectionData({ collection }: { collection: CollectionFetch }) {
   return (
     <section id={collection.name}>
-      <h3 className="text-xl pl-1 my-2 tracking-wide font-semibold">{collection.name}</h3>
-      <h4 className="pl-1 mt-6 mb-2 font-semibold text-lg opacity-60">Schema</h4>
-      <div className="border rounded-xl bg-white max-w-[600px]">
+      <h3 className="text-xl pl-1 py-4 tracking-wide font-semibold">{collection.name}</h3>
+      <div className="border rounded-xl bg-white max-w-[600px] not-prose mb-6">
         <Table>
           <TableHeader>
             <TableRow>

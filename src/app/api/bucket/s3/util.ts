@@ -1,4 +1,5 @@
 import { S3Client, GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3"
+import { CollectionItemData } from "../../../bucket/src/types"
 import { Readable } from "stream"
 
 export const initializeS3Client = (): S3Client => {
@@ -23,7 +24,8 @@ export const readCollectionItem = async (collectionName: string, itemId: string)
     const { Body } = await s3.send(command)
     const data = await streamToString(Body as Readable)
     const jsonData = JSON.parse(data)
-    return jsonData
+    const itemData: CollectionItemData = { itemId, ...jsonData }
+    return itemData
   } catch (error) {
     throw error
   }
@@ -52,14 +54,15 @@ export const readCollectionItems = async (collectionName: string, token?: string
       const { Body } = await s3.send(itemCommand)
       const data = await streamToString(Body as Readable)
       const itemData = JSON.parse(data)
-
-      return {
+      const itemResponse: CollectionItemData = {
         itemId,
         ...itemData,
       }
+
+      return itemResponse
     })
 
-    const items = await Promise.all(itemsPromises || [])
+    const items: CollectionItemData[] = await Promise.all(itemsPromises || [])
     return items
   } catch (error) {
     throw error

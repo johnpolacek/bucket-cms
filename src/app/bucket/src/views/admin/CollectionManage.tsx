@@ -3,7 +3,7 @@ import ItemForm from "./ItemForm"
 import { Button } from "../../ui"
 import { CollectionItemData } from "../../types"
 
-function CollectionManage({ collectionName, onFinish }: { collectionName: string; onFinish: () => void }) {
+function CollectionManage({ collectionName, onFinish, onCreateItem }: { collectionName: string; onFinish: () => void; onCreateItem: (collectionName: string) => void }) {
   const [items, setItems] = useState<Array<CollectionItemData>>([])
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -59,33 +59,40 @@ function CollectionManage({ collectionName, onFinish }: { collectionName: string
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center pt-12">
         <Button className="-mt-16 bg-[rgba(255,255,255,.75)] hover:bg-white" variant="outline" onClick={onFinish}>
           <span className="text-2xl -mt-[2px] pr-2 opacity-50 font-thin scale-x-125">‹</span> Back to Admin
         </Button>
       </div>
 
       {!editItem && !loading && (
-        <div className="my-8 bg-white p-8 rounded-xl shadow">
-          <h3 className="text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
-          <h4 className="text-center font-semibold text-4xl pb-6">{collectionName}</h4>
-          <div className="border-t">
-            {items.map((item) => (
-              <div key={item.itemId} className="flex justify-between items-center border-b py-4 px-8">
-                {item.itemName}
-                <div>
-                  <Button variant="outline" className="text-blue-600" onClick={() => setEditItem(item)}>
-                    edit
-                  </Button>
-                  <Button aria-label={`Delete ${item.itemName}`} variant="ghost" className="text-xl ml-2 p-2 -mr-8 text-red-500 hover:text-red-700" onClick={() => handleDeleteItem(item.itemId)}>
-                    ×
-                  </Button>
+        <div className="flex items-center justify-center w-full">
+          <div className="my-8 bg-white p-8 rounded-xl shadow">
+            <h3 className="text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
+            <h4 className="text-center font-semibold text-4xl pb-6">{collectionName}</h4>
+            <div className="border-t min-w-[480px]">
+              {items.map((item) => (
+                <div key={item.itemId} className="flex justify-between items-center border-b py-4 px-8">
+                  <div className="pr-12">{item.itemName}</div>
+                  <div>
+                    <Button variant="outline" className="text-blue-600" onClick={() => setEditItem(item)}>
+                      edit
+                    </Button>
+                    <Button aria-label={`Delete ${item.itemName}`} variant="ghost" className="text-xl ml-2 p-2 -mr-8 text-red-500 hover:text-red-700" onClick={() => handleDeleteItem(item.itemId)}>
+                      ×
+                    </Button>
+                  </div>
                 </div>
+              ))}
+              <div className="w-full text-right my-4">
+                <Button onClick={() => onCreateItem(collectionName)} variant="outline" className="text-green-600">
+                  + New
+                </Button>
               </div>
-            ))}
-            {items.length === 0 && <div className="p-8 w-full text-center text-lg italic opacity-60 border-b mb-4">This collection is empty...</div>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading && !error && <ul></ul>}
+              {items.length === 0 && <div className="p-8 w-full text-center text-lg italic opacity-60 border-b mb-4">This collection is empty...</div>}
+              {error && <p className="text-red-500">{error}</p>}
+              {!loading && !error && <ul></ul>}
+            </div>
           </div>
         </div>
       )}

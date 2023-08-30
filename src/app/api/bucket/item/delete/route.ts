@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { initializeS3Client } from "../../s3/util"
 
-// ... existing GET function ...
-
 export async function DELETE(req: NextRequest) {
   const s3 = initializeS3Client()
 

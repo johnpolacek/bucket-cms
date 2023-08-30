@@ -4,7 +4,7 @@ import React from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
 import Link from "next/link"
-import { Bucket } from "@/app/bucket"
+import { Bucket } from "../../../bucket"
 
 function Demo({ user }: { user: string }) {
   const getInitials = (name: string): string =>
