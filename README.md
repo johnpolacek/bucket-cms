@@ -14,10 +14,10 @@ If you wish to start from scratch, begin by using `create-next-app` to [create a
 npx create-next-app@latest
 ```
 
-Once you have a Next.js project, you can add Bucket CMS:
+Once you have a Next.js project, you can create Bucket CMS inside it:
 
 ```
-npx bucket-cms-cli
+npx create-bucket-cms
 ```
 
 
