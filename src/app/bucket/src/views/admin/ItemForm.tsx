@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Button } from "../../ui"
+import { Button, Label, Input } from "../../ui"
 import { Collection, CollectionFetch, ComponentData, CollectionItemData, Field, ItemFormData } from "../../types"
 import * as FieldTypes from "../../field-types"
 
@@ -163,7 +163,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   }
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md max-w-[960px] mx-auto">
+    <div className="p-8 bg-white rounded-lg shadow-md max-w-[720px] mx-auto">
       <h3 className="uppercase opacity-50 text-sm pb-1">{collectionName}</h3>
       <h2 className="text-3xl pb-8">{itemToEdit ? "Edit Item" : "Create New Item"}</h2>
 
@@ -172,9 +172,9 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       {collection && formData?.fields && (
         <div className="">
           <div className="flex flex-col gap-8">
-            <div className="mb-6">
-              <label className="block opacity-70 font-medium">Item Name</label>
-              <input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} className="border rounded p-2 w-full" placeholder="Enter item name..." />
+            <div>
+              <Label className="block opacity-70 font-medium mb-2">Item Name</Label>
+              <Input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} className="border rounded p-2 w-full" placeholder="Enter item name..." />
             </div>
 
             {formData?.fields.map((field, index) => {
@@ -191,7 +191,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
               return (
                 <div key={`field-${index}`} className="flex flex-col gap-2">
-                  <label className="block opacity-70 font-medium">{field.name}</label>
+                  <Label className="block opacity-70 font-medium">{field.name}</Label>
                   {fieldType.renderAdmin({
                     data: field.data as any, // type checking and validation occurs during submit
                     setData: (updatedData: ComponentData) => {
