@@ -154,7 +154,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
               <SelectContent>
                 {availableFieldTypes.map((type) => (
                   <SelectItem key={type.name} value={type.name}>
-                    {type.name}
+                    {type.name.replace("Field", "")}
                   </SelectItem>
                 ))}
               </SelectContent>
