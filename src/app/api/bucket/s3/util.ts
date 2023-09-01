@@ -70,11 +70,27 @@ export const readCollectionItems = async (collectionName: string, token?: string
 }
 
 // Helper function to convert a Readable stream to a string
-const streamToString = (stream: Readable): Promise<string> => {
+export const streamToString = (stream: Readable): Promise<string> => {
   const chunks: any[] = []
   return new Promise((resolve, reject) => {
     stream.on("data", (chunk) => chunks.push(chunk))
     stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
     stream.on("error", reject)
   })
+}
+
+export const doesItemExist = async (collectionName: string, slug: string) => {
+  const s3 = initializeS3Client()
+  const itemKey = `items/${collectionName}/${slug}.json`
+  try {
+    await s3.send(
+      new GetObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: itemKey,
+      })
+    )
+    return true
+  } catch (error) {
+    return false
+  }
 }
