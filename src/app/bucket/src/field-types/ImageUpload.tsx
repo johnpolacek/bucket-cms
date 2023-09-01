@@ -10,9 +10,9 @@ const imageSchema = z.object({
   alt: z.string(),
 })
 
-type ImageData = z.infer<typeof imageSchema>
+export type ImageData = z.infer<typeof imageSchema>
 
-const ImageAdmin = ({ data, setData, Component }: FieldTypeProps<ImageData>): ReactElement => {
+const ImageAdmin = ({ data, setData }: FieldTypeProps<ImageData>): ReactElement => {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [imageNaturalSize, setImageNaturalSize] = useState<{ width: number; height: number } | null>(null)
@@ -62,16 +62,12 @@ const ImageAdmin = ({ data, setData, Component }: FieldTypeProps<ImageData>): Re
     setIsUploading(false)
   }
 
-  if (Component) {
-    return <Component data={data} setData={setData} />
-  }
-
   return (
     <div className="flex flex-col space-y-4">
       {data?.url && (
         <div className="image-preview space-y-2">
           <img
-            className="max-w-[320px] h-auto rounded border mb-8"
+            className="max-w-[320px] h-auto rounded border mb-4"
             src={data.url}
             alt={data.alt || "Uploaded Image"}
             onLoad={handleImageLoad}

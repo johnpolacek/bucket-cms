@@ -1,5 +1,7 @@
 import { z } from "zod"
 import { ReactElement } from "react"
+import { AllFieldTypes } from "./field-types"
+import * as FieldTypesModule from "./field-types"
 
 export interface ConfigValidation {
   hasAWSAccess: boolean
@@ -8,60 +10,46 @@ export interface ConfigValidation {
   hasAWSBucket: boolean
 }
 
-export interface ComponentData {
-  [key: string]: any
-}
-
-export interface CollectionData {
-  collectionName: string
-  itemCount: number
-}
-
-export type SetDataFunction<T extends ComponentData> = (data: Partial<T>) => void
-
+export type FieldKeys = keyof typeof FieldTypesModule
+export type SetDataFunction<T> = (data: Partial<T>) => void
 export interface FieldType<T> {
   schema: z.ZodType<T, any, any>
-  renderAdmin: ({ data, setData, Component }: FieldTypeProps<T>) => ReactElement
+  renderAdmin: ({ data, setData }: FieldTypeProps<T>) => ReactElement
   validate: (data: T) => { isValid: boolean; errorMessage?: string }
-}
-
-export interface FieldTypes {
-  [key: string]: FieldType<any>
 }
 
 export interface FieldTypeProps<T> {
   data: T
-  setData: SetDataFunction<T extends ComponentData>
-  Component: React.FC<{ data: T; setData?: SetDataFunction<T extends ComponentData> }>
+  setData: SetDataFunction<Partial<T>>
 }
 
-export interface AvailableFieldType<T> {
+export type FieldTypes = Record<FieldKeys, FieldType<AllFieldTypes>>
+export interface Field {
+  name: string
+  typeName: FieldKeys
+}
+
+export interface Collection {
+  name: string
+  fields: Field[]
+}
+
+export interface CollectionFetch extends Collection {} // If they are same, just extend. Otherwise, keep them separate.
+
+export interface AvailableFieldType<T = any> {
   name: string
   component: FieldType<T>
 }
 
-export interface Collection<T = any> {
+export interface ItemFormFieldData {
   name: string
-  fields: Field<T>[]
-}
-
-export interface CollectionFetch {
-  name: string
-  fields: {
-    name: string
-    typeName: string
-  }[]
-}
-
-export interface Field<T = any> {
-  name: string
-  typeName: keyof FieldType<T>
+  data: Partial<AllFieldTypes> // If you're not sure of the exact shape, use Partial
 }
 
 export interface CollectionItemData {
   itemId: string
   itemName: string
-  data: ComponentData
+  data: AllFieldTypes
 }
 
 export interface ItemFormData {
@@ -69,7 +57,7 @@ export interface ItemFormData {
   fields: ItemFormFieldData[]
 }
 
-export interface ItemFormFieldData {
-  name: string
-  data: ComponentData
+export interface CollectionData {
+  collectionName: string
+  itemCount: number
 }

@@ -8,13 +8,10 @@ const textSchema = z.object({
   value: z.string().min(1, "Text cannot be empty"),
 })
 
-type TextData = z.infer<typeof textSchema>
+export type TextData = z.infer<typeof textSchema>
 
 export const Text: FieldType<TextData> = {
-  renderAdmin: ({ data, setData, Component }: FieldTypeProps<TextData>): ReactElement => {
-    if (Component) {
-      return <Component data={data} setData={setData} />
-    }
+  renderAdmin: ({ data, setData }: FieldTypeProps<TextData>): ReactElement => {
     return <Input type="text" defaultValue={data?.value || ""} onChange={(e) => setData && setData({ value: e.target.value })} />
   },
   validate: (data: TextData) => {

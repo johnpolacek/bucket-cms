@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from "react"
+import { Transition } from "@headlessui/react"
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui"
 import { Collection, Field, AvailableFieldType } from "../../types"
 import * as FieldTypes from "../../field-types"
@@ -112,7 +113,14 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
   }
 
   return (
-    <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-[640px] flex flex-col gap-2 mx-auto mt-8">
+    <Transition
+      className="p-8 bg-white rounded-lg shadow-md w-full max-w-[640px] flex flex-col gap-2 mx-auto mt-8"
+      appear={true}
+      show={true}
+      enter="transition-all duration-150"
+      enterFrom="opacity-0 translate-y-4"
+      enterTo="opacity-100 translate-y-0"
+    >
       <h1 className="text-3xl font-semibold pb-8">Create a New Collection</h1>
 
       <Label htmlFor="collectionName">Collection Name</Label>
@@ -183,7 +191,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
           Save Collection
         </Button>
       </div>
-    </div>
+    </Transition>
   )
 }
 

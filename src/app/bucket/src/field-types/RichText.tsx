@@ -16,13 +16,10 @@ const richTextSchema = z.object({
   value: z.string().min(1, "Content cannot be empty"),
 })
 
-type RichTextData = z.infer<typeof richTextSchema>
+export type RichTextData = z.infer<typeof richTextSchema>
 
 export const RichText: FieldType<RichTextData> = {
-  renderAdmin: ({ data, setData, Component }: FieldTypeProps<RichTextData>): ReactElement => {
-    if (Component) {
-      return <Component data={data} setData={setData} />
-    }
+  renderAdmin: ({ data, setData }: FieldTypeProps<RichTextData>): ReactElement => {
     return typeof window !== "undefined" ? (
       <ReactQuill
         theme="snow"
