@@ -9,6 +9,8 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     fetchItems()
@@ -39,7 +41,8 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
   }
 
   const handleDeleteItem = async (itemId: string) => {
-    if (window.confirm("Are you sure you want to delete this item? This action cannot be undone.")) {
+    if (confirmDeleteItemId === itemId) {
+      setIsDeleting(true) // Set isDeleting to true before starting the deletion process
       try {
         const response = await fetch(`/api/bucket/item/delete?itemId=${itemId}&collectionName=${collectionName}`, {
           method: "DELETE",
@@ -50,11 +53,18 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
         }
 
         // Refresh items list after successful deletion
-        fetchItems()
+        await fetchItems()
       } catch (error: any) {
         console.error(error)
         alert("An error occurred while trying to delete the item. Please try again.")
+      } finally {
+        // Reset the confirmDeleteItemId and isDeleting state after action is taken
+        setConfirmDeleteItemId(null)
+        setIsDeleting(false)
       }
+    } else {
+      // Show inline confirmation message
+      setConfirmDeleteItemId(itemId)
     }
   }
 
@@ -80,25 +90,59 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
               <h3 className="text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
               <h4 className="text-center font-semibold text-4xl pb-6">{collectionName}</h4>
               <div className="border-t min-w-[480px]">
+                {items.length === 0 && (
+                  <div className="py-16 w-full text-center text-lg italic border-b">
+                    <div className="pb-6 opacity-60">This collection is empty...</div>
+                    <Button
+                      onClick={() => onCreateItem(collectionName)}
+                      variant="outline"
+                      className="bg-green-500 text-white text-xl h-auto py-4 px-6 hover:bg-green-400 hover:scale-110 hover:text-white transition-all ease-in-out"
+                    >
+                      + Create First Item
+                    </Button>
+                  </div>
+                )}
                 {items.map((item) => (
                   <div key={item.itemId} className="flex justify-between items-center border-b py-4 px-8">
                     <div className="pr-12">{item.itemName}</div>
                     <div>
-                      <Button variant="outline" className="text-blue-600" onClick={() => setEditItem(item)}>
-                        edit
-                      </Button>
-                      <Button aria-label={`Delete ${item.itemName}`} variant="ghost" className="text-xl ml-2 p-2 -mr-8 text-red-500 hover:text-red-700" onClick={() => handleDeleteItem(item.itemId)}>
-                        ×
-                      </Button>
+                      {!confirmDeleteItemId && (
+                        <Button variant="outline" className="text-blue-600" onClick={() => setEditItem(item)}>
+                          edit
+                        </Button>
+                      )}
+                      {confirmDeleteItemId === item.itemId ? (
+                        <div className="inline-flex items-center -mr-8">
+                          {isDeleting ? (
+                            <div className="ml-2 text-gray-500 italic pr-4">Deleting...</div>
+                          ) : (
+                            <>
+                              <span className="mr-2 font-bold italic">Confirm delete?</span>
+                              <Button variant="ghost" className="text-red-600 ml-2" onClick={() => handleDeleteItem(item.itemId)}>
+                                Yes
+                              </Button>
+                              <Button variant="outline" className="ml-2" onClick={() => setConfirmDeleteItemId(null)}>
+                                No
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      ) : (
+                        <Button aria-label={`Delete ${item.itemName}`} variant="ghost" className="text-xl ml-2 p-2 -mr-8 text-red-500 hover:text-red-700" onClick={() => handleDeleteItem(item.itemId)}>
+                          ×
+                        </Button>
+                      )}
                     </div>
                   </div>
                 ))}
-                <div className="w-full text-right my-4">
-                  <Button onClick={() => onCreateItem(collectionName)} variant="outline" className="text-green-600">
-                    + New
-                  </Button>
-                </div>
-                {items.length === 0 && <div className="p-8 w-full text-center text-lg italic opacity-60 border-b mb-4">This collection is empty...</div>}
+                {items.length > 0 && (
+                  <div className="w-full text-right my-4">
+                    <Button onClick={() => onCreateItem(collectionName)} variant="outline" className="text-green-600">
+                      + New
+                    </Button>
+                  </div>
+                )}
+
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && <ul></ul>}
               </div>

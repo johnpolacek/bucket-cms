@@ -20,7 +20,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
   const [fields, setFields] = useState<(Field | FieldBlank)[]>(collection ? collection.fields : [{ name: "", typeName: "" }])
   const [errors, setErrors] = useState<ErrorState>({})
-  const [submit, setSubmit] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const isEditMode = Boolean(collection)
 
   const availableFieldTypes: AvailableFieldType<any>[] = Object.entries(FieldTypes).map(([name, component]) => ({
@@ -79,7 +79,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
   }
 
   const handleSubmit = async () => {
-    setSubmit(true)
+    setIsSubmitting(true)
     if (validateForm()) {
       const endpoint = isEditMode ? "/api/bucket/collection/update" : "/api/bucket/collection/create"
       try {
@@ -101,14 +101,16 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
           setErrors({
             errorMessage: errorData.error,
           })
-          setSubmit(false)
+          setIsSubmitting(false)
         }
       } catch (error) {
         setErrors({
           errorMessage: (error as Error).message || "Sorry, there was an error.",
         })
-        setSubmit(false)
+        setIsSubmitting(false)
       }
+    } else {
+      setIsSubmitting(false)
     }
   }
 
@@ -184,10 +186,10 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
       {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
       <div className="flex justify-end gap-4 mt-8">
-        <Button size="lg" disabled={submit} variant="ghost" onClick={onCancel}>
+        <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
-        <Button size="lg" disabled={submit} onClick={handleSubmit}>
+        <Button size="lg" disabled={isSubmitting} onClick={handleSubmit}>
           Save Collection
         </Button>
       </div>

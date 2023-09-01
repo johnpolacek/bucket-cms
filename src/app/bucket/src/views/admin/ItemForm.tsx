@@ -5,7 +5,7 @@ import { Collection, CollectionFetch, CollectionItemData, Field, ItemFormData } 
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { Transition } from "@headlessui/react"
-import { z } from "zod"
+import { isZodObject, getDefaultDataFromSchema } from "../../util"
 
 function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
   const [collection, setCollection] = useState<Collection | null>(null)
@@ -14,10 +14,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})
   const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
-
-  function isZodObject(schema: any): schema is z.ZodObject<any> {
-    return schema && typeof schema.shape === "object"
-  }
 
   useEffect(() => {
     const fetchCollectionAndPopulate = async () => {
@@ -42,17 +38,21 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
           }
 
           setCollection(typedCollection)
-          if (itemToEdit) {
-            const initialFormData = {
-              collectionName,
-              fields: collectionData.fields.map((field) => ({
+
+          const initialFormData = {
+            collectionName,
+            fields: collectionData.fields.map((field) => {
+              const fieldType = FieldTypes[field.typeName as keyof typeof FieldTypes]
+              const defaultData = getDefaultDataFromSchema(fieldType.schema)
+              return {
                 name: field.name,
-                data: itemToEdit.data[field.name as keyof AllFieldTypes] || {},
-              })),
-            }
-            setItemName(itemToEdit.itemName)
-            setFormData(initialFormData)
+                data: itemToEdit?.data[field.name as keyof AllFieldTypes] || defaultData,
+              }
+            }),
           }
+
+          setItemName(itemToEdit ? itemToEdit.itemName : "")
+          setFormData(initialFormData)
         } catch (error: any) {
           setErrors({ errorMessage: error.message || "Failed to load collection data" })
         }

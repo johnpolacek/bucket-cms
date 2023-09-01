@@ -24,22 +24,33 @@ function CollectionsList({
   const [collections, setCollections] = useState<CollectionData[]>([])
   const [deletedCollections, setDeletedCollections] = useState<string[]>([])
   const [deleteError, setDeleteError] = useState<string | null>(null)
+  const [confirmDeleteCollectionName, setConfirmDeleteCollectionName] = useState<string | null>(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDeleteCollection = async (collectionName: string) => {
-    try {
-      const response = await fetch(`/api/bucket/collection/delete?collectionName=${collectionName}`, {
-        method: "DELETE",
-      })
+    setIsDeleting(true)
+    if (confirmDeleteCollectionName === collectionName) {
+      try {
+        const response = await fetch(`/api/bucket/collection/delete?collectionName=${collectionName}`, {
+          method: "DELETE",
+        })
 
-      const data = await response.json()
-      if (response.ok) {
-        setDeletedCollections((prev) => [...prev, collectionName])
-        setDeleteError(null) // Reset any previous error
-      } else {
-        setDeleteError(data.error || "Failed to delete collection.")
+        if (response.ok) {
+          setDeletedCollections((prev) => [...prev, collectionName])
+          setDeleteError(null)
+        } else {
+          const data = await response.json()
+          setDeleteError(data.error || "Failed to delete collection.")
+        }
+      } catch (error: any) {
+        setDeleteError(`Error deleting collection: ${error.message || "unknown"}`)
+      } finally {
+        setIsDeleting(false)
+        setConfirmDeleteCollectionName(null)
       }
-    } catch (error: any) {
-      setDeleteError(`Error deleting collection: ${error.message || "unknown"}`)
+    } else {
+      setConfirmDeleteCollectionName(collectionName)
+      setIsDeleting(false)
     }
   }
 
@@ -72,22 +83,46 @@ function CollectionsList({
                         {collection.collectionName}
                         {collection.itemCount > 0 && <span className="ml-1 font-mono text-sm opacity-60">({collection.itemCount})</span>}
                       </div>
-                      <div className="flex gap-3 pr-4">
-                        <Button onClick={() => onCreateItem(collection.collectionName)} className="text-green-600" variant="outline">
-                          + New
-                        </Button>
-                        <Button onClick={() => onManage(collection.collectionName)} className="text-blue-600" variant="outline">
-                          Manage
-                        </Button>
+                      <div className="flex gap-3 pr-4 w-[320px] justify-end">
+                        {confirmDeleteCollectionName !== collection.collectionName && (
+                          <>
+                            <Button onClick={() => onCreateItem(collection.collectionName)} className="text-green-600" variant="outline">
+                              + New
+                            </Button>
+                            <Button onClick={() => onManage(collection.collectionName)} className="text-blue-600" variant="outline">
+                              Manage
+                            </Button>
+                          </>
+                        )}
                         {collection.itemCount === 0 && (
-                          <Button
-                            aria-label={`Delete ${collection.collectionName}`}
-                            variant="ghost"
-                            className="text-2xl px-2 -mr-[43px] text-red-500 hover:text-red-700"
-                            onClick={() => handleDeleteCollection(collection.collectionName)}
-                          >
-                            ×
-                          </Button>
+                          <div className="flex justify-end gap-2 -mr-[43px]">
+                            {confirmDeleteCollectionName === collection.collectionName ? (
+                              <div className="inline-flex gap-3 items-center mr-[43px]">
+                                {isDeleting ? (
+                                  <span className="ml-2 text-gray-500 italic">Deleting...</span>
+                                ) : (
+                                  <>
+                                    <span className="mr-2 font-bold italic">Confirm delete?</span>
+                                    <Button variant="ghost" className="text-red-600" onClick={() => handleDeleteCollection(collection.collectionName)} disabled={isDeleting}>
+                                      Yes
+                                    </Button>
+                                    <Button variant="outline" onClick={() => setConfirmDeleteCollectionName(null)} disabled={isDeleting}>
+                                      No
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            ) : (
+                              <Button
+                                aria-label={`Delete ${collection.collectionName}`}
+                                variant="ghost"
+                                className="text-2xl px-2 text-red-500 hover:text-red-700"
+                                onClick={() => handleDeleteCollection(collection.collectionName)}
+                              >
+                                ×
+                              </Button>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>
