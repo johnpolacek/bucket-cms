@@ -1,10 +1,26 @@
 import { NextRequest, NextResponse } from "next/server"
 import { initializeS3Client } from "../../s3/util"
-import { PutObjectCommand } from "@aws-sdk/client-s3"
-import { v4 as uuid } from "uuid"
+import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3"
+import slugify from "slugify"
 
 export async function POST(req: NextRequest) {
   const s3 = initializeS3Client()
+
+  const doesItemExist = async (collectionName: string, slug: string) => {
+    const s3 = initializeS3Client()
+    const itemKey = `items/${collectionName}/${slug}.json`
+    try {
+      await s3.send(
+        new GetObjectCommand({
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key: itemKey,
+        })
+      )
+      return true
+    } catch (error) {
+      return false
+    }
+  }
 
   try {
     const { collectionName, itemName, data } = await req.json()
@@ -14,26 +30,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Item name is required and should be a non-empty string." }, { status: 400 })
     }
 
-    // Create a unique itemId
-    const itemId = uuid()
+    // Generate the initial slug from the item name
+    let slug = slugify(itemName, { lower: true, strict: true })
 
-    // Define the path where the item will be stored
-    const itemPath = `items/${collectionName}/${itemId}.json`
+    // Check if an item with this slug already exists and modify the slug until it's unique
+    let originalSlug = slug
+    let counter = 1
+    while (await doesItemExist(collectionName, slug)) {
+      slug = `${originalSlug}-${counter}`
+      counter++
+    }
 
-    // Convert the data to a JSON string
     const fileContent = JSON.stringify({ itemName, data })
 
-    // Upload the JSON string to S3
-    const command = new PutObjectCommand({
+    // Store the item with the slug as its name
+    const itemKey = `items/${collectionName}/${slug}.json`
+    const putCommand = new PutObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET_NAME,
-      Key: itemPath,
+      Key: itemKey,
       Body: fileContent,
       ContentType: "application/json",
     })
+    await s3.send(putCommand)
 
-    const result = await s3.send(command)
-
-    return NextResponse.json({ success: true, itemId: itemId }, { status: 200 })
+    return NextResponse.json({ success: true, itemId: slug }, { status: 200 })
   } catch (error: any) {
     return NextResponse.json({ error: `${error.message || "An error occurred"}` }, { status: 500 })
   }
