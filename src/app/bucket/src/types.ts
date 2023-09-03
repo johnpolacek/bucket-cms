@@ -13,7 +13,7 @@ export interface ConfigValidation {
 export type FieldKeys = keyof typeof FieldTypesModule
 export type SetDataFunction<T> = (data: Partial<T>) => void
 
-export interface FieldType<T, P = FieldTypeProps<T>> {
+export interface FieldType<T, P = any> {
   schema: z.ZodType<T, any, any>
   renderAdmin: (props: P) => ReactElement
   validate: (data: T) => { isValid: boolean; errorMessage?: string }
@@ -49,9 +49,9 @@ export interface Collection {
 
 export interface CollectionFetch extends Collection {} // If they are same, just extend. Otherwise, keep them separate.
 
-export interface AvailableFieldType<T = any> {
+export interface AvailableFieldType {
   name: string
-  component: FieldType<T>
+  component: FieldType<any, any>
 }
 
 export interface ItemFormFieldData {

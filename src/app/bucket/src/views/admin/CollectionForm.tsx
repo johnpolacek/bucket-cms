@@ -24,7 +24,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isEditMode = Boolean(collection)
 
-  const availableFieldTypes: AvailableFieldType<any>[] = Object.entries(FieldTypes).map(([name, component]) => ({
+  const availableFieldTypes: AvailableFieldType[] = Object.entries(FieldTypes).map(([name, component]) => ({
     name,
     component,
   }))
