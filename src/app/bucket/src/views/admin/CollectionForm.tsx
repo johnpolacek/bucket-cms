@@ -2,7 +2,7 @@
 import React, { useState } from "react"
 import { Transition } from "@headlessui/react"
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui"
-import { Collection, Field, AvailableFieldType } from "../../types"
+import { Collection, Field, AvailableFieldType, SelectField, SelectOption, BaseField } from "../../types"
 import * as FieldTypes from "../../field-types"
 
 type ErrorState = {
@@ -14,6 +14,7 @@ type ErrorState = {
 type FieldBlank = {
   name: string
   typeName: string
+  options?: SelectOption[]
 }
 
 function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void; onDelete: () => void }) {
@@ -33,13 +34,32 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
     setFields([...fields, { name: "", typeName: "" }])
   }
 
+  const addOption = (fieldIndex: number) => {
+    setErrors({})
+    const newFields = [...fields]
+    ;(newFields[fieldIndex] as SelectField).options.push("")
+    setFields(newFields)
+  }
+
   const handleFieldTypeChange = (index: number, typeName: string) => {
     const updatedFields = [...fields]
     const matchingFieldType = availableFieldTypes.find((ft) => ft.name === typeName)
 
     if (matchingFieldType) {
       updatedFields[index].typeName = matchingFieldType.name
+      if (updatedFields[index].typeName === "SelectField") {
+        ;(updatedFields[index] as FieldBlank).options = [""]
+      }
     }
+    setErrors({})
+    setFields(updatedFields)
+  }
+
+  const handleOptionChange = (fieldIndex: number, optionIndex: number, value: string) => {
+    const updatedFields = [...fields]
+    const updatedOptions = [...(updatedFields[fieldIndex] as SelectField).options]
+    updatedOptions[optionIndex] = value
+    ;(updatedFields[fieldIndex] as SelectField).options = updatedOptions
     setErrors({})
     setFields(updatedFields)
   }
@@ -49,7 +69,13 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
     updatedFields.splice(index, 1)
     setErrors({})
     setFields(updatedFields)
-    onDelete()
+  }
+
+  const handleDeleteOption = (fieldIndex: number, optionIndex: number) => {
+    const updatedFields = [...fields]
+    ;(updatedFields[fieldIndex] as SelectField).options.splice(optionIndex, 1)
+    setErrors({})
+    setFields(updatedFields)
   }
 
   const validateForm = () => {
@@ -65,6 +91,17 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
       .map((field, index) => {
         if (!field.name || !field.typeName) {
           return `Field #${index + 1}: Please complete selecting field type and name`
+        }
+        if ((field as SelectField).options) {
+          if ((field as SelectField).options.length < 2) {
+            return `Field #${index + 1}: Please provide at least 2 options`
+          }
+          const emptyFieldOptions = (field as SelectField).options.filter((option) => {
+            return option === ""
+          })
+          if (emptyFieldOptions.length !== 0) {
+            return `Field #${index + 1}: Please provide values for all select options`
+          }
         }
         return null
       })
@@ -82,6 +119,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
     setIsSubmitting(true)
     if (validateForm()) {
       const endpoint = isEditMode ? "/api/bucket/collection/update" : "/api/bucket/collection/create"
+      console.log({ fields })
       try {
         const response = await fetch(endpoint, {
           method: "POST",
@@ -90,7 +128,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
           },
           body: JSON.stringify({
             name: collectionName,
-            fields: fields.map((f) => ({ name: f.name, typeName: f.typeName })),
+            fields,
           }),
         })
 
@@ -129,42 +167,91 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
       <Input name="collectionName" type="text" value={collectionName} onChange={(e) => setCollectionName(e.target.value)} placeholder="Enter collection name" />
       {errors.name && <div className="text-red-500 text-sm">{errors.name}</div>}
 
-      <Label className="pt-4">Fields</Label>
+      <Label className="mt-4 mb-2">Fields</Label>
       <div className="flex flex-col gap-4">
-        {fields.map((field, index) => (
-          <div key={index} className="flex w-full gap-2">
-            <Input
-              className={`w-2/3 text-sm py-1 px-2 ${errors.fields && !field.name ? "border-red-500" : ""}`}
-              type="text"
-              value={field.name || ""}
-              onChange={(e) => {
-                const updatedFields = [...fields]
-                updatedFields[index].name = e.target.value
-                setFields(updatedFields)
-              }}
-              placeholder="Field Name"
-            />
-            <Select
-              onValueChange={(value) => handleFieldTypeChange(index, value)}
-              value={field?.typeName} // Use typeName to display the name of the FieldType
-            >
-              <SelectTrigger className={`w-[240px] bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
-                <SelectValue placeholder="Select FieldType" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableFieldTypes.map((type) => (
-                  <SelectItem key={type.name} value={type.name}>
-                    {type.name.replace("Field", "")}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {fields.length > 1 && (
-              <Button variant="ghost" className="text-red-600 hover:text-red-700 text-xl px-2" onClick={() => handleDeleteField(index)}>
-                ×
-              </Button>
+        {fields.map((field, fieldIndex) => (
+          <>
+            <div key={fieldIndex} className="flex w-full gap-2 items-end">
+              <div className="flex flex-col gap-2 w-2/3">
+                <Label className="opacity-60 pl-1" htmlFor="fieldName">
+                  Field Name
+                </Label>
+                <Input
+                  className={`w-full text-sm py-1 px-2 ${errors.fields && !field.name ? "border-red-500" : ""}`}
+                  type="text"
+                  name="fieldName"
+                  value={field.name || ""}
+                  onChange={(e) => {
+                    const updatedFields = [...fields]
+                    updatedFields[fieldIndex].name = e.target.value
+                    setFields(updatedFields)
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-2 w-1/3">
+                <Label className="opacity-60 pl-1" htmlFor="fieldType">
+                  Type
+                </Label>
+                <Select
+                  name="fieldType"
+                  onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
+                  value={field?.typeName} // Use typeName to display the name of the FieldType
+                >
+                  <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
+                    <SelectValue placeholder="Select FieldType" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableFieldTypes.map((type) => (
+                      <SelectItem key={type.name} value={type.name}>
+                        {type.name.replace("Field", "")}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {fields.length > 1 && (
+                <Button variant="ghost" className="text-red-600 hover:text-red-700 text-xl px-2" onClick={() => handleDeleteField(fieldIndex)}>
+                  ×
+                </Button>
+              )}
+            </div>
+            {field.typeName === "SelectField" && (
+              <div>
+                {(field as SelectField).options.map((option, optionIndex) => {
+                  const numOptions = (field as SelectField).options.length
+                  return (
+                    <div key={`select-option-${optionIndex}`} className="flex w-full gap-2 items-center mt-2">
+                      <Label className="w-2/3 text-right">Option {optionIndex + 1}:</Label>
+                      <Input
+                        onChange={(e) => {
+                          handleOptionChange(fieldIndex, optionIndex, e.target.value)
+                        }}
+                        className="w-1/3"
+                        required
+                        type="text"
+                        value={option}
+                      />
+                      <Button
+                        variant="ghost"
+                        className={`text-red-600 hover:text-red-700 text-xl px-2 ${numOptions > 1 ? "" : "opacity-0 pointer-events-none"}`}
+                        onClick={() => handleDeleteOption(fieldIndex, optionIndex)}
+                      >
+                        ×
+                      </Button>
+                    </div>
+                  )
+                })}
+                <div className="text-right my-4">
+                  <Button variant="outline" className="text-xs text-white hover:text-white bg-green-600 hover:bg-green-700" onClick={() => addOption(fieldIndex)}>
+                    + Add Option
+                  </Button>
+                  <Button variant="ghost" className="opacity-0 pointer-events-none text-xl px-3">
+                    ×
+                  </Button>
+                </div>
+              </div>
             )}
-          </div>
+          </>
         ))}
       </div>
 

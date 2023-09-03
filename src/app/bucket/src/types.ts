@@ -12,22 +12,35 @@ export interface ConfigValidation {
 
 export type FieldKeys = keyof typeof FieldTypesModule
 export type SetDataFunction<T> = (data: Partial<T>) => void
-export interface FieldType<T> {
+
+export interface FieldType<T, P = FieldTypeProps<T>> {
   schema: z.ZodType<T, any, any>
-  renderAdmin: ({ data, setData }: FieldTypeProps<T>) => ReactElement
+  renderAdmin: (props: P) => ReactElement
   validate: (data: T) => { isValid: boolean; errorMessage?: string }
 }
 
 export interface FieldTypeProps<T> {
   data: T
-  setData: SetDataFunction<Partial<T>>
+  setData: SetDataFunction<T>
+  fieldOptions?: T // Renamed this to fieldOptions
 }
 
-export type FieldTypes = Record<FieldKeys, FieldType<AllFieldTypes>>
-export interface Field {
+export interface SelectFieldTypeProps<T> extends Omit<FieldTypeProps<T>, "fieldOptions"> {
+  options: string[] // Explicitly specify that options should be string[]
+}
+
+export interface BaseField {
   name: string
   typeName: FieldKeys
 }
+
+export interface SelectField extends BaseField {
+  typeName: "SelectField"
+  options: string[]
+}
+
+export type FieldTypes = Record<FieldKeys, FieldType<AllFieldTypes>>
+export type Field = BaseField | SelectField
 
 export interface Collection {
   name: string
@@ -44,6 +57,7 @@ export interface AvailableFieldType<T = any> {
 export interface ItemFormFieldData {
   name: string
   data: Partial<AllFieldTypes> // If you're not sure of the exact shape, use Partial
+  options?: string[]
 }
 
 export interface CollectionItemData {

@@ -1,11 +1,13 @@
 export * from "./Text"
 export * from "./Date"
+export * from "./Select"
 export * from "./RichText"
 export * from "./ImageUpload"
 
 import { TextData } from "./Text"
 import { DateData } from "./Date"
+import { SelectData } from "./Select"
 import { RichTextData } from "./RichText"
 import { ImageData } from "./ImageUpload"
 
-export type AllFieldTypes = TextData | DateData | RichTextData | ImageData
+export type AllFieldTypes = TextData | DateData | SelectData | RichTextData | ImageData

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import { Button, Label, Input } from "../../ui"
-import { Collection, CollectionFetch, CollectionItemData, Field, ItemFormData } from "../../types"
+import { Collection, CollectionFetch, CollectionItemData, Field, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { Transition } from "@headlessui/react"
@@ -14,6 +14,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})
   const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     const fetchCollectionAndPopulate = async () => {
@@ -39,14 +40,18 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
           setCollection(typedCollection)
 
+          console.log({ collectionData })
+
           const initialFormData = {
             collectionName,
             fields: collectionData.fields.map((field) => {
               const fieldType = FieldTypes[field.typeName as keyof typeof FieldTypes]
+              console.log({ fieldType })
               const defaultData = getDefaultDataFromSchema(fieldType.schema)
               return {
                 name: field.name,
                 data: itemToEdit?.data[field.name as keyof AllFieldTypes] || defaultData,
+                options: (field as SelectField).options || undefined,
               }
             }),
           }
@@ -168,7 +173,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
     <>
       {collection && (
         <Transition appear={true} show={true} enter="transition-all duration-150" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0">
-          <div className="p-8 bg-white rounded-lg shadow-md max-w-[720px] mx-auto">
+          <div className="p-8 bg-white rounded-lg shadow-md max-w-[480px] mx-auto">
             <h3 className="uppercase opacity-50 text-sm pb-1">{collectionName}</h3>
             <h2 className="text-3xl pb-8">{itemToEdit ? "Edit Item" : "Create New Item"}</h2>
 
@@ -210,6 +215,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
                                 return newData
                               })
                             },
+                            options: field.options || [],
                           })
                         ) : (
                           <div className="p-2 bg-red-100 text-red-700 border border-red-300 rounded">Error: Invalid field type schema.</div>
