@@ -1,8 +1,8 @@
 "use client"
-import React, { useState } from "react"
+import React, { Fragment, useState } from "react"
 import { Transition } from "@headlessui/react"
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui"
-import { Collection, Field, AvailableFieldType, SelectField, SelectOption, BaseField } from "../../types"
+import { Collection, Field, AvailableFieldType, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
 
 type ErrorState = {
@@ -14,7 +14,7 @@ type ErrorState = {
 type FieldBlank = {
   name: string
   typeName: string
-  options?: SelectOption[]
+  options?: string[]
 }
 
 function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void; onDelete: () => void }) {
@@ -169,8 +169,8 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
       <Label className="mt-4 mb-2">Fields</Label>
       <div className="flex flex-col gap-4">
         {fields.map((field, fieldIndex) => (
-          <>
-            <div key={fieldIndex} className="flex w-full gap-2 items-end">
+          <Fragment key={fieldIndex}>
+            <div className="flex w-full gap-2 items-end">
               <div className="flex flex-col gap-2 w-2/3">
                 <Label className="opacity-60 pl-1" htmlFor="fieldName">
                   Field Name
@@ -219,7 +219,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
                 {(field as SelectField).options.map((option, optionIndex) => {
                   const numOptions = (field as SelectField).options.length
                   return (
-                    <div key={`select-option-${optionIndex}`} className="flex w-full gap-2 items-center mt-2">
+                    <div key={optionIndex} className="flex w-full gap-2 items-center mt-2">
                       <Label className="w-2/3 text-right">Option {optionIndex + 1}:</Label>
                       <Input
                         onChange={(e) => {
@@ -250,7 +250,7 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
                 </div>
               </div>
             )}
-          </>
+          </Fragment>
         ))}
       </div>
 

@@ -191,7 +191,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
                     if (!fieldType) {
                       return (
-                        <div key={`field-${index}`} className="text-red-500">
+                        <div key={index} className="text-red-500">
                           Field type not found!
                         </div>
                       )
@@ -200,7 +200,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
                     let fieldDataShape = isZodObject(fieldType.schema) ? fieldType.schema.shape : null
 
                     return (
-                      <div key={`field-${index}`} className="flex flex-col gap-2">
+                      <div key={index} className="flex flex-col gap-2">
                         <Label className="block opacity-70 font-medium">{field.name}</Label>
                         {isZodObject(fieldType.schema) ? (
                           fieldType.renderAdmin({

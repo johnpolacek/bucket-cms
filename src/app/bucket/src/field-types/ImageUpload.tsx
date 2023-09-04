@@ -3,7 +3,7 @@ import { FieldType, FieldTypeProps } from "../types"
 import { Label, Input } from "../ui"
 import { z } from "zod"
 
-const imageSchema = z.object({
+export const imageSchema = z.object({
   url: z.string().url("Invalid image URL"),
   width: z.number().min(0, "Missing image width"),
   height: z.number().min(0, "Missing image height"),
