@@ -1,0 +1,8 @@
+{
+  "componentName": "FAQRenderer",
+  "supportedCollections": ["FAQs"],
+  "requiredFields": [
+    { "name": "Question", "typeName": "Text" },
+    { "name": "Answer", "typeName": "RichText" }
+  ]
+}
