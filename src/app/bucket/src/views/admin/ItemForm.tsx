@@ -5,7 +5,7 @@ import { Collection, CollectionFetch, CollectionItemData, Field, ItemFormData, S
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { Transition } from "@headlessui/react"
-import { isZodObject, getDefaultDataFromSchema } from "../../util"
+import { isZodObjectOrArray, getDefaultDataFromSchema } from "../../util"
 
 function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
   const [collection, setCollection] = useState<Collection | null>(null)
@@ -14,7 +14,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})
   const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
     const fetchCollectionAndPopulate = async () => {
@@ -197,12 +196,12 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
                       )
                     }
 
-                    let fieldDataShape = isZodObject(fieldType.schema) ? fieldType.schema.shape : null
+                    let fieldDataShape = isZodObjectOrArray(fieldType.schema) ? fieldType.schema.shape : null
 
                     return (
                       <div key={index} className="flex flex-col gap-2">
                         <Label className="block opacity-70 font-medium">{field.name}</Label>
-                        {isZodObject(fieldType.schema) ? (
+                        {isZodObjectOrArray(fieldType.schema) ? (
                           fieldType.renderAdmin({
                             data: field.data as typeof fieldDataShape,
                             setData: (updatedData) => {

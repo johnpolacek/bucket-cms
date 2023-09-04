@@ -1,7 +1,7 @@
 import { z } from "zod"
 
-export function isZodObject(schema: any): schema is z.ZodObject<any> {
-  return schema && typeof schema.shape === "object"
+export function isZodObjectOrArray(schema: any): schema is z.ZodObject<any> {
+  return schema && (typeof schema.shape === "object" || schema instanceof z.ZodArray)
 }
 
 export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any {
@@ -23,6 +23,8 @@ export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any 
     return ""
   } else if (schema instanceof z.ZodNumber) {
     return null // or 0, or undefined, depending on your needs
+  } else if (schema instanceof z.ZodArray) {
+    return []
   } else if ((schema as any) instanceof z.ZodEffects) {
     // Check if the base type exists, if it does, use that
     const baseType = (schema as any)._def.baseType

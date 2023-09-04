@@ -31,9 +31,9 @@ export const readCollectionItem = async (collectionName: string, itemId: string)
   }
 }
 
-export const readCollectionItems = async (collectionName: string, token?: string) => {
+export async function readCollectionItems<T extends { itemName: string; data: any }>(collectionName: string, token?: string): Promise<(T & { itemId: string })[]> {
   const s3 = initializeS3Client()
-  const MAX_ITEMS_PER_PAGE = 100 // You can adjust this value based on your needs
+  const MAX_ITEMS_PER_PAGE = 100
 
   const command = new ListObjectsV2Command({
     Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -47,22 +47,25 @@ export const readCollectionItems = async (collectionName: string, token?: string
 
     const itemsPromises = response.Contents?.map(async (item) => {
       const itemId = item.Key?.split("/").pop()?.replace(".json", "")
+      if (!itemId) {
+        throw new Error("Failed to derive itemId from the S3 key")
+      }
+
       const itemCommand = new GetObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: item.Key!,
       })
       const { Body } = await s3.send(itemCommand)
       const data = await streamToString(Body as Readable)
-      const itemData = JSON.parse(data)
-      const itemResponse: CollectionItemData = {
-        itemId,
-        ...itemData,
-      }
+      const itemData: T = JSON.parse(data)
 
-      return itemResponse
+      return {
+        ...itemData,
+        itemId,
+      }
     })
 
-    const items: CollectionItemData[] = await Promise.all(itemsPromises || [])
+    const items: (T & { itemId: string })[] = await Promise.all(itemsPromises || [])
     return items
   } catch (error) {
     throw error

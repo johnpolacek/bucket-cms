@@ -1,9 +1,5 @@
 import { readCollectionItems } from "../../../../app/api/bucket/s3/util"
 
-async function getData() {
-  return await readCollectionItems("FAQs")
-}
-
 interface FAQItem {
   itemId: string
   itemName: string
@@ -14,7 +10,7 @@ interface FAQItem {
 }
 
 export default async function FAQDemo() {
-  const data: FAQItem[] = await getData()
+  const data: FAQItem[] = await readCollectionItems("FAQs")
   return (
     <main className="py-16 w-full max-w-[1280px] mx-auto">
       <h1 className="text-4xl pb-8">Frequently Asked Questions</h1>
@@ -23,7 +19,7 @@ export default async function FAQDemo() {
           return (
             <div>
               <div className="font-semibold pb-2">{item.data.Question.value}</div>
-              <div className="prose prose-p:pb-4 " dangerouslySetInnerHTML={{ __html: item.data.Answer.value }} />
+              <div className="prose prose-p:pb-4" dangerouslySetInnerHTML={{ __html: item.data.Answer.value }} />
             </div>
           )
         })}
