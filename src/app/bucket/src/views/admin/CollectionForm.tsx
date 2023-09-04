@@ -119,7 +119,6 @@ function CollectionForm({ collection = null, onCancel, onComplete, onDelete }: {
     setIsSubmitting(true)
     if (validateForm()) {
       const endpoint = isEditMode ? "/api/bucket/collection/update" : "/api/bucket/collection/create"
-      console.log({ fields })
       try {
         const response = await fetch(endpoint, {
           method: "POST",

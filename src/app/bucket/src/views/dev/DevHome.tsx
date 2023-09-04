@@ -68,8 +68,6 @@ function DevHome() {
     }
   }, [scrollableDivRef?.current])
 
-  console.log({ activeSection })
-
   return (
     <div className="flex w-full h-screen overflow-auto">
       <DevHomeNav collections={collections} activeSection={activeSection} />
