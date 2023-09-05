@@ -1,6 +1,6 @@
 import React, { useState, ReactElement } from "react"
 import { FieldType, FieldTypeProps } from "../types"
-import { Label, Input } from "../ui"
+import { Label, Input, Button } from "../ui"
 import { z } from "zod"
 import { imageSchema } from "./ImageUpload"
 
@@ -74,19 +74,25 @@ const ImageGalleryAdmin = ({ data, setData }: FieldTypeProps<ImageGalleryData>):
   return (
     <div className="flex flex-col space-y-4">
       {data.map((imageData, index) => (
-        <div key={index} className="image-preview space-y-2">
-          <img className="rounded border mb-2" src={imageData.url} alt={imageData.alt || "Uploaded Image"} onLoad={(e) => handleImageLoad(e, index)} />
+        <div key={index} className="image-preview space-y-2 relative">
+          <Button aria-label="Remove Image" onClick={() => handleRemoveImage(index)} className="bg-red-500 hover:bg-red-600 rounded-full p-2 absolute -top-2 -right-3 h-8 w-8 text-2xl">
+            ×
+          </Button>
+          <img className="rounded border mb-2 w-full h-auto" src={imageData.url} alt={imageData.alt || "Uploaded Image"} onLoad={(e) => handleImageLoad(e, index)} />
           <div className="image-caption flex flex-col space-y-2">
-            <Label className="block opacity-70 font-medium">Image Description</Label>
+            <Label className="block opacity-70 font-medium">Image #{index + 1} Description</Label>
             <Input type="text" value={imageData.alt || ""} onChange={(e) => handleAltChange(e, index)} className="p-2 border rounded" />
-            <button onClick={() => handleRemoveImage(index)} className="text-red-500">
-              Remove
-            </button>
           </div>
         </div>
       ))}
-      <Input type="file" accept="image/*" onChange={handleImageChange} className="p-2 border rounded" />
-      {isUploading && <div className="text-blue-500">Uploading...</div>}
+      <div>
+        {data.length > 0 && (
+          <Label className="block opacity-70 font-medium mb-1" htmlFor="uploader">
+            Add another image
+          </Label>
+        )}
+        {isUploading ? <div className="italic opacity-50">Uploading...</div> : <Input name="uploader" type="file" accept="image/*" onChange={handleImageChange} className="p-2 border rounded" />}
+      </div>
       {uploadError && <div className="text-red-500 bg-red-100 p-2 rounded">{uploadError}</div>}
     </div>
   )
