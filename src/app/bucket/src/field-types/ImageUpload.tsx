@@ -23,16 +23,14 @@ const ImageAdmin = ({ data, setData }: FieldTypeProps<ImageData>): ReactElement 
   }
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsUploading(true)
     setUploadError(null)
 
     const file = event.target.files?.[0]
     if (!file) {
-      setUploadError("No file selected.")
-      setIsUploading(false)
       return
     }
 
+    setIsUploading(true)
     const formData = new FormData()
     formData.append("image", file)
 
@@ -67,7 +65,7 @@ const ImageAdmin = ({ data, setData }: FieldTypeProps<ImageData>): ReactElement 
       {data?.url && (
         <div className="image-preview space-y-2">
           <img
-            className="max-w-[320px] h-auto rounded border mb-4"
+            className="rounded border mb-4"
             src={data.url}
             alt={data.alt || "Uploaded Image"}
             onLoad={handleImageLoad}
@@ -75,17 +73,12 @@ const ImageAdmin = ({ data, setData }: FieldTypeProps<ImageData>): ReactElement 
             height={imageNaturalSize?.height || data.height}
           />
           <div className="image-caption flex flex-col space-y-2">
-            <Label className="block opacity-70 font-medium">Alt Text</Label>
+            <Label className="block opacity-70 font-medium">Image Description</Label>
             <Input type="text" value={data?.alt || ""} onChange={(e) => setData && setData({ ...data, alt: e.target.value })} className="p-2 border rounded" />
-            {imageNaturalSize && (
-              <p className="text-sm text-gray-600">
-                <strong>Dimensions:</strong> {imageNaturalSize.width}x{imageNaturalSize.height}
-              </p>
-            )}
           </div>
         </div>
       )}
-      <input type="file" accept="image/*" onChange={handleImageChange} className="p-2 border rounded" />
+      <Input type="file" accept="image/*" onChange={handleImageChange} className="p-2 border rounded" />
       {isUploading && <div className="text-blue-500">Uploading...</div>}
       {uploadError && <div className="text-red-500 bg-red-100 p-2 rounded">{uploadError}</div>}
     </div>
