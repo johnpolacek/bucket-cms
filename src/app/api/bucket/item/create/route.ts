@@ -7,7 +7,9 @@ export async function POST(req: NextRequest) {
   const s3 = initializeS3Client()
 
   try {
-    const { collectionName, itemName, data } = await req.json()
+    const { collectionName, data } = await req.json()
+
+    const itemName = data.fields[0].value
 
     // Validate the itemName
     if (!itemName || typeof itemName !== "string" || !itemName.trim()) {
@@ -25,7 +27,7 @@ export async function POST(req: NextRequest) {
       counter++
     }
 
-    const fileContent = JSON.stringify({ itemName, data })
+    const fileContent = JSON.stringify({ data })
 
     // Store the item with the slug as its name
     const itemKey = `items/${collectionName}/${slug}.json`

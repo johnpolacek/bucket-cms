@@ -6,6 +6,7 @@ import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { Transition } from "@headlessui/react"
 import { isZodObjectOrArray, getDefaultDataFromSchema } from "../../util"
+import ItemFormUI from "./ItemFormUI"
 
 function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
   const [collection, setCollection] = useState<Collection | null>(null)
