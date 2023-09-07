@@ -44,7 +44,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
             collectionName,
             fields: collectionData.fields.map((field) => {
               const fieldType = FieldTypes[field.typeName as keyof typeof FieldTypes]
-              console.log("field.typeName: " + field.typeName)
               const defaultData = getDefaultDataFromSchema(fieldType.schema)
               return {
                 name: field.name,

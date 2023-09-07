@@ -2,22 +2,14 @@
 import React, { Fragment, useState } from "react"
 import { Transition } from "@headlessui/react"
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui"
-import { Collection, Field, AvailableFieldType, SelectField } from "../../types"
+import { Collection, Field, FieldBlank, AvailableFieldType, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
-import { cn } from "../../ui/utils"
 import ItemFormPreview from "./ItemFormPreview"
-
-type ErrorState = {
-  name?: string
-  fields?: string[]
-  errorMessage?: string
-}
-
-export type FieldBlank = {
-  name: string
-  typeName: string
-  options?: string[]
-}
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { SortableItem } from "./SortableItem"
+import CollectionFormField from "./CollectionFormField"
+import { ErrorState } from "./CollectionFormField"
 
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
@@ -48,6 +40,28 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     const newFields = [...fields]
     ;(newFields[fieldIndex] as SelectField).options.push("")
     setFields(newFields)
+  }
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event
+    if (over && active.id !== over.id) {
+      setFields((fields) => arrayMove(fields, parseInt(active.id) + 1, parseInt(over.id) + 1))
+    }
+  }
+
+  const handleFieldNameChange = (fieldIndex: number, name: string) => {
+    const updatedFields = [...fields]
+    updatedFields[fieldIndex].name = name
+    setFields(updatedFields)
+    setErrors({})
+    setFields(updatedFields)
   }
 
   const handleFieldTypeChange = (index: number, typeName: string) => {
@@ -160,11 +174,9 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     }
   }
 
-  console.log({ fields })
-
   return (
     <Transition
-      className="p-8 bg-white rounded-lg shadow-md w-full max-w-[1100px] mx-auto mt-8 grid grid-cols-2 gap-16"
+      className="p-8 bg-white rounded-lg shadow-md w-full max-w-[1100px] mx-auto mt-8 grid grid-cols-2 gap-16 lg:scale-110"
       appear={true}
       show={true}
       enter="transition-all duration-150"
@@ -179,118 +191,50 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
         {errors.name && <div className="text-red-500 text-sm">{errors.name}</div>}
 
         <Label className="mt-4 mb-2">Fields</Label>
-        <div className="flex flex-col gap-4">
-          {fields.map((field, fieldIndex) => (
-            <Fragment key={fieldIndex}>
-              {fieldIndex === 0 && (
-                <div className="text-xs opacity-60">
-                  The first field in your collection is its name. For field name, enter the label you would like it to have on the Item Form, such as "Product Name", "Book Title" or "Full Name".
-                </div>
-              )}
-              {fieldIndex === 1 && <div className="text-xs opacity-60">Add other fields to your collection.</div>}
-              <div className="flex w-full gap-2 items-end">
-                <div className="flex flex-col gap-2 w-2/3">
-                  <Label className="opacity-60 pl-1" htmlFor="fieldName">
-                    Field Name
-                  </Label>
-                  <Input
-                    className={`w-full text-sm py-1 px-2 ${errors.fields && !field.name ? "border-red-500" : ""}`}
-                    type="text"
-                    name="fieldName"
-                    value={field.name || ""}
-                    onChange={(e) => {
-                      const updatedFields = [...fields]
-                      updatedFields[fieldIndex].name = e.target.value
-                      setFields(updatedFields)
-                    }}
-                  />
-                </div>
-                <div className="flex flex-col gap-2 w-1/3">
-                  <Label className="opacity-60 pl-1" htmlFor="fieldType">
-                    Type
-                  </Label>
-                  {fieldIndex === 0 ? (
-                    <Select
-                      name="fieldType"
-                      onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
-                      value={field?.typeName} // Use typeName to display the name of the FieldType
-                      disabled={true}
-                    >
-                      <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
-                        <SelectValue placeholder="Select FieldType" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem key="item-name" value="Text">
-                          Item Name
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <Select
-                      name="fieldType"
-                      onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
-                      value={field?.typeName} // Use typeName to display the name of the FieldType
-                    >
-                      <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
-                        <SelectValue placeholder="Select FieldType" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {availableFieldTypes.map((type) => (
-                          <SelectItem key={type.name} value={type.name}>
-                            {type.name.replace("Field", "")}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={fields.slice(1, fields.length >= 3 ? undefined : 1).map((_, index) => index.toString())} strategy={verticalListSortingStrategy}>
+            <div className="flex flex-col gap-4">
+              {fields.map((field, fieldIndex) => (
+                <Fragment key={fieldIndex}>
+                  {fieldIndex === 0 && (
+                    <div className="text-xs opacity-60">
+                      The first field in your collection is for its name. Enter the label you would like it to have on the Item Form, such as "Product Name", "Book Title" or "Full Name".
+                    </div>
                   )}
-                </div>
-                <Button
-                  variant="ghost"
-                  className={cn("text-red-600 hover:text-red-700 text-xl px-2", fieldIndex > 2 ? "" : "opacity-0 pointer-events-none")}
-                  onClick={() => handleDeleteField(fieldIndex)}
-                >
-                  ×
-                </Button>
-              </div>
-              {field.typeName === "SelectField" && (
-                <div>
-                  {(field as SelectField).options.map((option, optionIndex) => {
-                    const numOptions = (field as SelectField).options.length
-                    return (
-                      <div key={optionIndex} className="flex w-full gap-2 items-center mt-2">
-                        <Label className="w-2/3 text-right">Option {optionIndex + 1}:</Label>
-                        <Input
-                          onChange={(e) => {
-                            handleOptionChange(fieldIndex, optionIndex, e.target.value)
-                          }}
-                          className="w-1/3"
-                          required
-                          type="text"
-                          value={option}
-                        />
-                        <Button
-                          variant="ghost"
-                          className={`text-red-600 hover:text-red-700 text-xl px-2 ${numOptions > 1 ? "" : "opacity-0 pointer-events-none"}`}
-                          onClick={() => handleDeleteOption(fieldIndex, optionIndex)}
-                        >
-                          ×
-                        </Button>
-                      </div>
-                    )
-                  })}
-                  <div className="text-right my-4">
-                    <Button variant="outline" className="text-xs text-white hover:text-white bg-green-500 hover:bg-green-600" onClick={() => addOption(fieldIndex)}>
-                      + Add Option
-                    </Button>
-                    <Button variant="ghost" className="opacity-0 pointer-events-none text-xl px-3">
-                      ×
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </Fragment>
-          ))}
-        </div>
+                  {fieldIndex === 0 || fields.length < 3 ? (
+                    <CollectionFormField
+                      field={field}
+                      fieldIndex={fieldIndex}
+                      errors={errors}
+                      handleFieldNameChange={handleFieldNameChange}
+                      handleFieldTypeChange={handleFieldTypeChange}
+                      addOption={addOption}
+                      handleOptionChange={handleOptionChange}
+                      handleDeleteOption={handleDeleteOption}
+                      handleDeleteField={handleDeleteField}
+                    />
+                  ) : (
+                    <SortableItem index={fieldIndex - 1}>
+                      {/* the 1st field item name is not sortable */}
+                      <CollectionFormField
+                        field={field}
+                        fieldIndex={fieldIndex}
+                        errors={errors}
+                        handleFieldNameChange={handleFieldNameChange}
+                        handleFieldTypeChange={handleFieldTypeChange}
+                        addOption={addOption}
+                        handleOptionChange={handleOptionChange}
+                        handleDeleteOption={handleDeleteOption}
+                        handleDeleteField={handleDeleteField}
+                      />
+                    </SortableItem>
+                  )}
+                  {fieldIndex === 0 && <div className="text-xs opacity-60 pt-2">Add other fields to your collection.</div>}
+                </Fragment>
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
 
         <div className="text-right pt-2">
           <Button variant="outline" className="text-sm text-green-600 hover:text-green-700 border-green-300" onClick={addField}>
@@ -321,13 +265,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           </Button>
         </div>
       </div>
-      <div className="flex flex-col gap-2 p-8 rounded-lg bg-gray-50">
-        <div className="text-center italic opacity-60">Item Form Preview</div>
-        <div className="text-center opacity-60 text-xs px-4">This is what the form will look like for creating and editing items in {collectionName ? collectionName : "this collection"}.</div>
-        <div className="mt-4">
-          <ItemFormPreview collectionName={collectionName} fields={fields} />
-        </div>
-      </div>
+      <ItemFormPreview collectionName={collectionName} fields={fields} />
     </Transition>
   )
 }

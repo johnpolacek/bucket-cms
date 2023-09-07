@@ -39,6 +39,12 @@ export interface SelectField extends BaseField {
   options: string[]
 }
 
+export interface FieldBlank {
+  name: string
+  typeName: string
+  options?: string[]
+}
+
 export type FieldTypes = Record<FieldKeys, FieldType<AllFieldTypes>>
 export type Field = BaseField | SelectField
 
@@ -62,7 +68,6 @@ export interface ItemFormFieldData {
 
 export interface CollectionItemData {
   itemId: string
-  itemName: string
   data: AllFieldTypes[]
 }
 
