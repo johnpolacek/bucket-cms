@@ -7,9 +7,7 @@ export async function POST(req: NextRequest) {
   const s3 = initializeS3Client()
 
   try {
-    const { collectionName, data } = await req.json()
-
-    const itemName = data.fields[0].value
+    const { itemName, collectionName, data } = await req.json()
 
     // Validate the itemName
     if (!itemName || typeof itemName !== "string" || !itemName.trim()) {
@@ -41,6 +39,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, itemId: slug }, { status: 200 })
   } catch (error: any) {
+    console.log({ error })
     return NextResponse.json({ error: `${error.message || "An error occurred"}` }, { status: 500 })
   }
 }

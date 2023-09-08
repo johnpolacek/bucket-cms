@@ -3,14 +3,12 @@ import React, { useState, useEffect } from "react"
 import { Button, Label, Input } from "../../ui"
 import { Collection, CollectionFetch, CollectionItemData, Field, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
-import { AllFieldTypes } from "../../field-types"
+import { AllFieldTypes, TextData } from "../../field-types"
 import { Transition } from "@headlessui/react"
 import { isZodObjectOrArray, getDefaultDataFromSchema } from "../../util"
-import ItemFormUI from "./ItemFormUI"
 
 function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
   const [collection, setCollection] = useState<Collection | null>(null)
-  const [itemName, setItemName] = useState("")
   const [formData, setFormData] = useState<ItemFormData | null>({ collectionName, fields: [] })
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})
   const [fieldErrors, setFieldErrors] = useState<string[]>([])
@@ -53,7 +51,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
             }),
           }
 
-          setItemName(itemToEdit ? itemToEdit.itemName : "")
           setFormData(initialFormData)
         } catch (error: any) {
           setErrors({ errorMessage: error.message || "Failed to load collection data" })
@@ -67,11 +64,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   const handleSubmit = async () => {
     if (!formData) {
       setErrors({ errorMessage: "Please provide some data" })
-      return
-    }
-
-    if (!itemName.trim()) {
-      setErrors({ errorMessage: "Item name is required." })
       return
     }
 
@@ -117,7 +109,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
     const payload: ItemPayload = {
       collectionName: formData.collectionName,
-      itemName,
+      itemName: (formData.fields[0].data as TextData).value,
       data: formData.fields.reduce((accumulatedData: any, field) => {
         accumulatedData[field.name] = field.data
         return accumulatedData
@@ -179,11 +171,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
             {collection && formData?.fields && (
               <div className="">
                 <div className="flex flex-col gap-8">
-                  <div>
-                    <Label className="block opacity-70 font-medium mb-2">Item Name</Label>
-                    <Input type="text" value={itemName} onChange={(e) => setItemName(e.target.value)} className="border rounded p-2 w-full" placeholder="Enter item name..." />
-                  </div>
-
                   {formData?.fields.map((field, index) => {
                     const fieldTypeKey = collection.fields[index].typeName as keyof typeof FieldTypes
                     const fieldType = FieldTypes[fieldTypeKey]
