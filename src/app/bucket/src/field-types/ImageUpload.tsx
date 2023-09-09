@@ -95,5 +95,5 @@ export const ImageUpload: FieldType<ImageData> = {
       return { isValid: false, errorMessage: validationResult.error.issues[0]?.message || "Invalid data" }
     }
   },
-  schema: imageSchema,
+  imageSchema,
 }

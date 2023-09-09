@@ -10,11 +10,11 @@ const selectAdminSchema = z.object({
   }),
 })
 
-const selectSchema = z.object({
+const schema = z.object({
   value: z.string().min(1, "Content cannot be empty"),
 })
 
-export type SelectData = z.infer<typeof selectSchema>
+export type SelectData = z.infer<typeof schema>
 
 const SelectAdmin: React.FC<SelectFieldTypeProps<SelectData>> = ({ data, setData, options }): ReactElement => {
   return options ? (
@@ -38,7 +38,7 @@ const SelectAdmin: React.FC<SelectFieldTypeProps<SelectData>> = ({ data, setData
 export const SelectField: FieldType<SelectData, SelectFieldTypeProps<SelectData>> = {
   renderAdmin: (props) => <SelectAdmin {...props} />,
   validate: (data: SelectData) => {
-    const validationResult = selectSchema.safeParse(data)
+    const validationResult = schema.safeParse(data)
     if (validationResult.success) {
       return { isValid: true }
     } else {
@@ -48,5 +48,5 @@ export const SelectField: FieldType<SelectData, SelectFieldTypeProps<SelectData>
       }
     }
   },
-  schema: selectSchema,
+  schema,
 }

@@ -4,18 +4,18 @@ import { FieldType, FieldTypeProps } from "../types"
 import { z } from "zod"
 import { Input } from "../ui"
 
-const dateSchema = z.object({
+const schema = z.object({
   value: z.string().refine((data) => !isNaN(Date.parse(data)), { message: "Invalid date format" }),
 })
 
-export type DateData = z.infer<typeof dateSchema>
+export type DateData = z.infer<typeof schema>
 
 export const DateField: FieldType<DateData> = {
   renderAdmin: ({ data, setData }: FieldTypeProps<DateData>): ReactElement => {
     return <Input type="date" defaultValue={data?.value || ""} onChange={(e) => setData && setData({ value: e.target.value })} />
   },
   validate: (data: DateData) => {
-    const validationResult = dateSchema.safeParse(data)
+    const validationResult = schema.safeParse(data)
     if (validationResult.success) {
       return { isValid: true }
     } else {
@@ -25,5 +25,5 @@ export const DateField: FieldType<DateData> = {
       }
     }
   },
-  schema: dateSchema,
+  schema,
 }

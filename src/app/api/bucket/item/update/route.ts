@@ -8,7 +8,11 @@ export async function PUT(req: NextRequest) {
 
   if (req.method === "PUT") {
     try {
-      const { collectionName, itemName, data, itemId } = await req.json()
+      const json = await req.json()
+      console.log({ json })
+
+      const { collectionName, itemName, data, itemId } = json
+      console.log({ collectionName, itemName, data, itemId })
 
       // Validate the itemName
       if (!itemName || typeof itemName !== "string" || !itemName.trim()) {
@@ -28,12 +32,16 @@ export async function PUT(req: NextRequest) {
       })
       const currentDataResponse = await s3.send(getObjectCommand)
 
-      // Check if Body is defined in the response
-      if (!currentDataResponse.Body) {
+      let dataResponse = ""
+      if (currentDataResponse.Body) {
+        for await (const chunk of currentDataResponse.Body) {
+          dataResponse += chunk
+        }
+      } else {
         throw new Error("Failed to fetch current item data from S3.")
       }
 
-      const currentData = JSON.parse(currentDataResponse.Body.toString())
+      const currentData = JSON.parse(dataResponse)
 
       let newPath = currentKey
 
@@ -77,7 +85,7 @@ export async function PUT(req: NextRequest) {
 
       return NextResponse.json({ success: true, itemId: (newPath.split("/").pop() || "").replace(".json", "") }, { status: 200 })
     } catch (error: any) {
-      return NextResponse.json({ error: `${error.message || "An error occurred"}` }, { status: 500 })
+      return NextResponse.json({ error: `${error.message || "An error occurred"}`, stack: error.stack }, { status: 500 })
     }
   } else {
     return NextResponse.json({ error: `Method Not Allowed` }, { status: 405 })

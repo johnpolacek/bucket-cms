@@ -12,11 +12,11 @@ const ReactQuill = dynamic(() => import("react-quill"), {
   loading: () => <p>Loading editor...</p>,
 })
 
-const richTextSchema = z.object({
+const schema = z.object({
   value: z.string().min(1, "Content cannot be empty"),
 })
 
-export type RichTextData = z.infer<typeof richTextSchema>
+export type RichTextData = z.infer<typeof schema>
 
 export const RichText: FieldType<RichTextData> = {
   renderAdmin: ({ data, setData }: FieldTypeProps<RichTextData>): ReactElement => {
@@ -35,12 +35,12 @@ export const RichText: FieldType<RichTextData> = {
     )
   },
   validate: (data: RichTextData) => {
-    const validationResult = richTextSchema.safeParse(data)
+    const validationResult = schema.safeParse(data)
     if (validationResult.success) {
       return { isValid: true }
     } else {
       return { isValid: false, errorMessage: validationResult.error.issues[0]?.message || "Invalid data" }
     }
   },
-  schema: richTextSchema,
+  schema,
 }
