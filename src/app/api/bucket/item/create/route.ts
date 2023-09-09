@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       counter++
     }
 
-    const fileContent = JSON.stringify({ data })
+    const fileContent = JSON.stringify({ data, itemName })
 
     // Store the item with the slug as its name
     const itemKey = `items/${collectionName}/${slug}.json`

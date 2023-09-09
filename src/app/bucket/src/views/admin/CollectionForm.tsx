@@ -236,8 +236,8 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           </SortableContext>
         </DndContext>
 
-        <div className="text-right pt-2">
-          <Button variant="outline" className="text-sm text-green-600 hover:text-green-700 border-green-300" onClick={addField}>
+        <div className="text-right -mt-1">
+          <Button variant="outline" className="text-green-600 hover:text-green-700 border-green-300 text-xs px-2 py-1 mt-2 h-auto" onClick={addField}>
             + Add Field
           </Button>
           <Button variant="ghost" className="opacity-0 pointer-events-none text-xl px-3">

@@ -68,6 +68,7 @@ export interface ItemFormFieldData {
 
 export interface CollectionItemData {
   itemId: string
+  itemName: string
   data: AllFieldTypes[]
 }
 
