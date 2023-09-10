@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import { Button, Label, Input } from "../../ui"
-import { Collection, CollectionFetch, CollectionItemData, Field, ItemFormData, SelectField } from "../../types"
+import { Collection, CollectionFetch, CollectionItemData, CollectionReferenceField, Field, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { TextData } from "../../field-types/Text"
@@ -42,7 +42,9 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
           const initialFormData = {
             collectionName,
             fields: collectionData.fields.map((field) => {
+              console.log("initialFormData field", { field })
               const fieldType = FieldTypes[field.typeName as keyof typeof FieldTypes]
+              console.log({ fieldType })
               const defaultData = getDefaultDataFromSchema(fieldType.schema)
               return {
                 name: field.name,
@@ -61,6 +63,42 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
     fetchCollectionAndPopulate()
   }, [collectionName, itemToEdit])
+
+  useEffect(() => {
+    if (collection && formData?.fields) {
+      const collectionNames = collection.fields.reduce((acc: { name: string; index: number }[], field, index) => {
+        if (field.typeName === "CollectionReference" && (field as CollectionReferenceField).options && (field as CollectionReferenceField).options.length > 0) {
+          acc.push({ name: (field as CollectionReferenceField).options[0], index })
+        }
+        return acc
+      }, [])
+
+      collectionNames.forEach(async ({ name, index }) => {
+        console.log(`Fetching items for collection: ${name} (index: ${index})`)
+        const itemIds = await fetchItemsIds(name, index)
+        console.log({ itemIds })
+        const newFormData = { ...formData }
+        console.log({ index, itemIds })
+        newFormData.fields[index].options = itemIds
+        console.log({ newFormData })
+        setFormData(newFormData)
+      })
+    }
+  }, [Boolean(collection && formData?.fields)])
+
+  const fetchItemsIds = async (collectionName: string, fieldIndex: number) => {
+    try {
+      const response = await fetch(`/api/bucket/item/ids/read?collectionName=${collectionName}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch items")
+      }
+      const data = await response.json()
+      console.log(`Items for collection: ${collectionName} (index: ${fieldIndex})`, data.itemIds)
+      return data.itemIds as string[]
+    } catch (error: any) {
+      setErrors(error.message)
+    }
+  }
 
   const handleSubmit = async () => {
     if (!formData) {

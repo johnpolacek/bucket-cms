@@ -29,6 +29,10 @@ export interface SelectFieldTypeProps<T> extends Omit<FieldTypeProps<T>, "fieldO
   options: string[] // Explicitly specify that options should be string[]
 }
 
+export interface CollectionReferenceFieldTypeProps<T> extends Omit<FieldTypeProps<T>, "fieldOptions"> {
+  options: string[] // Item ids that get loaded in by the ItemForm
+}
+
 export interface BaseField {
   name: string
   typeName: FieldKeys
@@ -36,6 +40,11 @@ export interface BaseField {
 
 export interface SelectField extends BaseField {
   typeName: "SelectField"
+  options: string[]
+}
+
+export interface CollectionReferenceField extends BaseField {
+  typeName: "CollectionReference"
   options: string[]
 }
 

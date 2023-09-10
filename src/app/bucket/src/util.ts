@@ -39,3 +39,7 @@ export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any 
     throw new Error(`Unsupported Zod schema type: ${schema.constructor.name}`)
   }
 }
+
+export function getHumanReadableId(slug: string): string {
+  return slug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
+}

@@ -3,14 +3,14 @@ import { FieldType, FieldTypeProps } from "../types"
 import { Label, Input } from "../ui"
 import { z } from "zod"
 
-export const imageSchema = z.object({
+export const schema = z.object({
   url: z.string().url("Invalid image URL"),
   width: z.number().min(0, "Missing image width"),
   height: z.number().min(0, "Missing image height"),
   alt: z.string(),
 })
 
-export type ImageData = z.infer<typeof imageSchema>
+export type ImageData = z.infer<typeof schema>
 
 const ImageAdmin = ({ data, setData }: FieldTypeProps<ImageData>): ReactElement => {
   const [isUploading, setIsUploading] = useState(false)
@@ -88,12 +88,12 @@ const ImageAdmin = ({ data, setData }: FieldTypeProps<ImageData>): ReactElement 
 export const ImageUpload: FieldType<ImageData> = {
   renderAdmin: (props) => <ImageAdmin {...props} />,
   validate: (data: ImageData) => {
-    const validationResult = imageSchema.safeParse(data)
+    const validationResult = schema.safeParse(data)
     if (validationResult.success) {
       return { isValid: true }
     } else {
       return { isValid: false, errorMessage: validationResult.error.issues[0]?.message || "Invalid data" }
     }
   },
-  imageSchema,
+  schema,
 }

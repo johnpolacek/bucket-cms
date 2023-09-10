@@ -72,6 +72,33 @@ export async function readCollectionItems<T extends { itemName: string; data: an
   }
 }
 
+export async function readCollectionItemIDs(collectionName: string, token?: string): Promise<string[]> {
+  const s3 = initializeS3Client()
+
+  const command = new ListObjectsV2Command({
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Prefix: `items/${collectionName}/`,
+    ContinuationToken: token || undefined,
+  })
+
+  try {
+    const response = await s3.send(command)
+
+    const itemIDs: string[] =
+      response.Contents?.map((item) => {
+        const itemId = item.Key?.split("/").pop()?.replace(".json", "")
+        if (!itemId) {
+          throw new Error("Failed to derive itemId from the S3 key")
+        }
+        return itemId
+      }) || []
+
+    return itemIDs
+  } catch (error) {
+    throw error
+  }
+}
+
 // Helper function to convert a Readable stream to a string
 export const streamToString = (stream: Readable): Promise<string> => {
   const chunks: any[] = []

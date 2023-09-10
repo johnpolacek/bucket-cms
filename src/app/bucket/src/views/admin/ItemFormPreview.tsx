@@ -1,9 +1,8 @@
 "use client"
 import React from "react"
-import { Button, Label } from "../../ui"
+import { Label } from "../../ui"
 import { Field, FieldBlank, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
-import { isZodObjectOrArray } from "../../util"
 
 function ItemFormPreview({ collectionName, fields }: { collectionName: string; fields: (FieldBlank | Field)[] }) {
   const FieldsPreview = fields.reduce<React.ReactElement[]>((acc, field, index) => {
@@ -17,15 +16,11 @@ function ItemFormPreview({ collectionName, fields }: { collectionName: string; f
     const fieldComponent = (
       <div key={index} className="flex flex-col gap-2">
         <Label className="block opacity-70 font-medium">{field.name}</Label>
-        {isZodObjectOrArray(fieldType.schema) ? (
-          fieldType.renderAdmin({
-            data: { value: "" },
-            setData: () => {},
-            options: (field as SelectField).options || [],
-          })
-        ) : (
-          <div className="p-2 bg-red-100 text-red-700 border border-red-300 rounded">Error: Invalid field type schema.</div>
-        )}
+        {fieldType.renderAdmin({
+          data: { value: "" },
+          setData: () => {},
+          options: (field as SelectField).options || [],
+        })}
       </div>
     )
     return [...acc, fieldComponent]

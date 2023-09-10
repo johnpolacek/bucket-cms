@@ -7,6 +7,7 @@ export { Statistic } from "./Statistic"
 export { ImageUpload } from "./ImageUpload"
 export { ImageGallery } from "./ImageGallery"
 export { VideoEmbed } from "./VideoEmbed"
+export { CollectionReference } from "./CollectionReference"
 
 import { TextData } from "./Text"
 import { LabelsData } from "./Labels"
@@ -17,5 +18,6 @@ import { StatisticData } from "./Statistic"
 import { ImageData } from "./ImageUpload"
 import { ImageGalleryData } from "./ImageGallery"
 import { VideoEmbedData } from "./VideoEmbed"
+import { CollectionReferenceData } from "./CollectionReference"
 
-export type AllFieldTypes = TextData | LabelsData | DateData | SelectData | RichTextData | StatisticData | ImageData | ImageGalleryData | VideoEmbedData
+export type AllFieldTypes = TextData | LabelsData | DateData | SelectData | RichTextData | StatisticData | ImageData | ImageGalleryData | VideoEmbedData | CollectionReferenceData

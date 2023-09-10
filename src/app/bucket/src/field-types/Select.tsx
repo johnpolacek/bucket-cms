@@ -4,12 +4,6 @@ import { FieldType, SelectFieldTypeProps } from "../types"
 import { z } from "zod"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui"
 
-const selectAdminSchema = z.object({
-  options: z.array(z.string()).refine((options) => options.length > 0 && !options.some((option) => option.trim() === ""), {
-    message: "Array should have at least one non-empty string",
-  }),
-})
-
 const schema = z.object({
   value: z.string().min(1, "Content cannot be empty"),
 })

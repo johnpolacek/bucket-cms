@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui"
-import { Field, FieldBlank, AvailableFieldType, SelectField } from "../../types"
+import { Field, FieldBlank, AvailableFieldType, SelectField, CollectionData, CollectionReferenceField } from "../../types"
 import * as FieldTypes from "../../field-types"
 import { cn } from "../../ui/utils"
 import DragHandle from "./DragHandle"
@@ -19,12 +19,14 @@ function CollectionFormField({
   handleFieldNameChange,
   handleFieldTypeChange,
   handleOptionChange,
+  handleCollectionChange,
   addOption,
   handleDeleteOption,
   handleDeleteField,
   dragHandleProps = {},
   itemProps = {},
   setNodeRef,
+  collectionReferences,
 }: {
   field: Field | FieldBlank
   fieldIndex: number
@@ -33,11 +35,13 @@ function CollectionFormField({
   handleFieldTypeChange: (fieldIndex: number, value: string) => void
   addOption: (fieldIndex: number) => void
   handleOptionChange: (fieldIndex: number, optionIndex: number, value: string) => void
+  handleCollectionChange: (fieldIndex: number, value: string) => void
   handleDeleteOption: (fieldIndex: number, optionIndex: number) => void
   handleDeleteField: (fieldIndex: number) => void
   dragHandleProps?: any
   itemProps?: any
   setNodeRef?: any
+  collectionReferences: CollectionData[]
 }) {
   const availableFieldTypes: AvailableFieldType[] = Object.entries(FieldTypes).map(([name, component]) => ({
     name,
@@ -94,7 +98,7 @@ function CollectionFormField({
               <SelectContent>
                 {availableFieldTypes.map((type) => (
                   <SelectItem key={type.name} value={type.name}>
-                    {type.name.replace("Field", "")}
+                    {type.name.replace("Field", "").replace("Upload", "")}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -105,6 +109,29 @@ function CollectionFormField({
           ×
         </Button>
       </div>
+      {field.typeName === "CollectionReference" && (
+        <div className="flex flex-col gap-1 pl-16 pr-10">
+          <Label className="opacity-60 pl-1" htmlFor="collectionReference">
+            Choose a Collection
+          </Label>
+          <Select
+            name="collectionReference"
+            onValueChange={(value) => handleCollectionChange(fieldIndex, value)}
+            value={(field as CollectionReferenceField).options ? (field as CollectionReferenceField).options[0] : ""}
+          >
+            <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
+              <SelectValue placeholder="Select Collection" />
+            </SelectTrigger>
+            <SelectContent>
+              {collectionReferences.map((c) => (
+                <SelectItem key={c.collectionName} value={c.collectionName}>
+                  {c.collectionName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
       {field.typeName === "SelectField" && (
         <div>
           {(field as SelectField).options.map((option, optionIndex) => {
@@ -132,7 +159,7 @@ function CollectionFormField({
             )
           })}
           <div className="text-right my-4">
-            <Button variant="outline" className="text-xs text-white hover:text-white bg-green-500 hover:bg-green-600" onClick={() => addOption(fieldIndex)}>
+            <Button variant="outline" className="text-green-600 hover:text-green-700 border-green-300 text-xs px-2 py-1 mt-2 h-auto" onClick={() => addOption(fieldIndex)}>
               + Add Option
             </Button>
             <Button variant="ghost" className="opacity-0 pointer-events-none text-xl px-3">
