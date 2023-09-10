@@ -74,6 +74,7 @@ const ImageGalleryAdmin = ({ data, setData }: FieldTypeProps<ImageGalleryData>):
   return (
     <div className="flex flex-col space-y-4">
       {data &&
+        typeof data.map === "function" &&
         data.map((imageData, index) => (
           <div key={index} className="image-preview space-y-2 relative">
             <Button aria-label="Remove Image" onClick={() => handleRemoveImage(index)} className="bg-red-500 hover:bg-red-600 rounded-full p-2 absolute -top-2 -right-3 h-8 w-8 text-2xl">
