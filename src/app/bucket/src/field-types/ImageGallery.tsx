@@ -3,6 +3,7 @@ import { FieldType, FieldTypeProps } from "../types"
 import { Label, Input, Button } from "../ui"
 import { z } from "zod"
 import { imageSchema } from "./ImageUpload"
+import { uploadImageAndGetURL } from "../util"
 
 const imageGallerySchema = z.array(imageSchema)
 
@@ -28,34 +29,21 @@ const ImageGalleryAdmin = ({ data, setData }: FieldTypeProps<ImageGalleryData>):
     }
 
     setIsUploading(true)
-    const formData = new FormData()
-    formData.append("image", file)
 
     try {
-      const response = await fetch("/api/bucket/upload/image", {
-        method: "POST",
-        body: formData,
-      })
-
-      if (response.ok) {
-        const responseData = await response.json()
-        setData([
-          ...data,
-          {
-            url: responseData.url,
-            width: 0, // Set a default width; update it once the image loads
-            height: 0, // Set a default height; update it once the image loads
-            alt: "",
-          },
-        ])
-      } else {
-        const errorData = await response.json()
-        setUploadError(errorData.error || "Failed to upload image.")
-      }
+      const url = await uploadImageAndGetURL(file)
+      setData([
+        ...data,
+        {
+          url,
+          width: 0, // Set a default width; update it once the image loads
+          height: 0, // Set a default height; update it once the image loads
+          alt: "",
+        },
+      ])
     } catch (error: any) {
       setUploadError(error.message || "An error occurred while uploading.")
     }
-
     setIsUploading(false)
   }
 

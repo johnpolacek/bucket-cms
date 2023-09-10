@@ -239,6 +239,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
                     <SortableItem index={fieldIndex - 1}>
                       {/* the 1st field item name is not sortable */}
                       <CollectionFormField
+                        autoFocus={fieldIndex === fields.length - 1}
                         field={field}
                         fieldIndex={fieldIndex}
                         errors={errors}

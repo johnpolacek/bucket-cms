@@ -43,3 +43,25 @@ export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any 
 export function getHumanReadableId(slug: string): string {
   return slug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
 }
+
+export async function uploadImageAndGetURL(file: File): Promise<string> {
+  try {
+    const formData = new FormData()
+    formData.append("image", file)
+
+    const response = await fetch("/api/bucket/upload/image", {
+      method: "POST",
+      body: formData,
+    })
+
+    if (response.ok) {
+      const responseData = await response.json()
+      return responseData.url
+    } else {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Failed to upload image.")
+    }
+  } catch (error) {
+    throw error
+  }
+}

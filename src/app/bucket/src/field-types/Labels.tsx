@@ -21,7 +21,7 @@ const LabelsAdmin = ({ data, setData }: FieldTypeProps<LabelsData>): ReactElemen
     <div className="flex flex-col gap-2">
       {(data.value?.length ? data.value : [""]).map((label, index) => (
         <div key={index} className="flex items-center space-x-2">
-          <Input type="text" value={label} onChange={(e) => handleChange(e, index)} />
+          <Input autoFocus={true} type="text" value={label} onChange={(e) => handleChange(e, index)} />
           {(data.value.length > 1 || index !== 0) && (
             <Button variant="ghost" className="text-xl px-3 text-red-500 hover:text-red-600" onClick={() => setData && setData({ value: data.value.filter((_, idx) => idx !== index) })}>
               ×

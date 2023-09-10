@@ -2,13 +2,16 @@ import React, { useState, ReactElement } from "react"
 import { FieldType, FieldTypeProps } from "../types"
 import { Label, Input } from "../ui"
 import { z } from "zod"
+import { uploadImageAndGetURL } from "../util"
 
-export const schema = z.object({
+const schema = z.object({
   url: z.string().url("Invalid image URL"),
   width: z.number().min(0, "Missing image width"),
   height: z.number().min(0, "Missing image height"),
   alt: z.string(),
 })
+
+export const imageSchema = schema
 
 export type ImageData = z.infer<typeof schema>
 
@@ -31,28 +34,15 @@ const ImageAdmin = ({ data, setData }: FieldTypeProps<ImageData>): ReactElement 
     }
 
     setIsUploading(true)
-    const formData = new FormData()
-    formData.append("image", file)
-
     try {
-      const response = await fetch("/api/bucket/upload/image", {
-        method: "POST",
-        body: formData,
-      })
-
-      if (response.ok) {
-        const responseData = await response.json()
-        setData &&
-          setData({
-            url: responseData.url,
-            width: 0, // Set a default width; update it once the image loads
-            height: 0, // Set a default height; update it once the image loads
-            alt: "",
-          })
-      } else {
-        const errorData = await response.json()
-        setUploadError(errorData.error || "Failed to upload image.")
-      }
+      const url = await uploadImageAndGetURL(file)
+      setData &&
+        setData({
+          url,
+          width: 0, // Set a default width; update it once the image loads
+          height: 0, // Set a default height; update it once the image loads
+          alt: "",
+        })
     } catch (error: any) {
       setUploadError(error.message || "An error occurred while uploading.")
     }

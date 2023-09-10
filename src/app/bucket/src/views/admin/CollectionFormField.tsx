@@ -27,6 +27,7 @@ function CollectionFormField({
   itemProps = {},
   setNodeRef,
   collectionReferences,
+  autoFocus,
 }: {
   field: Field | FieldBlank
   fieldIndex: number
@@ -42,6 +43,7 @@ function CollectionFormField({
   itemProps?: any
   setNodeRef?: any
   collectionReferences: CollectionData[]
+  autoFocus?: boolean
 }) {
   const availableFieldTypes: AvailableFieldType[] = Object.entries(FieldTypes).map(([name, component]) => ({
     name,
@@ -57,6 +59,7 @@ function CollectionFormField({
             Field Name
           </Label>
           <Input
+            autoFocus={autoFocus}
             className={`w-full text-sm py-1 px-2 ${errors.fields && !field.name ? "border-red-500" : ""}`}
             type="text"
             name="fieldName"
@@ -140,6 +143,7 @@ function CollectionFormField({
               <div key={optionIndex} className="flex w-full gap-2 items-center mt-2">
                 <Label className="w-2/3 text-right">Option {optionIndex + 1}:</Label>
                 <Input
+                  autoFocus={true}
                   onChange={(e) => {
                     handleOptionChange(fieldIndex, optionIndex, e.target.value)
                   }}
