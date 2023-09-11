@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react"
 import ItemForm from "./ItemForm"
 import { Button } from "../../ui"
@@ -11,6 +12,7 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
   const [error, setError] = useState<string | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
 
   useEffect(() => {
     fetchItems()
@@ -68,6 +70,29 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
     }
   }
 
+  const handleDeleteCollection = async () => {
+    if (confirmDeleteCollection) {
+      try {
+        const response = await fetch(`/api/bucket/collection/delete?collectionName=${collectionName}`, {
+          method: "DELETE",
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to delete collection")
+        } else {
+          onFinish()
+        }
+      } catch (error: any) {
+        console.error(error)
+        alert("An error occurred while trying to delete the collection. Please try again.")
+      } finally {
+        setConfirmDeleteCollection(false)
+      }
+    } else {
+      setConfirmDeleteCollection(true)
+    }
+  }
+
   return (
     <>
       <div className="flex justify-center pt-12">
@@ -100,6 +125,23 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
                     >
                       + Create First Item
                     </Button>
+                    <div className="pt-8">
+                      {confirmDeleteCollection ? (
+                        <div className="inline-flex items-center">
+                          <span className="mr-2 font-bold italic">Confirm delete collection?</span>
+                          <Button variant="ghost" className="text-red-600 ml-2" onClick={handleDeleteCollection}>
+                            Yes
+                          </Button>
+                          <Button variant="outline" className="ml-2" onClick={() => setConfirmDeleteCollection(false)}>
+                            No
+                          </Button>
+                        </div>
+                      ) : (
+                        <Button variant="ghost" className="text-red-500" onClick={handleDeleteCollection}>
+                          Delete {collectionName}
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 )}
                 {items.map((item) => (
