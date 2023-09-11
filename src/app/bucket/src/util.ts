@@ -62,6 +62,7 @@ export async function uploadImageAndGetURL(file: File): Promise<string> {
       throw new Error(errorData.error || "Failed to upload image.")
     }
   } catch (error) {
+    console.error(error)
     throw error
   }
 }
