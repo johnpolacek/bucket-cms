@@ -49,8 +49,13 @@ function Home() {
                   <>
                     {view === "ADMIN" && (
                       <div className="min-h-screen w-full bg-gray-50">
-                        <Button onClick={() => setView("DEV")} variant="outline" className="absolute top-4 right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100">
-                          Go to Dev View
+                        <Button
+                          onClick={() => setView("DEV")}
+                          variant="outline"
+                          className="absolute top-4 right-2 sm:right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100 scale-90 sm:scale-100"
+                        >
+                          <span className="hidden sm:block">Go to </span>
+                          <span>Dev View</span>
                           <span className="opacity-60 text-3xl font-thin relative ml-px left-1 -top-[2px]">»</span>
                         </Button>
                         <AdminHome collections={collections} onUpdateCollection={refreshCollections} />
@@ -58,9 +63,14 @@ function Home() {
                     )}
                     {view === "DEV" && (
                       <>
-                        <Button onClick={() => setView("ADMIN")} variant="outline" className="absolute top-4 right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100">
+                        <Button
+                          onClick={() => setView("ADMIN")}
+                          variant="outline"
+                          className="absolute top-4 right-2 sm:right-8 flex items-center bg-white hover:bg-white opacity-80 hover:opacity-100 scale-90 sm:scale-100"
+                        >
                           <span className="opacity-60 text-3xl font-thin relative ml-px right-1 -top-[2px]">«</span>
-                          Go to Admin View
+                          <span className="hidden sm:block">Go to </span>
+                          <span>Admin View</span>
                         </Button>
                         <DevHome />
                       </>

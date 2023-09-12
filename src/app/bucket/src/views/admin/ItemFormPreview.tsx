@@ -27,7 +27,7 @@ function ItemFormPreview({ collectionName, fields }: { collectionName: string; f
   }, [])
 
   return (
-    <div className="flex flex-col gap-2 p-8 rounded-lg bg-gray-50">
+    <div className="hidden sm:flex flex-col gap-2 p-8 rounded-lg bg-gray-50">
       <h3 className="uppercase opacity-50 text-xs text-center font-bold -mb-1">{collectionName}</h3>
       <div className="text-center italic opacity-60">Item Form Fields Preview</div>
       <div className="mt-4">

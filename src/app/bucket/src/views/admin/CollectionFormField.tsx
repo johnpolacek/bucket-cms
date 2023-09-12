@@ -52,9 +52,9 @@ function CollectionFormField({
 
   return (
     <>
-      <div ref={setNodeRef} className="flex w-full gap-2 items-end" {...itemProps}>
+      <div ref={setNodeRef} className="flex flex-wrap sm:flex-nowrap w-full gap-2 items-end" {...itemProps}>
         <DragHandle {...dragHandleProps} />
-        <div className="flex flex-col gap-1 w-2/3">
+        <div className="grow sm:grow-0 sm:shrink flex flex-col gap-1 w-2/3 pt-2">
           <Label className="opacity-60 pl-1" htmlFor="fieldName">
             Field Name
           </Label>
@@ -69,7 +69,7 @@ function CollectionFormField({
             }}
           />
         </div>
-        <div className="flex flex-col gap-1 w-1/3">
+        <div className="grow sm:grow-0 flex flex-col gap-1 w-1/2 pl-6 sm:pl-0 sm:w-1/3">
           <Label className="opacity-60 pl-1" htmlFor="fieldType">
             Type
           </Label>

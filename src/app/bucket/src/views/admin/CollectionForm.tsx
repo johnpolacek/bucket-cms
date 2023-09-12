@@ -196,7 +196,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
 
   return (
     <Transition
-      className="p-8 bg-white rounded-lg shadow-md w-full max-w-[1100px] mx-auto mt-8 grid grid-cols-2 gap-16 lg:scale-110"
+      className="p-8 bg-white rounded-lg shadow-md w-full max-w-[1100px] mx-auto mt-8 sm:grid sm:grid-cols-2 gap-16 lg:scale-110"
       appear={true}
       show={true}
       enter="transition-all duration-150"
@@ -204,7 +204,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
       enterTo="opacity-100 translate-y-0"
     >
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold pb-8">Create a New Collection</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold pb-8">Create a New Collection</h1>
 
         <Label htmlFor="collectionName">Collection Name</Label>
         <Input name="collectionName" type="text" value={collectionName} onChange={(e) => setCollectionName(e.target.value)} placeholder="Enter collection name" />
@@ -261,7 +261,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           </SortableContext>
         </DndContext>
 
-        <div className="text-right">
+        <div className="mt-2 pl-6">
           <Button className="text-xs text-white hover:text-white bg-green-500 hover:bg-green-600" onClick={addField}>
             + Add Field
           </Button>

@@ -57,7 +57,7 @@ function CollectionsList({
   return (
     <div className="flex flex-col">
       <Transition appear={true} show={true} enter="transition-all delay-300 duration-300" enterFrom="opacity-0" enterTo="opacity-100">
-        <h3 className="text-center font-semibold text-3xl">Your Collections</h3>
+        <h3 className="text-center font-semibold text-3xl mt-4 sm:mt-0">Your Collections</h3>
       </Transition>
       {collections.length > 0 && (
         <Transition
@@ -71,19 +71,19 @@ function CollectionsList({
           leaveTo="opacity-0"
           className="flex flex-col"
         >
-          <div className="flex justify-center">
-            <div className="my-8 bg-white p-8 rounded-xl shadow">
+          <div className="flex flex-col sm:flex-row justify-center">
+            <div className="my-8 bg-white p-8 sm:rounded-xl shadow">
               <div className="border-t">
                 {deleteError && <div className="text-red-500">{deleteError}</div>}
                 {collections
                   .filter((col) => !deletedCollections.includes(col.collectionName))
                   .map((collection: CollectionData) => (
-                    <div key={collection.collectionName} className="flex justify-between items-center border-b py-4 px-8">
+                    <div key={collection.collectionName} className="flex flex-col sm:flex-row sm:justify-between gap-2 items-center border-b py-4 px-8">
                       <div className="sm:min-w-[240px]">
                         {collection.collectionName}
                         {collection.itemCount > 0 && <span className="ml-1 font-mono text-sm opacity-60">({collection.itemCount})</span>}
                       </div>
-                      <div className="flex gap-3 pr-4 w-[320px] justify-end">
+                      <div className="flex gap-3 pr-4 sm:w-[320px] justify-end -mr-4 sm:mr-0">
                         {confirmDeleteCollectionName !== collection.collectionName && (
                           <>
                             <Button onClick={() => onCreateItem(collection.collectionName)} className="text-green-600" variant="outline">

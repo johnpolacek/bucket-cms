@@ -201,7 +201,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
     <>
       {collection && (
         <Transition appear={true} show={true} enter="transition-all duration-150" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0">
-          <div className="p-8 bg-white rounded-lg shadow-md max-w-[480px] mx-auto">
+          <div className="p-8 bg-white sm:rounded-xl shadow-md max-w-[480px] mx-auto">
             <h3 className="uppercase opacity-50 text-sm pb-1">{collectionName}</h3>
             <h2 className="text-3xl pb-8">{itemToEdit ? "Edit Item" : "Create New Item"}</h2>
 

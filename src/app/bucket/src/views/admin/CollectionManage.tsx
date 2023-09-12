@@ -96,7 +96,7 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
   return (
     <>
       <div className="flex justify-center pt-12">
-        <Button className="-mt-16 bg-[rgba(255,255,255,.75)] hover:bg-white" variant="outline" onClick={onFinish}>
+        <Button className="-mt-8 sm:-mt-16 bg-[rgba(255,255,255,.75)] hover:bg-white scale-110 sm:scale-100" variant="outline" onClick={onFinish}>
           <span className="text-2xl -mt-[2px] pr-2 opacity-50 font-thin scale-x-125">‹</span> Back to Admin
         </Button>
       </div>
@@ -109,12 +109,12 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
             enter="transition-all duration-300"
             enterFrom="opacity-0 translate-y-4"
             enterTo="opacity-100 translate-y-0"
-            className="my-8 bg-white p-8 rounded-xl shadow"
+            className="my-8 bg-white p-4 sm:p-8 sm:rounded-xl shadow"
           >
             <div>
               <h3 className="text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
               <h4 className="text-center font-semibold text-4xl pb-6">{collectionName}</h4>
-              <div className="border-t min-w-[480px]">
+              <div className="border-t sm:min-w-[480px]">
                 {items.length === 0 && (
                   <div className="py-16 w-full text-center text-lg italic border-b">
                     <div className="pb-6 opacity-60">This collection is empty...</div>
@@ -145,8 +145,8 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
                   </div>
                 )}
                 {items.map((item) => (
-                  <div key={item.itemId} className="flex justify-between items-center border-b py-4 px-8">
-                    <div className="pr-12">{item.itemName}</div>
+                  <div key={item.itemId} className="flex flex-col sm:flex-row sm:justify-between items-center border-b py-4 px-8 gap-2">
+                    <div className="sm:pr-12 py-4 sm:py-0 text-center sm:text-left">{item.itemName}</div>
                     <div>
                       {!confirmDeleteItemId && (
                         <Button variant="outline" className="text-blue-600" onClick={() => setEditItem(item)}>
