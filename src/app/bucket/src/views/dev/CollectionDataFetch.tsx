@@ -129,7 +129,7 @@ ${fieldsInterface}
         The <strong>bucket/item/read</strong> API route fetches data for a single Item in a Collection.
       </p>
       <div className="italic">Endpoint:</div>
-      <pre>
+      <pre className="mb-4">
         <code>/api/bucket/item/read?collectionName={collection.name}&itemId=123</code>
       </pre>
       <div>
