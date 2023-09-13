@@ -285,7 +285,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={onCancel}>
             Cancel
           </Button>
-          <Button className="bg-green-600 hover:bg-green-700" size="lg" disabled={isSubmitting} onClick={handleSubmit}>
+          <Button className="bg-blue-600 text-white hover:bg-blue-700" size="lg" disabled={isSubmitting} onClick={handleSubmit}>
             Save Collection
           </Button>
         </div>

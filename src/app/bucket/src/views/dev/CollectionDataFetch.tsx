@@ -1,3 +1,4 @@
+"use client"
 import React from "react"
 import { CollectionFetch } from "../../types"
 
@@ -91,7 +92,7 @@ ${fieldsInterface}
       <pre>
         <code className="text-sm">{`const item: CollectionItemData = await readCollectionItem("${collection.name}", "123...")`}</code>
       </pre>
-      <p>
+      <div>
         <span className="italic">Parameters:</span>{" "}
         <ul className="-mt-1">
           <li>
@@ -101,7 +102,7 @@ ${fieldsInterface}
             <span className="bg-gray-100 rounded font-mono text-sm p-1">itemId</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The id of the Item
           </li>
         </ul>
-      </p>
+      </div>
       <p className="italic">Returns: CollectionItemData</p>
       <p>
         The <strong>readCollectionItems</strong> utility fetches data for a multiple Items in a Collection.
@@ -109,7 +110,7 @@ ${fieldsInterface}
       <pre>
         <code className="text-sm">{`const items: CollectionItemData[] = await readCollectionItems("${collection.name}")`}</code>
       </pre>
-      <p>
+      <div>
         <span className="italic">Parameters:</span>{" "}
         <ul className="-mt-1">
           <li>
@@ -120,15 +121,18 @@ ${fieldsInterface}
             of results
           </li>
         </ul>
-      </p>
+      </div>
       <p className="italic">Returns: CollectionItemData[]</p>
 
       <h5 className="font-bold pt-8 mb-4">Client-Side Data Fetching</h5>
-      <div className="italic -mb-4">Endpoint:</div>
+      <p>
+        The <strong>bucket/item/read</strong> API route fetches data for a single Item in a Collection.
+      </p>
+      <div className="italic">Endpoint:</div>
       <pre>
         <code>/api/bucket/item/read?collectionName={collection.name}&itemId=123</code>
       </pre>
-      <p>
+      <div>
         <span className="italic">Parameters:</span>{" "}
         <ul className="-mt-1">
           <li>
@@ -138,16 +142,19 @@ ${fieldsInterface}
             <span className="bg-gray-100 rounded font-mono text-sm p-1">itemId</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The id of the Item
           </li>
         </ul>
-      </p>
+      </div>
       <div className="italic -mb-6">Response:</div>
       <pre>
         <code className="text-sm">{generateSampleDataItem(collection)}</code>
       </pre>
-      <div className="italic -mb-4">Endpoint:</div>
-      <pre>
+      <p>
+        The <strong>bucket/items/read</strong> API route fetches data for a multiple Items in a Collection.
+      </p>
+      <div className="italic">Endpoint:</div>
+      <pre className="mb-4">
         <code>/api/bucket/items/read?collectionName={collection.name}&token=123</code>
       </pre>
-      <p>
+      <div>
         <span className="italic">Parameters:</span>{" "}
         <ul className="-mt-1">
           <li>
@@ -157,7 +164,7 @@ ${fieldsInterface}
             <span className="bg-gray-100 rounded font-mono text-sm p-1">token</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - Continuation token to mark pagination
           </li>
         </ul>
-      </p>
+      </div>
       <div className="italic -mb-6">Response:</div>
       <pre>
         <code className="text-sm">{generateSampleDataItems(collection)}</code>

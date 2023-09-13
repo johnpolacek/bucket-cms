@@ -72,7 +72,7 @@ function DevHome() {
     <div className="flex w-full h-screen overflow-auto">
       <DevHomeNav collections={collections} activeSection={activeSection} />
       <div className="grow min-h-screen overflow-auto scroll-smooth" ref={scrollableDivRef}>
-        <div className="py-8 max-w-[960px] mx-auto">
+        <div className="py-16 max-w-[960px] mx-auto">
           <Docs collections={collections} />
           {error && <div className="text-red-500">{error}</div>}
         </div>

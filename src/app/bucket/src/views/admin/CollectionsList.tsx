@@ -131,7 +131,7 @@ function CollectionsList({
             </div>
           </div>
           <div className="flex justify-center">
-            <Button className="text-lg py-3 h-auto bg-green-600 hover:bg-green-600 hover:scale-105 transition-all" onClick={onCreateCollection} size="lg">
+            <Button className="text-lg py-3 h-auto text-white bg-blue-600 hover:bg-blue-600 hover:scale-105 transition-all" onClick={onCreateCollection} size="lg">
               + Create New Collection
             </Button>
           </div>

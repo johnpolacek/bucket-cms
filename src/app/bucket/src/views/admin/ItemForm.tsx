@@ -252,7 +252,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
                   <Button variant="ghost" onClick={onCancel}>
                     Cancel
                   </Button>
-                  <Button className="w-[140px] text-center" onClick={handleSubmit} disabled={isSubmitting}>
+                  <Button className="w-[140px] text-center bg-blue-500 hover:bg-blue-600" onClick={handleSubmit} disabled={isSubmitting}>
                     {isSubmitting ? "Saving..." : "Save Item"}
                   </Button>
                 </div>

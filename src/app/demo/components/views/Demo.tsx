@@ -3,8 +3,8 @@ import { signOut } from "next-auth/react"
 import React from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
-import Link from "next/link"
 import { Bucket } from "../../../bucket"
+import Header from "../ui/header"
 
 function Demo({ user }: { user: string }) {
   const getInitials = (name: string): string =>
@@ -17,10 +17,7 @@ function Demo({ user }: { user: string }) {
 
   return (
     <div className="min-h-screen">
-      <header className="flex justify-between items-center w-full px-8 py-4 border-b bg-white">
-        <div>
-          <Link href="/">Your App</Link>
-        </div>
+      <Header>
         <DropdownMenu>
           <DropdownMenuTrigger className="outline-none">
             <div className="w-10 h-10 flex items-center justify-center rounded-full border">{getInitials(user)}</div>
@@ -33,8 +30,9 @@ function Demo({ user }: { user: string }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </header>
-      <Bucket />
+      </Header>
+      <div className="w-full border opacity-50"></div>
+      <Bucket view="ADMIN" hideViewSwitch={true} />
     </div>
   )
 }

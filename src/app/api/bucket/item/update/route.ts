@@ -34,7 +34,7 @@ export async function PUT(req: NextRequest) {
 
       let dataResponse = ""
       if (currentDataResponse.Body) {
-        for await (const chunk of currentDataResponse.Body) {
+        for await (const chunk of currentDataResponse.Body as AsyncIterable<Uint8Array>) {
           dataResponse += chunk
         }
       } else {

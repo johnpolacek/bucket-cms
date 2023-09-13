@@ -40,8 +40,8 @@ function DocsSectionFetchingData() {
         modify, and manage your content as you see fit.
       </p>
 
-      <h5 className="font-mono text-lg font-bold -mb-3 pt-4">/api/bucket/items/read?collectionName=FAQ&token=123</h5>
-      <p>
+      <h5 className="font-mono text-lg font-bold mb-2 pt-4">/api/bucket/items/read?collectionName=FAQ&token=123</h5>
+      <div>
         <span className="italic">Parameters:</span>{" "}
         <ul className="-mt-1">
           <li>
@@ -51,7 +51,7 @@ function DocsSectionFetchingData() {
             <span className="bg-gray-100 rounded font-mono text-sm p-1">token</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The id of the Item
           </li>
         </ul>
-      </p>
+      </div>
       <p className="italic">Returns: CollectionItemData[]</p>
       <p>This API endpoint returns data for multiple Items in a Collection.</p>
       <pre>

@@ -33,10 +33,9 @@ function AdminHome({ collections, onUpdateCollection }: { collections: Collectio
                 setIsCreatingCollection(false)
                 onUpdateCollection()
               }}
-              onDelete={onUpdateCollection}
             />
           ) : (
-            <CollectionsList collections={collections} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
+            <CollectionsList onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
           )}
         </>
       )}

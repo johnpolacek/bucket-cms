@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 import { Readable } from "stream"
 import { initializeS3Client } from "../../s3/util"
-import { Collection } from "../../../../bucket/components/types"
+import { Collection } from "../../../../../app/bucket/src/types"
 
 export async function GET(req: NextRequest) {
   const s3 = initializeS3Client()
