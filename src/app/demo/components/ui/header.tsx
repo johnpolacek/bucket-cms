@@ -1,10 +1,10 @@
-import * as React from "react"
+import React, { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "./button"
 
 const Header = ({ children }: { children: React.ReactElement }) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
     <header className="px-4 py-2 flex flex-wrap justify-between items-center">
