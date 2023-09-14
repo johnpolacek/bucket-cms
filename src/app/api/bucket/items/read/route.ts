@@ -9,10 +9,8 @@ export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token") || undefined
 
   const session = await getServerSession(options)
-  console.log("process.env.USE_SANDBOX" + process.env.USE_SANDBOX)
-
-  if (process.env.USE_SANDBOX === "true") {
-    console.log("collections/read", { session })
+  if (process.env.NODE_ENV !== "development" && !session?.user) {
+    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
   }
 
   if (!collectionName) {

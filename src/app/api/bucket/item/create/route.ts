@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { initializeS3Client, doesItemExist } from "../../s3/util"
+import { initializeS3Client, doesItemExist, getBucketName } from "../../s3/util"
 import { PutObjectCommand } from "@aws-sdk/client-s3"
 import slugify from "slugify"
 
@@ -28,9 +28,10 @@ export async function POST(req: NextRequest) {
     const fileContent = JSON.stringify({ data, itemName })
 
     // Store the item with the slug as its name
+    const bucketName = await getBucketName()
     const itemKey = `items/${collectionName}/${slug}.json`
     const putCommand = new PutObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Bucket: bucketName,
       Key: itemKey,
       Body: fileContent,
       ContentType: "application/json",

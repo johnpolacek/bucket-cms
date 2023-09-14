@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 import { Readable } from "stream"
-import { initializeS3Client } from "../../s3/util"
+import { initializeS3Client, getBucketName } from "../../s3/util"
 import { Collection } from "../../../../../app/bucket/src/types"
 
 export async function GET(req: NextRequest) {
@@ -15,8 +15,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    const bucketName = await getBucketName()
     const command = new GetObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Bucket: bucketName,
       Key: `collections/${collectionName}.json`,
     })
 

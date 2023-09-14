@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import { ALLOWED_IMAGE_MIME_TYPES } from "../../s3/allowed-mime-types"
+import { getBucketName } from "../../s3/util"
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -37,9 +38,10 @@ export async function POST(req: NextRequest) {
     console.log("Reading entire file...")
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
+    const bucketName = await getBucketName()
 
     const command = new PutObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Bucket: bucketName,
       Key: `images/${fileName}`,
       Body: buffer, // Use the Buffer here
       ContentType: file.type,
@@ -49,7 +51,7 @@ export async function POST(req: NextRequest) {
     console.log("Uploading to S3...")
     await s3.send(command)
 
-    const imageURL = `https://s3.${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET_NAME}/images/${fileName}`
+    const imageURL = `https://s3.${process.env.AWS_REGION}.amazonaws.com/${bucketName}/images/${fileName}`
     return NextResponse.json({ success: true, url: imageURL }, { status: 200 })
   } catch (error) {
     console.error("Error uploading image:", error)

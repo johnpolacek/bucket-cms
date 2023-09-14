@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { initializeS3Client } from "../../s3/util"
+import { initializeS3Client, getBucketName } from "../../s3/util"
 
 export async function DELETE(req: NextRequest) {
   const s3 = initializeS3Client()
@@ -14,8 +14,9 @@ export async function DELETE(req: NextRequest) {
   }
 
   try {
+    const bucketName = await getBucketName()
     const deleteCommand = new DeleteObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Bucket: bucketName,
       Key: `items/${collectionName}/${itemId}.json`,
     })
 

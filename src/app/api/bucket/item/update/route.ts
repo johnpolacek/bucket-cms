@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { initializeS3Client, doesItemExist } from "../../s3/util"
+import { initializeS3Client, doesItemExist, getBucketName } from "../../s3/util"
 import { GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3"
 import slugify from "slugify"
 
@@ -9,7 +9,6 @@ export async function PUT(req: NextRequest) {
   if (req.method === "PUT") {
     try {
       const json = await req.json()
-      console.log({ json })
 
       const { collectionName, itemName, data, itemId } = json
       console.log({ collectionName, itemName, data, itemId })
@@ -25,9 +24,10 @@ export async function PUT(req: NextRequest) {
       }
 
       // Fetch the current item data
+      const bucketName = await getBucketName()
       const currentKey = `items/${collectionName}/${itemId}.json`
       const getObjectCommand = new GetObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
         Key: currentKey,
       })
       const currentDataResponse = await s3.send(getObjectCommand)
@@ -66,7 +66,7 @@ export async function PUT(req: NextRequest) {
 
       // Upload the updated JSON string to S3
       const command = new PutObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
         Key: newPath,
         Body: fileContent,
         ContentType: "application/json",
@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest) {
       // If itemName has changed (meaning we have a new slug), then delete the old file
       if (newPath !== currentKey) {
         const deleteCommand = new DeleteObjectCommand({
-          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Bucket: bucketName,
           Key: currentKey,
         })
         await s3.send(deleteCommand)

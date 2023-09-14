@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { initializeS3Client } from "../../s3/util"
+import { initializeS3Client, getBucketName } from "../../s3/util"
 import { DeleteObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3"
 
 export async function DELETE(req: NextRequest) {
@@ -14,8 +14,9 @@ export async function DELETE(req: NextRequest) {
 
   try {
     // Check if there are any items in the collection
+    const bucketName = await getBucketName()
     const listCommand = new ListObjectsV2Command({
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Bucket: bucketName,
       Prefix: `items/${collectionName}/`,
     })
     const listResponse = await s3.send(listCommand)
@@ -26,7 +27,7 @@ export async function DELETE(req: NextRequest) {
 
     // If no items, proceed to delete the collection
     const deleteCommand = new DeleteObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Bucket: bucketName,
       Key: `collections/${collectionName}.json`,
     })
     await s3.send(deleteCommand)

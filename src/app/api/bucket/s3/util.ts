@@ -1,4 +1,6 @@
 import { S3Client, GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3"
+import { getServerSession } from "next-auth/next"
+import { options } from "../../../../app/bucket/options"
 import { CollectionItemData } from "../../../bucket/src/types"
 import { Readable } from "stream"
 
@@ -12,11 +14,25 @@ export const initializeS3Client = (): S3Client => {
   })
 }
 
+export const getBucketName = async (): Promise<string> => {
+  let prefix = ""
+  if (process.env.USE_SANDBOX === "true") {
+    let session = await getServerSession(options)
+    prefix =
+      session?.user?.email
+        ?.toLowerCase()
+        .replace(/[^a-z0-9.\-_]/g, "")
+        .replace(/\./g, "-") ?? ""
+  }
+  return process.env.AWS_BUCKET_NAME ? prefix + process.env.AWS_S3_BUCKET_NAME : ""
+}
+
 export const readCollectionItem = async (collectionName: string, itemId: string) => {
   const s3 = initializeS3Client()
 
+  const bucketName = await getBucketName()
   const command = new GetObjectCommand({
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Bucket: bucketName,
     Key: `items/${collectionName}/${itemId}.json`,
   })
 
@@ -35,8 +51,9 @@ export async function readCollectionItems<T extends { itemName: string; data: an
   const s3 = initializeS3Client()
   const MAX_ITEMS_PER_PAGE = 100
 
+  const bucketName = await getBucketName()
   const command = new ListObjectsV2Command({
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Bucket: bucketName,
     Prefix: `items/${collectionName}/`,
     MaxKeys: MAX_ITEMS_PER_PAGE,
     ContinuationToken: token || undefined,
@@ -52,7 +69,7 @@ export async function readCollectionItems<T extends { itemName: string; data: an
       }
 
       const itemCommand = new GetObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
         Key: item.Key!,
       })
       const { Body } = await s3.send(itemCommand)
@@ -75,8 +92,9 @@ export async function readCollectionItems<T extends { itemName: string; data: an
 export async function readCollectionItemIDs(collectionName: string, token?: string): Promise<string[]> {
   const s3 = initializeS3Client()
 
+  const bucketName = await getBucketName()
   const command = new ListObjectsV2Command({
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Bucket: bucketName,
     Prefix: `items/${collectionName}/`,
     ContinuationToken: token || undefined,
   })
@@ -113,9 +131,10 @@ export const doesItemExist = async (collectionName: string, slug: string) => {
   const s3 = initializeS3Client()
   const itemKey = `items/${collectionName}/${slug}.json`
   try {
+    const bucketName = await getBucketName()
     await s3.send(
       new GetObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
         Key: itemKey,
       })
     )

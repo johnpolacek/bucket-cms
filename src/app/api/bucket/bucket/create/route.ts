@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { initializeS3Client } from "../../s3/util"
+import { initializeS3Client, getBucketName } from "../../s3/util"
 import { CreateBucketCommand, PutBucketPolicyCommand } from "@aws-sdk/client-s3"
 
 export async function POST(req: NextRequest) {
@@ -8,8 +8,9 @@ export async function POST(req: NextRequest) {
   if (req.method === "POST") {
     try {
       // Create the bucket
+      const bucketName = await getBucketName()
       const createBucketCommand = new CreateBucketCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
       })
       await s3.send(createBucketCommand)
 
@@ -22,13 +23,13 @@ export async function POST(req: NextRequest) {
             Effect: "Allow",
             Principal: "*",
             Action: "s3:GetObject",
-            Resource: `arn:aws:s3:::${process.env.AWS_S3_BUCKET_NAME}/*`,
+            Resource: `arn:aws:s3:::${bucketName}/*`,
           },
         ],
       }
 
       const putBucketPolicyCommand = new PutBucketPolicyCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
         Policy: JSON.stringify(bucketPolicy),
       })
       await s3.send(putBucketPolicyCommand)

@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
 import { ListObjectsV2Command } from "@aws-sdk/client-s3"
-import { initializeS3Client } from "../../s3/util"
+import { initializeS3Client, getBucketName } from "../../s3/util"
 
 export async function GET(req: NextRequest) {
   const s3 = initializeS3Client()
+  const bucketName = await getBucketName()
 
   try {
     const command = new ListObjectsV2Command({
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Bucket: bucketName,
       Prefix: "collections/", // The prefix for the files
     })
     const response = await s3.send(command)
@@ -19,7 +20,7 @@ export async function GET(req: NextRequest) {
     const collectionsWithCounts = await Promise.all(
       collectionNames.map(async (collectionName) => {
         const itemCommand = new ListObjectsV2Command({
-          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Bucket: bucketName,
           Prefix: `items/${collectionName}/`,
         })
         const itemResponse = await s3.send(itemCommand)
@@ -33,7 +34,7 @@ export async function GET(req: NextRequest) {
     console.error("Error fetching collections from S3:", error) // Log the error for debugging
 
     if (error.name === "NoSuchBucket") {
-      return NextResponse.json({ error: { message: "The specified bucket does not exist", bucketName: process.env.AWS_S3_BUCKET_NAME } }, { status: 400 })
+      return NextResponse.json({ error: { message: "The specified bucket does not exist", bucketName } }, { status: 400 })
     }
 
     return NextResponse.json({ error }, { status: 500 }) // Return the error message

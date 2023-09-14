@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { initializeS3Client } from "../../s3/util"
+import { initializeS3Client, getBucketName } from "../../s3/util"
 import { PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3"
 import { Collection } from "../../../../bucket/src/types"
 
@@ -17,8 +17,9 @@ export async function POST(req: NextRequest) {
       const collectionName = data.name
 
       // Check if the file already exists
+      const bucketName = await getBucketName()
       const headCommand = new HeadObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
         Key: `collections/${collectionName}.json`,
       })
 
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
 
       // Upload the JSON string to S3
       const command = new PutObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: bucketName,
         Key: `collections/${collectionName}.json`, // File name you want to save as in S3
         Body: fileContent,
         ContentType: "application/json",
