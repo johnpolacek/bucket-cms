@@ -29,8 +29,13 @@ export async function GET(req: NextRequest) {
     )
 
     return NextResponse.json({ collections: collectionsWithCounts }, { status: 200 })
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error fetching collections from S3:", error) // Log the error for debugging
+
+    if (error.name === "NoSuchBucket") {
+      return NextResponse.json({ error: { message: "The specified bucket does not exist", bucketName: process.env.AWS_S3_BUCKET_NAME } }, { status: 400 })
+    }
+
     return NextResponse.json({ error }, { status: 500 }) // Return the error message
   }
 }

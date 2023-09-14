@@ -5,5 +5,6 @@ import { options } from "./options"
 
 export default async function Home() {
   const session = await getServerSession(options)
+  console.log({ session })
   return <main>{session?.user?.name ? <Demo user={session.user.name} /> : <SignIn />}</main>
 }

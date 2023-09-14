@@ -1,3 +1,5 @@
+import { getServerSession } from "next-auth/next"
+import { options } from "../../../../../app/bucket/options"
 import { NextRequest, NextResponse } from "next/server"
 import { ListObjectsV2Command, GetObjectCommand } from "@aws-sdk/client-s3"
 import { Readable } from "stream"
@@ -6,6 +8,8 @@ import { Collection } from "../../../../bucket/src/types"
 
 export async function GET(req: NextRequest) {
   const s3 = initializeS3Client()
+
+  const session = await getServerSession(options)
 
   try {
     const command = new ListObjectsV2Command({
@@ -44,6 +48,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ collections }, { status: 200 })
   } catch (error: any) {
     console.error("Error fetching collections from S3:", error) // Log the error for debugging
+
+    if (error.name === "NoSuchBucket") {
+      return NextResponse.json({ error: { message: "The specified bucket does not exist", bucketName: process.env.AWS_S3_BUCKET_NAME } }, { status: 400 })
+    }
+
     return NextResponse.json({ error: error.message || "Failed to fetch collections" }, { status: 500 }) // Return the error message
   }
 }
