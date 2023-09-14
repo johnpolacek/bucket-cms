@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get("token") || undefined
 
   const session = await getServerSession(options)
-  if (process.env.NODE_ENV !== "development" && !session?.user) {
+  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
     return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
   }
 

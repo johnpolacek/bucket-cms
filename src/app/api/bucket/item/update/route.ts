@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server"
 import { initializeS3Client, doesItemExist, getBucketName } from "../../s3/util"
+import { getServerSession } from "next-auth"
+import { options } from "../../../../../app/bucket/options"
 import { GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3"
 import slugify from "slugify"
 
 export async function PUT(req: NextRequest) {
+  const session = await getServerSession(options)
+  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
+    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
+  }
+
   const s3 = initializeS3Client()
 
   if (req.method === "PUT") {

@@ -1,3 +1,5 @@
+import { getServerSession } from "next-auth"
+import { options } from "../../../../../app/bucket/options"
 import { NextRequest, NextResponse } from "next/server"
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import { ALLOWED_MIME_TYPES } from "../../s3/allowed-mime-types"
@@ -16,6 +18,11 @@ const MAX_FILE_SIZE = 20 * 1024 * 1024 // 20 MB
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
   const file = formData.get("file")
+
+  const session = await getServerSession(options)
+  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
+    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
+  }
 
   if (!file) {
     return NextResponse.json({ error: "File not provided" }, { status: 400 })
