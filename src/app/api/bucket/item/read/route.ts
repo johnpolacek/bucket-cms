@@ -1,15 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { initializeS3Client, readCollectionItem } from "../../s3/util"
 import { CollectionItemData } from "../../../../bucket/src/types"
-import { getServerSession } from "next-auth"
-import { options } from "../../../../../app/bucket/options"
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(options)
-  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
-    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
-  }
-
   const s3 = initializeS3Client()
 
   // Extracting collectionName and itemId from the query parameters
