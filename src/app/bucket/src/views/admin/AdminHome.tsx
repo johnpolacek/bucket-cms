@@ -11,7 +11,7 @@ function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
 
   return (
-    <div className="py-16">
+    <div className="py-12">
       {manageCollection ? (
         <CollectionManage
           onCreateItem={(collectionName) => {

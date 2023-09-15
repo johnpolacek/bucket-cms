@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "../../ui"
 import CollectionForm from "./CollectionForm"
+import { Transition } from "@headlessui/react"
 
 function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection: () => void }) {
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
@@ -19,7 +20,7 @@ function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection
           }}
         />
       ) : (
-        <div className="flex flex-col items-center gap-4">
+        <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="flex flex-col items-center gap-4">
           <Image className="opacity-90 rounded-full overflow-hidden border-2 shadow-lg border-blue-200 mx-auto mb-4" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
           <h1 className="text-3xl font-bold opacity-80 mb-4">Welcome!</h1>
           <p className="text-xl opacity-60 mb-6 text-center">
@@ -45,7 +46,7 @@ function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection
             </Link>{" "}
             and come back!
           </div>
-        </div>
+        </Transition>
       )}
     </div>
   )
