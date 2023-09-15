@@ -8,11 +8,11 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
 
   return (
     <>
-      <p className="text-xl opacity-60 my-4 text-center">Looks like you need to configure your AWS and S3 environment variables.</p>
-      <div className="py-6 px-16 text-center bg-white rounded-lg shadow-md my-4">
+      <div className="py-6 px-8 text-center bg-white rounded-lg shadow-md my-4 w-full max-w-[360px] mx-auto">
         <h2 className="text-xs mb-4">
           ENVIRONMENT
           <div className="text-xl font-bold">{hostname}</div>
+          <p className="text-sm opacity-70 mt-2 mb-6 px-4 text-center">Looks like we need to configure environment variables.</p>
         </h2>
         <div className="flex items-center mb-2 ml-2">
           <span className={`px-2 py-1 rounded ${configValidation.hasAWSAccess ? "text-green-500" : "text-red-500 scale-90"}`}>{configValidation.hasAWSSecret ? "✅" : "❌"}</span>
@@ -23,19 +23,11 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
           <span className="mr-2">AWS_SECRET_ACCESS_KEY</span>
         </div>
         <div className="flex items-center mb-2 ml-2">
-          <span className={`px-2 py-1 rounded ${configValidation.hasAWSSecret ? "text-green-500" : "text-red-500 scale-90"}`}>{configValidation.hasAWSSecret ? "✅" : "❌"}</span>
-          <span className="mr-2">AWS_SECRET_ACCESS_KEY</span>
-        </div>
-        <div className="flex items-center mb-2 ml-2">
-          <span className={`px-2 py-1 rounded ${configValidation.hasAWSBucket ? "text-green-500" : "text-red-500 scale-90"}`}>{configValidation.hasAWSBucket ? "✅" : "❌"}</span>
-          <span className="mr-2">AWS_S3_BUCKET_NAME</span>
-        </div>
-        <div className="flex items-center mb-2 ml-2">
           <span className={`px-2 py-1 rounded ${configValidation.hasAWSRegion ? "text-green-500" : "text-red-500 scale-90"}`}>{configValidation.hasAWSRegion ? "✅" : "❌"}</span>
           <span className="mr-2">AWS_REGION</span>
         </div>
       </div>
-      <div className="bg-white p-12 rounded-lg shadow-md max-w-3xl mx-auto mt-16 pb-16">
+      <div className="max-w-4xl mx-auto my-16 px-8 prose">
         <h2 className="text-3xl font-bold opacity-80 mb-6">Connecting to AWS + S3</h2>
         <p className="mb-4">
           Environment variables are configurable key-value pairs that store private data like API keys, region specifications, and bucket names. Instead of hardcoding this sensitive information
@@ -70,14 +62,14 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
               <a className="underline text-blue-600" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html">
                 Create a bucket
               </a>{" "}
-              on S3 and set its access to public, then add its name to a AWS_S3_BUCKET_NAME environment variable.
+              on S3 and set its access to public, then add its name to an AWS_S3_BUCKET_NAME environment variable.
             </p>
           </>
         )}
         {!configValidation.hasAWSRegion && (
           <>
-            <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">AWS S3 Bucket Region</h3>
-            <p>You can get the AWS region for your bucket from your S3 console. Add it to a AWS_S3_BUCKET_NAME environment variable.</p>
+            <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">AWS Region</h3>
+            <p>You can get the AWS region for your bucket from your S3 console. Add it to an AWS_REGION environment variable.</p>
           </>
         )}
       </div>
