@@ -9,7 +9,7 @@ function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
 
   return (
-    <>
+    <div className="py-16">
       {isCreatingCollection ? (
         <CollectionForm
           onCancel={() => setIsCreatingCollection(false)}
@@ -19,7 +19,7 @@ function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection
           }}
         />
       ) : (
-        <div className="flex flex-col items-center pt-16 gap-4">
+        <div className="flex flex-col items-center gap-4">
           <Image className="opacity-90 rounded-full overflow-hidden border-2 shadow-lg border-blue-200 mx-auto mb-4" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
           <h1 className="text-3xl font-bold opacity-80 mb-4">Welcome!</h1>
           <p className="text-xl opacity-60 mb-6 text-center">
@@ -47,7 +47,7 @@ function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

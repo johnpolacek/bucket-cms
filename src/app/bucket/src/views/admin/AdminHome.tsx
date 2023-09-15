@@ -6,7 +6,7 @@ import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
 import { CollectionData } from "../../types"
 
-function AdminHome({ collections, onUpdateCollection }: { collections: CollectionData[]; onUpdateCollection: () => void }) {
+function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
   const [manageCollection, setManageCollection] = useState("")
   const [createItemInCollection, setCreateItemInCollection] = useState("")
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
