@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
 
   const bucketName = await getBucketName()
   try {
+    console.log({ bucketName })
     const command = new ListObjectsV2Command({
       Bucket: bucketName,
       Prefix: "collections/", // The prefix for the files

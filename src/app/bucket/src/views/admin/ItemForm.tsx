@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { Button, Label, Input } from "../../ui"
+import { Button, Label } from "../../ui"
 import { Collection, CollectionFetch, CollectionItemData, CollectionReferenceField, Field, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"

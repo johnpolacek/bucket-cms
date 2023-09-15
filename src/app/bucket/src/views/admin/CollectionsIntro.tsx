@@ -15,6 +15,7 @@ function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection
           onCancel={() => setIsCreatingCollection(false)}
           onComplete={() => {
             setIsCreatingCollection(false)
+            window.location.reload()
           }}
         />
       ) : (

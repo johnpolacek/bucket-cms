@@ -21,10 +21,12 @@ export const getBucketName = async (): Promise<string> => {
     prefix =
       session?.user?.email
         ?.toLowerCase()
+        .replace("@", "-")
         .replace(/[^a-z0-9.\-_]/g, "")
         .replace(/\./g, "-") ?? ""
   }
-  return process.env.AWS_BUCKET_NAME ? prefix + process.env.AWS_S3_BUCKET_NAME : ""
+  console.log("getBucketName " + process.env.AWS_S3_BUCKET_NAME ? prefix + process.env.AWS_S3_BUCKET_NAME : "")
+  return process.env.AWS_S3_BUCKET_NAME ? prefix + "-" + process.env.AWS_S3_BUCKET_NAME : ""
 }
 
 export const readCollectionItem = async (collectionName: string, itemId: string) => {

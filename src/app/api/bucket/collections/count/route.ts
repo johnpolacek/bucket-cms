@@ -4,7 +4,7 @@ import { options } from "../../../../../app/bucket/options"
 import { ListObjectsV2Command } from "@aws-sdk/client-s3"
 import { initializeS3Client, getBucketName } from "../../s3/util"
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const session = await getServerSession(options)
   if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
     return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
   const bucketName = await getBucketName()
 
   try {
+    console.log({ bucketName })
     const command = new ListObjectsV2Command({
       Bucket: bucketName,
       Prefix: "collections/", // The prefix for the files
