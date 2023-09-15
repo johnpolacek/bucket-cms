@@ -42,6 +42,14 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
             .
           </p>
         )}
+        <p>
+          Refer to the provided <code>env.local.example</code>
+          file for the{" "}
+          <a className="underline text-blue-600" href="https://github.com/johnpolacek/bucket-cms/blob/main/.env.local.example">
+            environment variables required by Bucket CMS
+          </a>
+          .
+        </p>
 
         {!configValidation.hasAWSSecret && (
           <>
