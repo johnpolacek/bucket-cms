@@ -23,6 +23,7 @@ function SignIn() {
           className={cn("h-auto hover:scale-105 transition-all ease-in-out", isLoading && "opacity-30")}
           onClick={() => {
             setIsLoading(true)
+            console.log("window.location.href " + window.location.href)
             signIn("github")
           }}
           type="button"
