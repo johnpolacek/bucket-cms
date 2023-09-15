@@ -82,7 +82,7 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
                       collections.length ? (
                         isLoading ? null : (
                           <>
-                            <AdminHome collections={collections} onUpdateCollection={refreshCollections} />
+                            <AdminHome onUpdateCollection={refreshCollections} />
                           </>
                         )
                       ) : (
