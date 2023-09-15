@@ -42,15 +42,55 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
             .
           </p>
         )}
+
+        {!configValidation.hasAWSSecret && (
+          <>
+            <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">Setting Up Your IAM User</h3>
+            <p>
+              To get started with Bucket CMS, the simplest way is to create an IAM (Identity and Access Management) user on AWS with the AmazonS3FullAccess policy attached. This policy grants full
+              access to S3 services and resources. Bucket CMS is designed to run on your own server configuration and does not require any external access to function.
+            </p>
+            <ol>
+              <li>
+                <strong>Login to AWS Console: </strong>Sign into the{" "}
+                <a className="underline text-blue-600" href="https://aws.amazon.com/">
+                  AWS Management Console
+                </a>{" "}
+                and navigate to the{" "}
+                <a className="underline text-blue-600" href="https://console.aws.amazon.com/iam/">
+                  IAM dashboard
+                </a>
+                .
+              </li>
+              <li>
+                <strong>Create a New IAM User:</strong> Click on “Users” in the navigation pane, and then the “Add user” button. Provide a user name and select “Programmatic access” for the access
+                type.
+              </li>
+              <li>
+                <strong>Attach the AmazonS3FullAccess Policy:</strong> In the permissions section, click “Attach existing policies directly.” Here, search and select the AmazonS3FullAccess policy.
+              </li>
+              <li>
+                <strong>Review and Create:</strong> Review the details and hit “Create user.” Make sure to save the access key ID and secret access key, as you’ll need them to configure Bucket CMS.
+              </li>
+            </ol>
+            <p>
+              For more information on how to get your AWS Access Key and AWS Secret Access Key, refer to{" "}
+              <a className="underline text-blue-600" href="https://aws.amazon.com/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/">
+                this AWS article
+              </a>
+              . Once you have the secret, add it to the <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> environment variables (see below).
+            </p>
+          </>
+        )}
         {!configValidation.hasAWSSecret && (
           <>
             <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">AWS Access Key and AWS Secret Access Key</h3>
             <p>
-              For information on where you can get your AWS Access Key and AWS Secret Access Key, refer to{" "}
-              <a className="underline text-blue-600" href="https://aws.amazon.com/blogs/security/wheres-my-secret-access-key/">
-                aws.amazon.com/blogs/security/wheres-my-secret-access-key
+              For information on how to get your AWS Access Key and AWS Secret Access Key, refer to{" "}
+              <a className="underline text-blue-600" href="https://aws.amazon.com/blogs/security/how-to-find-update-access-keys-password-mfa-aws-management-console/">
+                this AWS article
               </a>
-              . Once you have the secret, add it to the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.
+              . Once you have the secret, add it to the <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> environment variables.
             </p>
           </>
         )}
@@ -58,11 +98,8 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
           <>
             <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">AWS S3 Bucket</h3>
             <p>
-              This CMS relies on the availability of a single AWS S3 Storage Bucket to store all data and file assets.{" "}
-              <a className="underline text-blue-600" href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/create-bucket-overview.html">
-                Create a bucket
-              </a>{" "}
-              on S3 and set its access to public, then add its name to an AWS_S3_BUCKET_NAME environment variable.
+              This CMS relies on the availability of a single AWS S3 Storage Bucket to store all data and file assets. Bucket CMS can create the bucket for you, just add a bucket name to to an
+              <code>AWS_S3_BUCKET_NAME</code> environment variable.
             </p>
           </>
         )}
