@@ -56,7 +56,7 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
     <main className="flex flex-col grow items-center relative w-full h-full">
       {error ? (
         missingBucket ? (
-          <BucketNotFound bucketName={missingBucket} onBucketCreated={refreshCollections} />
+          <BucketNotFound bucketName={missingBucket} onBucketCreated={() => window.location.reload()} />
         ) : (
           <div className="py-16 text-red-600">{error}</div>
         )
