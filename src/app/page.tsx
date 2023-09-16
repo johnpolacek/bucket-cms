@@ -14,8 +14,8 @@ export default function Home() {
         <h1 className="text-4xl font-light text-center text-blue-400">
           Sometimes, you don’t need a <strong>CMS</strong>.
         </h1>
-        <h2 className="text-6xl font-extrabold -mt-4 text-blue-700 pb-4">How about a Bucket?</h2>
-        <p className="text-lg opacity-90">Bucket is the world’s first portable drop-in CMS, no database necessary.</p>
+        <h2 className="text-6xl font-extrabold -mt-6 text-blue-700 pb-4">How about a Bucket?</h2>
+        <p className="text-lg opacity-70 max-w-[590px] text-center pb-8">Bucket is the world’s first portable drop-in CMS designed for Next.js (no database necessary)</p>
         <div className="grid grid-cols-2 gap-4 -mt-4">
           <div className="col-span-2">
             <CLICommandCopy commandText="npx create-bucket-cms" />
