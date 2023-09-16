@@ -28,6 +28,13 @@ export default function Home() {
           </Link>
         </div>
 
+        <div className="w-[640px] p-2 bg-black rounded-lg overflow-hidden mx-auto">
+          <video width="100%" height="100%" loop muted autoPlay playsInline>
+            <source src="/video/create-bucket-cms-demo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
         <p className="pt-32 mt-32">Own your data. All of your requests and data stay with you.</p>
         <p>You own the CMS. The content, the files, the APIs are all yours and live on your system. You can even name the CMS whatever you want.</p>
         <p>Automatically generated documentation for developers to create custom components to display your data.</p>
