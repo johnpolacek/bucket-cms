@@ -1,7 +1,13 @@
-import React from "react"
+import React, { useEffect } from "react"
 import DocsSection from "./DocsSection"
+import Prism from "prismjs"
+import "prismjs/components/prism-typescript"
 
 function DocsSectionFieldTypes() {
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [])
+
   return (
     <DocsSection id="field-types" title="Field Types">
       <p>
@@ -12,8 +18,8 @@ function DocsSectionFieldTypes() {
         </a>
         . Each Field Type is associated with a precise schema:
       </p>
-      <pre className="-mt-3">
-        <code>{`export interface FieldType<T> {
+      <pre className="!opacity-100 !bg-gray-100 -mt-3">
+        <code className="language-ts">{`export interface FieldType<T> {
   schema: z.ZodType<T, any, any>;
   renderAdmin: ({ data, setData, Component }: FieldTypeProps<T>) => ReactElement;
   validate: (data: T) => { isValid: boolean; errorMessage?: string };

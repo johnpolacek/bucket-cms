@@ -1,4 +1,6 @@
 import "./globals.css"
+import "prismjs/themes/prism.css"
+
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 

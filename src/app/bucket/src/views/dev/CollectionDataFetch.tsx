@@ -1,8 +1,14 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import { CollectionFetch } from "../../types"
+import Prism from "prismjs"
+import "prismjs/components/prism-typescript"
 
 function CollectionDataFetch({ collection }: { collection: CollectionFetch }) {
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [])
+
   const generateSampleDataItems = (collection: CollectionFetch) => {
     const itemsData = collection.fields.map((field: any) => {
       if (field.typeName === "Text") {
@@ -82,15 +88,15 @@ ${fieldsInterface}
   return (
     <div className="prose max-w-[720px] prose-pre:bg-[#eee] prose-pre:text-black prose-pre:opacity-70 w-full">
       <div className="italic -mb-6">Typescript:</div>
-      <pre>
-        <code className="text-sm">{generateTypeScriptInterface(collection)}</code>
+      <pre className="!opacity-100 !bg-gray-100">
+        <code className="language-ts">{generateTypeScriptInterface(collection)}</code>
       </pre>
       <h5 className="font-bold pt-8 mb-8">Server-Side Data Fetching</h5>
       <p>
         The <strong>readCollectionItem</strong> utility fetches data for a single Item in a Collection.
       </p>
-      <pre>
-        <code className="text-sm">{`const item: CollectionItemData = await readCollectionItem("${collection.name}", "123...")`}</code>
+      <pre className="!opacity-100 !bg-gray-100">
+        <code className="language-ts">{`const item: CollectionItemData = await readCollectionItem("${collection.name}", "123...")`}</code>
       </pre>
       <div>
         <span className="italic">Parameters:</span>{" "}
@@ -107,8 +113,8 @@ ${fieldsInterface}
       <p>
         The <strong>readCollectionItems</strong> utility fetches data for a multiple Items in a Collection.
       </p>
-      <pre>
-        <code className="text-sm">{`const items: CollectionItemData[] = await readCollectionItems("${collection.name}")`}</code>
+      <pre className="!opacity-100 !bg-gray-100">
+        <code className="language-ts">{`const items: CollectionItemData[] = await readCollectionItems("${collection.name}")`}</code>
       </pre>
       <div>
         <span className="italic">Parameters:</span>{" "}
@@ -144,14 +150,14 @@ ${fieldsInterface}
         </ul>
       </div>
       <div className="italic -mb-6">Response:</div>
-      <pre>
-        <code className="text-sm">{generateSampleDataItem(collection)}</code>
+      <pre className="!opacity-100 !bg-gray-100">
+        <code className="language-ts">{generateSampleDataItem(collection)}</code>
       </pre>
       <p>
         The <strong>bucket/items/read</strong> API route fetches data for a multiple Items in a Collection.
       </p>
       <div className="italic">Endpoint:</div>
-      <pre className="mb-4">
+      <pre className="!opacity-100 !bg-gray-100 mb-4">
         <code>/api/bucket/items/read?collectionName={collection.name}&token=123</code>
       </pre>
       <div>
@@ -166,8 +172,8 @@ ${fieldsInterface}
         </ul>
       </div>
       <div className="italic -mb-6">Response:</div>
-      <pre>
-        <code className="text-sm">{generateSampleDataItems(collection)}</code>
+      <pre className="!opacity-100 !bg-gray-100">
+        <code className="language-ts">{generateSampleDataItems(collection)}</code>
       </pre>
     </div>
   )

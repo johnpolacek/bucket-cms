@@ -1,7 +1,13 @@
-import React from "react"
+import React, { useEffect } from "react"
 import DocsSection from "./DocsSection"
+import Prism from "prismjs"
+import "prismjs/components/prism-typescript"
 
 function DocsSectionFetchingData() {
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [])
+
   return (
     <DocsSection id="fetching-data" title="Fetching Data">
       <p>
@@ -54,8 +60,8 @@ function DocsSectionFetchingData() {
       </div>
       <p className="italic">Returns: CollectionItemData[]</p>
       <p>This API endpoint returns data for multiple Items in a Collection.</p>
-      <pre>
-        <code className="text-sm">{`interface CollectionItemData {
+      <pre className="!opacity-100 !bg-gray-100">
+        <code className="language-ts">{`interface CollectionItemData {
   itemId: string
   itemName: string
   data: [key: string]: any

@@ -1,7 +1,13 @@
-import React from "react"
+import React, { useEffect } from "react"
 import DocsSection from "./DocsSection"
+import Prism from "prismjs"
+import "prismjs/components/prism-typescript"
 
 function DocsSectionFields() {
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [])
+
   return (
     <DocsSection id="fields" title="Fields">
       <p>
@@ -13,8 +19,8 @@ function DocsSectionFields() {
         "Profile Image", and "Bio".
       </p>
       <p>Fields in Bucket CMS are structured based on the following interface format:</p>
-      <pre className="-mt-3">
-        <code>{`export interface Field<T = any> {
+      <pre className="!opacity-100 !bg-gray-100 -mt-3">
+        <code className="language-ts">{`export interface Field<T = any> {
   name: string
   typeName: keyof FieldType<T>
 }`}</code>
