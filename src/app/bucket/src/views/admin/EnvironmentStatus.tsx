@@ -8,7 +8,7 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
 
   return (
     <>
-      <div className="py-6 px-8 text-center bg-white rounded-lg shadow-md my-4 w-full max-w-[360px] mx-auto">
+      <div className="mt-16 py-6 px-8 text-center bg-white rounded-lg shadow-md my-4 w-full max-w-[360px] mx-auto">
         <h2 className="text-xs mb-4">
           ENVIRONMENT
           <div className="text-xl font-bold">{hostname}</div>
@@ -26,8 +26,12 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
           <span className={`px-2 py-1 rounded ${configValidation.hasAWSRegion ? "text-green-500" : "text-red-500 scale-90"}`}>{configValidation.hasAWSRegion ? "✅" : "❌"}</span>
           <span className="mr-2">AWS_REGION</span>
         </div>
+        <div className="flex items-center mb-2 ml-2">
+          <span className={`px-2 py-1 rounded ${configValidation.hasAWSBucket ? "text-green-500" : "text-red-500 scale-90"}`}>{configValidation.hasAWSBucket ? "✅" : "❌"}</span>
+          <span className="mr-2">AWS_S3_BUCKET_NAME</span>
+        </div>
       </div>
-      <div className="max-w-4xl mx-auto my-16 px-8 prose">
+      <div className="max-w-4xl mx-auto mt-16 mb-32 px-8 prose">
         <h2 className="text-3xl font-bold opacity-80 mb-6">Connecting to AWS + S3</h2>
         <p className="mb-4">
           Environment variables are configurable key-value pairs that store private data like API keys, region specifications, and bucket names. Instead of hardcoding this sensitive information
@@ -106,7 +110,8 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
           <>
             <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">AWS S3 Bucket</h3>
             <p>
-              This CMS relies on the availability of a single AWS S3 Storage Bucket to store all data and file assets. Bucket CMS can create the bucket for you, just add a bucket name to to an
+              This CMS relies on the availability of a single AWS S3 Storage Bucket to store all data and file assets. Bucket CMS can create the bucket for you, just come up with a unique bucket name
+              and add it to to an
               <code>AWS_S3_BUCKET_NAME</code> environment variable.
             </p>
           </>
