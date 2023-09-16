@@ -31,7 +31,12 @@ export default function Home() {
         <div className="w-[640px] p-2 bg-black rounded-lg overflow-hidden mx-auto">
           <video width="100%" height="100%" loop muted autoPlay playsInline>
             <source src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-demo.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
+            <img
+              src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-cli.jpg"
+              alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
+              width="1041 "
+              height="599"
+            />
           </video>
         </div>
 
