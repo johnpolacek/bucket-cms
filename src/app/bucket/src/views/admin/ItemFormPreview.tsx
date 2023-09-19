@@ -27,11 +27,10 @@ function ItemFormPreview({ collectionName, fields }: { collectionName: string; f
   }, [])
 
   return (
-    <div className="hidden sm:flex flex-col gap-2 p-8 rounded-lg bg-gray-50">
-      <h3 className="uppercase opacity-50 text-xs text-center font-bold -mb-1">{collectionName}</h3>
-      <div className="text-center italic opacity-60">Item Form Fields Preview</div>
-      <div className="mt-4">
-        <div className="p-8 bg-white rounded-lg shadow-md max-w-[480px] mx-auto">
+    <div className="hidden sm:flex flex-col gap-2 py-12 pl-16 pr-8 rounded border-l">
+      <div className="text-center italic opacity-50 -mt-[2px] text-sm">Form Preview</div>
+      <div className="">
+        <div className="p-8 bg-white rounded border max-w-[480px] mx-auto">
           {fields && (
             <div className="">
               <div className="flex flex-col gap-8">{FieldsPreview}</div>

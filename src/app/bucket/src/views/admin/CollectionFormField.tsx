@@ -53,14 +53,72 @@ function CollectionFormField({
   return (
     <>
       <div ref={setNodeRef} className="flex flex-wrap sm:flex-nowrap w-full gap-2 items-end" {...itemProps}>
-        <DragHandle {...dragHandleProps} />
-        <div className="grow sm:grow-0 sm:shrink flex flex-col gap-1 w-2/3 pt-2">
-          <Label className="opacity-60 pl-1" htmlFor="fieldName">
-            Field Name
-          </Label>
+        {fieldIndex > 0 ? (
+          <>
+            <DragHandle {...dragHandleProps} />
+            <div className="grow sm:grow-0 sm:shrink flex flex-col gap-1 w-2/3 pt-2">
+              <Label className="opacity-60 pl-1" htmlFor="fieldName">
+                Field Name
+              </Label>
+              <Input
+                autoFocus={autoFocus}
+                className={`w-full text-sm py-1 px-2 ${errors.fields && !field.name ? "border-red-500" : ""}`}
+                type="text"
+                name="fieldName"
+                value={field.name || ""}
+                onChange={(e) => {
+                  handleFieldNameChange(fieldIndex, e.target.value)
+                }}
+              />
+            </div>
+            <div className="grow sm:grow-0 flex flex-col gap-1 w-1/2 pl-6 sm:pl-0 sm:w-1/3">
+              <Label className="opacity-60 pl-1" htmlFor="fieldType">
+                Type
+              </Label>
+              {fieldIndex === 0 ? (
+                <Select
+                  name="fieldType"
+                  onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
+                  value={field?.typeName} // Use typeName to display the name of the FieldType
+                  disabled={true}
+                >
+                  <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
+                    <SelectValue placeholder="Select FieldType" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem key="item-name" value="Text">
+                      Item Name
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Select
+                  name="fieldType"
+                  onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
+                  value={field?.typeName} // Use typeName to display the name of the FieldType
+                >
+                  <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
+                    <SelectValue placeholder="Select FieldType" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableFieldTypes.map((type) => (
+                      <SelectItem key={type.name} value={type.name}>
+                        {type.name.replace("Field", "").replace("Upload", "")}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
+            <Button variant="ghost" className={cn("text-red-600 hover:text-red-700 text-xl px-2", fieldIndex > 1 ? "" : "opacity-0 pointer-events-none")} onClick={() => handleDeleteField(fieldIndex)}>
+              ×
+            </Button>
+          </>
+        ) : (
           <Input
+            id="item-label"
             autoFocus={autoFocus}
-            className={`w-full text-sm py-1 px-2 ${errors.fields && !field.name ? "border-red-500" : ""}`}
+            className={`w-full text-lg h-auto py-2 px-4 ${errors.fields && !field.name ? "border-red-500" : ""}`}
             type="text"
             name="fieldName"
             value={field.name || ""}
@@ -68,49 +126,7 @@ function CollectionFormField({
               handleFieldNameChange(fieldIndex, e.target.value)
             }}
           />
-        </div>
-        <div className="grow sm:grow-0 flex flex-col gap-1 w-1/2 pl-6 sm:pl-0 sm:w-1/3">
-          <Label className="opacity-60 pl-1" htmlFor="fieldType">
-            Type
-          </Label>
-          {fieldIndex === 0 ? (
-            <Select
-              name="fieldType"
-              onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
-              value={field?.typeName} // Use typeName to display the name of the FieldType
-              disabled={true}
-            >
-              <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
-                <SelectValue placeholder="Select FieldType" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem key="item-name" value="Text">
-                  Item Name
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          ) : (
-            <Select
-              name="fieldType"
-              onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
-              value={field?.typeName} // Use typeName to display the name of the FieldType
-            >
-              <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
-                <SelectValue placeholder="Select FieldType" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableFieldTypes.map((type) => (
-                  <SelectItem key={type.name} value={type.name}>
-                    {type.name.replace("Field", "").replace("Upload", "")}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        </div>
-        <Button variant="ghost" className={cn("text-red-600 hover:text-red-700 text-xl px-2", fieldIndex > 1 ? "" : "opacity-0 pointer-events-none")} onClick={() => handleDeleteField(fieldIndex)}>
-          ×
-        </Button>
+        )}
       </div>
       {field.typeName === "CollectionReference" && (
         <div className="flex flex-col gap-1 pl-16 pr-10">

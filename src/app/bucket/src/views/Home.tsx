@@ -63,7 +63,7 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
       ) : (
         <>
           {view === "ADMIN" && (
-            <div className="min-h-screen w-full bg-gray-50">
+            <div className="min-h-screen w-full">
               {!props.hideViewSwitch && (
                 <Button
                   onClick={() => setView("DEV")}

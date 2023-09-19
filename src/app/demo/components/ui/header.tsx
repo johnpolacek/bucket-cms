@@ -10,8 +10,8 @@ const Header = ({ children }: { children: React.ReactElement }) => {
   return (
     <header className="px-4 py-2 flex flex-wrap justify-between items-center">
       <Link href="/">
-        <div className="flex gap-1 items-center cursor-pointer">
-          <div className="h-[72px] w-[72px] -mt-1 flex items-center overflow-hidden">
+        <div className="flex items-center cursor-pointer pl-4">
+          <div className="h-[54px] w-[54px] my-2 flex items-center overflow-hidden">
             <Image src="/bucket-cms-logo.png" width={54} height={54} alt="Bucket CMS Logo" />
           </div>
           <h2 className="font-extrabold text-2xl text-blue-600 sm:text-2xl">
