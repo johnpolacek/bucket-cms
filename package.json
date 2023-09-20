@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "npx playwright test",
+    "test-watch": "npx playwright test --headed",
+    "test-write": "npx playwright codegen localhost:3000/",
+    "deploy": "npx playwright test --headed --workers 1 && git push origin main"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.395.0",
@@ -46,5 +50,8 @@
     "tailwindcss-animate": "^1.0.6",
     "typescript": "5.1.6",
     "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.38.0"
   }
 }
