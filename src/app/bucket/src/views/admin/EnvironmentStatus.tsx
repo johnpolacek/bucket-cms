@@ -8,7 +8,7 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
 
   return (
     <>
-      <div className="mt-16 py-6 px-8 text-center bg-white rounded-lg shadow-md my-4 w-full max-w-[360px] mx-auto">
+      <div className="mt-16 py-6 px-8 text-center bg-white border rounded-lg shadow my-4 w-full max-w-[360px] mx-auto">
         <h2 className="text-xs mb-4">
           ENVIRONMENT
           <div className="text-xl font-bold">{hostname}</div>

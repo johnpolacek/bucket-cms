@@ -15,7 +15,7 @@ function SignIn() {
         <GithubLink />
       </Header>
       <div className="grow text-center bg-gray-50 py-12">
-        <Image className="opacity-90 rounded-full overflow-hidden border-2 shadow-lg border-blue-200 mx-auto" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
+        <Image className="opacity-90 rounded-full overflow-hidden border border-blue-300 mx-auto mb-4" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
         <h2 className="text-4xl font-bold text-blue-800 pt-6 pb-2">Welcome to Bucket</h2>
         <p className="text-blue-800 opacity-70 font-medium pb-12">Please sign in with an authentication provider to access the demo</p>
         <Button

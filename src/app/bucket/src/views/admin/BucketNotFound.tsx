@@ -32,7 +32,7 @@ const BucketNotFound: React.FC<BucketNotFoundProps> = ({ bucketName, onBucketCre
 
   return (
     <div className={cn("flex flex-col gap-4 py-16 items-center justify-center w-full h-full transition-all duration-1000", isCreating ? "opacity-0" : "opacity-100")}>
-      <Image className="opacity-90 rounded-full overflow-hidden border-2 shadow-lg border-blue-200 mx-auto mb-4" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
+      <Image className="opacity-90 rounded-full overflow-hidden border border-blue-300 mx-auto mb-4" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
       <h3 className="text-3xl font-bold">Bucket needs a Bucket!</h3>
       <div className="text-center py-4">
         <div className="pb-2 opacity-60">Your bucket’s name shall be:</div>

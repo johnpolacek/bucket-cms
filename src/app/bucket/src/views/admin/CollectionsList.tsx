@@ -78,7 +78,7 @@ function CollectionsList({
               className="flex flex-col"
             >
               <div className="flex flex-col sm:flex-row justify-center">
-                <div className="my-8 bg-white p-8 sm:rounded-xl shadow">
+                <div className="my-8 border bg-white p-8 sm:rounded-xl shadow">
                   <div className="border-t">
                     {deleteError && <div className="text-red-500">{deleteError}</div>}
                     {collections
