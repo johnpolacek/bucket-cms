@@ -30,7 +30,6 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
     <AlertDialog
       open={open}
       onOpenChange={() => {
-        console.log("onOpenChange")
         setFieldName("")
         setFieldType("")
         setStep(0)
@@ -42,11 +41,14 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="min-h-[50vh] w-full max-w-[900px] p-8 focus-visible:ring-0 outline-none">
-        <AlertDialogCancel onClick={() => setOpen(false)} aria-label="cancel" className="absolute top-0 right-0 py-4 px-6 hover:bg-transparent text-2xl h-auto border-none shadow-none font-mono">
-          ×
-        </AlertDialogCancel>
+        {!isFirstField && open && (
+          <AlertDialogCancel onClick={() => setOpen(false)} aria-label="cancel" className="absolute top-0 right-0 py-4 px-6 hover:bg-transparent text-2xl h-auto border-none shadow-none font-mono">
+            ×
+          </AlertDialogCancel>
+        )}
+
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-center uppercase text-sm tracking-wide opacity-60 pb-4">Add Field</AlertDialogTitle>
+          <AlertDialogTitle className="text-center uppercase text-sm tracking-wide opacity-50 pb-4">Add Field</AlertDialogTitle>
           <AlertDialogDescription className="flex flex-col justify-center items-center grow h-full">
             {step === 0 ? (
               <div>
@@ -73,6 +75,8 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
                 <CollectionFieldTypeChooser
                   onChoose={(selected) => {
                     setFieldType(selected)
+                    setOpen(false)
+                    onComplete(fieldName, selected)
                   }}
                 />
               </TransitionWrapper>
@@ -81,22 +85,9 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
         </AlertDialogHeader>
         <div className="flex flex-col items-end justify-end">
           <div>
-            {step === 0 ? (
+            {step === 0 && (
               <Button disabled={!fieldName} className="block text-xl px-8 py-3 h-auto" onClick={() => setStep(step + 1)}>
                 Next
-              </Button>
-            ) : (
-              <Button
-                disabled={!fieldType}
-                className="block text-xl px-8 py-3 h-auto"
-                onClick={() => {
-                  if (fieldType !== "") {
-                    setOpen(false)
-                    onComplete(fieldName, fieldType)
-                  }
-                }}
-              >
-                Save
               </Button>
             )}
           </div>

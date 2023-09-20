@@ -38,7 +38,7 @@ function CollectionFieldEditDialog({ fieldType, onComplete }: { fieldType: Field
           </span>
         </button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="min-h-[50vh] w-full max-w-[900px] p-8 focus-visible:ring-0 outline-none">
+      <AlertDialogContent className="min-h-[50vh] max-h-screen w-full max-w-[900px] p-8 focus-visible:ring-0 outline-none">
         <AlertDialogCancel onClick={() => setOpen(false)} aria-label="cancel" className="absolute top-0 right-0 py-4 px-6 hover:bg-transparent text-2xl h-auto border-none shadow-none font-mono">
           ×
         </AlertDialogCancel>
@@ -49,23 +49,12 @@ function CollectionFieldEditDialog({ fieldType, onComplete }: { fieldType: Field
               initial={fieldType}
               onChoose={(selected) => {
                 setNewFieldType(selected)
+                setOpen(false)
+                onComplete(selected)
               }}
             />
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="flex flex-col items-end justify-end">
-          <div>
-            <Button
-              className="block text-xl px-8 py-3 h-auto"
-              onClick={() => {
-                setOpen(false)
-                onComplete(newFieldType)
-              }}
-            >
-              Save
-            </Button>
-          </div>
-        </div>
       </AlertDialogContent>
     </AlertDialog>
   )
