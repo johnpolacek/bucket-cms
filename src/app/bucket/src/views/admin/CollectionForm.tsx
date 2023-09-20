@@ -13,6 +13,7 @@ import CollectionNameSelect from "./CollectionNameSelect"
 import CollectionNameEdit from "./CollectionNameEdit"
 import CollectionItemNameSelect from "./CollectionItemNameSelect"
 import CollectionFieldNewDialog from "./CollectionFieldNewDialog"
+import { cn } from "../../ui/utils"
 
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
@@ -22,11 +23,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [editFieldType, setEditFieldType] = useState<number | null>(null)
   const isEditMode = Boolean(collection)
-
-  const availableFieldTypes: AvailableFieldType[] = Object.entries(FieldTypes).map(([name, component]) => ({
-    name,
-    component,
-  }))
 
   const addOption = (fieldIndex: number) => {
     setErrors({})
@@ -201,7 +197,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           )}
         </>
       ) : (
-        <div className="flex flex-col items-center">
+        <div className={cn("flex flex-col items-center transition-all duration-500", fields.length > 1 ? "opacity-100" : "opacity-0")}>
           <h2 className="uppercase font-semibold text-sm tracking-wide opacity-50 pb-1">Create Collection</h2>
           <CollectionNameEdit initialValue={collectionName} onChange={(newCollectionName: string) => setCollectionName(newCollectionName)} />
 
