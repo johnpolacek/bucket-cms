@@ -11,7 +11,7 @@ interface CollectionFieldSelectProps {
   autoFocus?: boolean
 }
 
-const CollectionFieldSelect = ({ type, label, description, onChoose, autoFocus }: CollectionFieldSelectProps) => (
+const CollectionFieldSelect = ({ type, description, onChoose, autoFocus }: CollectionFieldSelectProps) => (
   <button
     onKeyDown={(e) => {
       if (e.key === "Enter") {
@@ -44,7 +44,7 @@ function CollectionFieldTypeChooser({ initial, onChoose }: { initial?: FieldKeys
         <CollectionFieldSelect autoFocus={initial === "FileUpload"} type="FileUpload" description="Upload a file" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "FileLibrary"} type="FileLibrary" description="Upload a group of files" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "VideoEmbed"} type="VideoEmbed" description="A video embed link (YouTube or Vimeo)" onChoose={onChoose} />
-        <CollectionFieldSelect autoFocus={initial === "URL"} type="URL" label="Link" description="A link to a website" onChoose={onChoose} />
+        <CollectionFieldSelect autoFocus={initial === "URL"} type="URL" description="A link to a website" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "DateField"} type="DateField" description="Choose from a group of preset options" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "Statistic"} type="Statistic" description="A statistic with a metric and value" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "CollectionReference"} type="CollectionReference" description="A reference to an item in another collection" onChoose={onChoose} />
