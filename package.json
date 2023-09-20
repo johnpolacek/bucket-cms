@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "npx playwright test",
-    "test-watch": "npx playwright test --headed",
-    "test-write": "npx playwright codegen localhost:3000/",
+    "test": "cross-env TEST_ENV=test npx playwright test",
+    "test-watch": "cross-env TEST_ENV=test npx playwright test --headed",
+    "test-write": "cross-env TEST_ENV=test npx playwright codegen localhost:3000/",
     "deploy": "npx playwright test --headed --workers 1 && git push origin main"
   },
   "dependencies": {
@@ -52,6 +52,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@playwright/test": "^1.38.0"
+    "@playwright/test": "^1.38.0",
+    "cross-env": "^7.0.3"
   }
 }

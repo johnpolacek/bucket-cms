@@ -5,5 +5,5 @@ import { options } from "./options"
 
 export default async function Home() {
   const session = await getServerSession(options)
-  return <main>{session?.user?.name ? <Demo user={session.user.name} /> : <SignIn />}</main>
+  return <main>{session?.user?.name ? <Demo user={session.user.name} /> : <SignIn isTestEnv={process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"} />}</main>
 }

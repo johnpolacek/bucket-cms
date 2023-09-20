@@ -8,13 +8,13 @@ const Header = ({ children }: { children: React.ReactElement }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="px-4 py-2 flex flex-wrap justify-between items-center">
+    <header className="px-4 flex flex-wrap justify-between items-center">
       <Link href="/">
         <div className="flex items-center cursor-pointer pl-4">
-          <div className="h-[54px] w-[54px] my-2 flex items-center overflow-hidden relative -top-[2px] mr-[2px]">
+          <div className="h-[54px] w-[54px] my-2 flex items-center overflow-hidden relative -top-[2px]">
             <Image src="/bucket-cms-logo.png" width={54} height={54} alt="Bucket CMS Logo" />
           </div>
-          <h2 className="font-extrabold text-2xl text-blue-600 sm:text-2xl">
+          <h2 className="font-extrabold text-2xl text-blue-600 sm:text-2xl scale-90 hover:scale-100 transition-all ease-in-out">
             Bucket <span className="font-bold text-lg relative -left-[2px] -top-px text-blue-400">CMS</span>
           </h2>
         </div>
