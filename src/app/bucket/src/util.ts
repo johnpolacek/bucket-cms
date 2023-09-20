@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { FieldKeys } from "./types"
 
 export function isZodObjectOrArray(schema: any): schema is z.ZodObject<any> {
   return schema && (typeof schema.shape === "object" || schema instanceof z.ZodArray)
@@ -42,6 +43,33 @@ export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any 
 
 export function getHumanReadableId(slug: string): string {
   return slug.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+export const getFieldTypeDisplayName = (fieldType: FieldKeys): string => {
+  switch (fieldType) {
+    case "DateField":
+      return "Date"
+    case "SelectField":
+      return "Select"
+    case "RichText":
+      return "Rich Text"
+    case "ImageUpload":
+      return "Image"
+    case "ImageGallery":
+      return "Image Gallery"
+    case "FileUpload":
+      return "File"
+    case "FileLibrary":
+      return "File Library"
+    case "URL":
+      return "Link"
+    case "VideoEmbed":
+      return "Video"
+    case "CollectionReference":
+      return "Reference"
+  }
+
+  return fieldType
 }
 
 export async function uploadImageAndGetURL(file: File): Promise<string> {

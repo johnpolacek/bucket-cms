@@ -5,7 +5,7 @@ import CollectionFieldTypeChooser from "./CollectionFieldTypeChooser"
 import { FieldKeys } from "../../types"
 import { FieldIcon } from "../../ui/icon/field"
 import { EditIcon } from "../../ui/icon"
-import { getFieldTypeDisplayName } from "../../field-types"
+import { getFieldTypeDisplayName } from "../../util"
 
 function CollectionFieldEditDialog({ fieldType, onComplete }: { fieldType: FieldKeys; onComplete: (fieldType: FieldKeys) => void }) {
   const [newFieldType, setNewFieldType] = useState(fieldType)
