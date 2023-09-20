@@ -1,10 +1,10 @@
 "use client"
 import React from "react"
 import { Button, Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui"
-import { Field, FieldBlank, AvailableFieldType, SelectField, CollectionData, CollectionReferenceField } from "../../types"
-import * as FieldTypes from "../../field-types"
+import { Field, SelectField, CollectionData, CollectionReferenceField, FieldBlank, FieldKeys } from "../../types"
 import { cn } from "../../ui/utils"
 import DragHandle from "./DragHandle"
+import CollectionFieldEditDialog from "./CollectionFieldEditDialog"
 
 export type ErrorState = {
   name?: string
@@ -17,7 +17,7 @@ function CollectionFormField({
   fieldIndex,
   errors,
   handleFieldNameChange,
-  handleFieldTypeChange,
+  onFieldTypeEdit,
   handleOptionChange,
   handleCollectionChange,
   addOption,
@@ -33,7 +33,7 @@ function CollectionFormField({
   fieldIndex: number
   errors: ErrorState
   handleFieldNameChange: (fieldIndex: number, name: string) => void
-  handleFieldTypeChange: (fieldIndex: number, value: string) => void
+  onFieldTypeEdit?: (fieldIndex: number, fieldType: FieldKeys) => void
   addOption: (fieldIndex: number) => void
   handleOptionChange: (fieldIndex: number, optionIndex: number, value: string) => void
   handleCollectionChange: (fieldIndex: number, value: string) => void
@@ -45,18 +45,13 @@ function CollectionFormField({
   collectionReferences: CollectionData[]
   autoFocus?: boolean
 }) {
-  const availableFieldTypes: AvailableFieldType[] = Object.entries(FieldTypes).map(([name, component]) => ({
-    name,
-    component,
-  }))
-
   return (
     <>
-      <div ref={setNodeRef} className="flex flex-wrap sm:flex-nowrap w-full gap-2 items-end" {...itemProps}>
+      <div ref={setNodeRef} className="flex flex-wrap sm:flex-nowrap w-full items-end" {...itemProps}>
         {fieldIndex > 0 ? (
           <>
             <DragHandle {...dragHandleProps} />
-            <div className="grow sm:grow-0 sm:shrink flex flex-col gap-1 w-2/3 pt-2">
+            <div className="grow flex flex-col gap-1 w-1/2 pl-2 pt-2">
               <Label className="opacity-60 pl-1" htmlFor="fieldName">
                 Field Name
               </Label>
@@ -71,46 +66,17 @@ function CollectionFormField({
                 }}
               />
             </div>
-            <div className="grow sm:grow-0 flex flex-col gap-1 w-1/2 pl-6 sm:pl-0 sm:w-1/3">
-              <Label className="opacity-60 pl-1" htmlFor="fieldType">
-                Type
-              </Label>
-              {fieldIndex === 0 ? (
-                <Select
-                  name="fieldType"
-                  onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
-                  value={field?.typeName} // Use typeName to display the name of the FieldType
-                  disabled={true}
-                >
-                  <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
-                    <SelectValue placeholder="Select FieldType" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem key="item-name" value="Text">
-                      Item Name
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Select
-                  name="fieldType"
-                  onValueChange={(value) => handleFieldTypeChange(fieldIndex, value)}
-                  value={field?.typeName} // Use typeName to display the name of the FieldType
-                >
-                  <SelectTrigger className={`bg-white ${errors.fields && !field.typeName ? "border-red-500" : ""}`}>
-                    <SelectValue placeholder="Select FieldType" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableFieldTypes.map((type) => (
-                      <SelectItem key={type.name} value={type.name}>
-                        {type.name.replace("Field", "").replace("Upload", "")}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <div className="grow flex flex-col gap-1 w-1/2 pl-6 sm:pl-0 sm:w-1/3">
+              {field.typeName && onFieldTypeEdit && (
+                <CollectionFieldEditDialog
+                  fieldType={field.typeName}
+                  onComplete={(newFieldType) => {
+                    onFieldTypeEdit(fieldIndex, newFieldType)
+                  }}
+                />
               )}
             </div>
-            <Button variant="ghost" className={cn("text-red-600 hover:text-red-700 text-xl px-2", fieldIndex > 1 ? "" : "opacity-0 pointer-events-none")} onClick={() => handleDeleteField(fieldIndex)}>
+            <Button variant="ghost" className={cn("text-red-600 hover:text-red-700 text-xl p-2", fieldIndex > 1 ? "" : "opacity-0 pointer-events-none")} onClick={() => handleDeleteField(fieldIndex)}>
               ×
             </Button>
           </>

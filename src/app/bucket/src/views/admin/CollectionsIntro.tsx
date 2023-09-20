@@ -1,13 +1,27 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "../../ui"
 import CollectionForm from "./CollectionForm"
 import { Transition } from "@headlessui/react"
 
-function CollectionsIntro({ onCreateFirstCollection }: { onCreateFirstCollection: () => void }) {
+function CollectionsIntro() {
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Enter") {
+        setIsCreatingCollection(true)
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [])
 
   return (
     <div className="py-16">

@@ -86,7 +86,7 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
                           </>
                         )
                       ) : (
-                        <CollectionsIntro onCreateFirstCollection={refreshCollections} />
+                        <CollectionsIntro />
                       )
                     ) : null
                   ) : (

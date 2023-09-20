@@ -50,7 +50,7 @@ export interface CollectionReferenceField extends BaseField {
 
 export interface FieldBlank {
   name: string
-  typeName: string
+  typeName: FieldKeys
   options?: string[]
 }
 

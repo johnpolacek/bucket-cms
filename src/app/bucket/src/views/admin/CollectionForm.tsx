@@ -1,7 +1,7 @@
 "use client"
 import React, { Fragment, useState, useEffect } from "react"
-import { Button, Input, Label } from "../../ui"
-import { Collection, CollectionData, Field, FieldBlank, AvailableFieldType, SelectField, CollectionReferenceField } from "../../types"
+import { Button } from "../../ui"
+import { Collection, CollectionData, Field, FieldBlank, AvailableFieldType, SelectField, CollectionReferenceField, FieldKeys } from "../../types"
 import * as FieldTypes from "../../field-types"
 import ItemFormPreview from "./ItemFormPreview"
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
@@ -12,6 +12,7 @@ import { ErrorState } from "./CollectionFormField"
 import CollectionNameSelect from "./CollectionNameSelect"
 import CollectionNameEdit from "./CollectionNameEdit"
 import CollectionItemNameSelect from "./CollectionItemNameSelect"
+import CollectionFieldNewDialog from "./CollectionFieldNewDialog"
 
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
@@ -19,17 +20,13 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   const [fields, setFields] = useState<(Field | FieldBlank)[]>(collection ? collection.fields : [])
   const [errors, setErrors] = useState<ErrorState>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [editFieldType, setEditFieldType] = useState<number | null>(null)
   const isEditMode = Boolean(collection)
 
   const availableFieldTypes: AvailableFieldType[] = Object.entries(FieldTypes).map(([name, component]) => ({
     name,
     component,
   }))
-
-  const addField = () => {
-    setErrors({})
-    setFields([...fields, { name: "", typeName: "" }])
-  }
 
   const addOption = (fieldIndex: number) => {
     setErrors({})
@@ -52,15 +49,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     }
   }
 
-  const setCollectionItemName = (collectionItemName: string) => {
-    console.log("setCollectionItemName " + collectionItemName)
-    const collectionFields = [
-      { name: collectionItemName, typeName: "Text" },
-      { name: "", typeName: "" },
-    ]
-    setFields(collectionFields)
-  }
-
   const handleFieldNameChange = (fieldIndex: number, name: string) => {
     const updatedFields = [...fields]
     updatedFields[fieldIndex].name = name
@@ -69,17 +57,13 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     setFields(updatedFields)
   }
 
-  const handleFieldTypeChange = (index: number, typeName: string) => {
+  const handleFieldTypeChange = (index: number, typeName: FieldKeys) => {
     const updatedFields = [...fields]
-    const matchingFieldType = availableFieldTypes.find((ft) => ft.name === typeName)
-
-    if (matchingFieldType) {
-      updatedFields[index].typeName = matchingFieldType.name
-      if (updatedFields[index].typeName === "SelectField") {
-        ;(updatedFields[index] as FieldBlank).options = [""]
-      } else if (updatedFields[index].typeName !== "CollectionReference") {
-        delete (updatedFields[index] as FieldBlank).options
-      }
+    updatedFields[index].typeName = typeName
+    if (updatedFields[index].typeName === "SelectField") {
+      ;(updatedFields[index] as FieldBlank).options = [""]
+    } else if (updatedFields[index].typeName !== "CollectionReference") {
+      delete (updatedFields[index] as FieldBlank).options
     }
     setErrors({})
     setFields(updatedFields)
@@ -137,7 +121,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           const emptyFieldOptions = (field as SelectField).options.filter((option) => {
             return option === ""
           })
-          if (emptyFieldOptions.length !== 0 && field.typeName !== "SelectField" && field.typeName !== "ColletionReference") {
+          if (emptyFieldOptions.length !== 0 && field.typeName !== "SelectField" && field.typeName !== "CollectionReference") {
             return `Field #${index + 1}: Please provide values for all select options`
           }
         }
@@ -198,16 +182,14 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     getCollections()
   }, [])
 
-  console.log({ fields })
-
   return (
     <>
       {fields.length === 0 ? (
         <>
           {collectionName ? (
             <CollectionItemNameSelect
-              onSelect={(name) => {
-                setCollectionItemName(name)
+              onSelect={() => {
+                setFields([{ name: collectionName, typeName: "Text" }])
               }}
             />
           ) : (
@@ -223,7 +205,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           <h2 className="uppercase font-semibold text-sm tracking-wide opacity-50 pb-1">Create Collection</h2>
           <CollectionNameEdit initialValue={collectionName} onChange={(newCollectionName: string) => setCollectionName(newCollectionName)} />
 
-          <div className="px-8 bg-white rounded border w-full max-w-[1100px] mx-auto mt-8 sm:grid sm:grid-cols-2 gap-16 lg:scale-110">
+          <div className="px-8 bg-white rounded border w-full max-w-[1100px] mx-auto mt-8 sm:grid sm:grid-cols-2 gap-12 lg:scale-110">
             <div className="flex flex-col gap-2 py-8 px-4">
               <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={fields.slice(1, fields.length >= 3 ? undefined : 1).map((_, index) => index.toString())} strategy={verticalListSortingStrategy}>
@@ -240,7 +222,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
                               fieldIndex={fieldIndex}
                               errors={errors}
                               handleFieldNameChange={handleFieldNameChange}
-                              handleFieldTypeChange={handleFieldTypeChange}
                               addOption={addOption}
                               handleOptionChange={handleOptionChange}
                               handleCollectionChange={handleCollectionChange}
@@ -261,7 +242,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
                               fieldIndex={fieldIndex}
                               errors={errors}
                               handleFieldNameChange={handleFieldNameChange}
-                              handleFieldTypeChange={handleFieldTypeChange}
+                              onFieldTypeEdit={handleFieldTypeChange}
                               addOption={addOption}
                               handleOptionChange={handleOptionChange}
                               handleCollectionChange={handleCollectionChange}
@@ -284,12 +265,13 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
               </DndContext>
 
               <div className="mt-2 pl-6">
-                <Button className="text-xs text-white hover:text-white bg-green-500 hover:bg-green-600" onClick={addField}>
-                  + Add Field
-                </Button>
-                <Button variant="ghost" className="opacity-0 pointer-events-none text-xl px-3">
-                  ×
-                </Button>
+                <CollectionFieldNewDialog
+                  isFirstField={fields.length === 1}
+                  onComplete={(fieldName, fieldType) => {
+                    setErrors({})
+                    setFields([...fields, { name: fieldName, typeName: fieldType }])
+                  }}
+                />
               </div>
 
               {errors.fields && (

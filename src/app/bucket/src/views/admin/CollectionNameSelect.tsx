@@ -8,7 +8,7 @@ function CollectionNameSelect({ onSelect }: { onSelect: (collectionName: string)
 
   return (
     <TransitionWrapper>
-      <div className="p-12 bg-white rounded border w-full max-w-[640px] mx-auto mt-8 flex flex-col justify-center items-center gap-4">
+      <div className="p-12 bg-white shadow rounded border w-full max-w-[640px] mx-auto mt-8 flex flex-col justify-center items-center gap-4">
         <Label htmlFor="collectionName" className="block text-2xl font-bold text-blue-600">
           Choose a name for your collection
         </Label>
@@ -19,6 +19,12 @@ function CollectionNameSelect({ onSelect }: { onSelect: (collectionName: string)
           value={collectionName}
           onChange={(e) => setCollectionName(e.target.value)}
           placeholder="Enter collection name"
+          autoFocus={true}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              onSelect(collectionName)
+            }
+          }}
         />
         <Button onClick={() => onSelect(collectionName)} className="h-auto bg-blue-600 hover:bg-blue-700 hover:scale-105 px-8 py-3 text-xl mt-4">
           Next <span className="font-thin scale-150 relative -top-[2px] left-3">»</span>

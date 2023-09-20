@@ -11,6 +11,7 @@ export { FileUpload } from "./FileUpload"
 export { FileLibrary } from "./FileLibrary"
 export { VideoEmbed } from "./VideoEmbed"
 export { CollectionReference } from "./CollectionReference"
+import { FieldKeys } from "../types"
 
 import { TextData } from "./Text"
 import { LabelsData } from "./Labels"
@@ -25,6 +26,33 @@ import { FileData } from "./FileUpload"
 import { FileLibraryData } from "./FileLibrary"
 import { VideoEmbedData } from "./VideoEmbed"
 import { CollectionReferenceData } from "./CollectionReference"
+
+export const getFieldTypeDisplayName = (fieldType: FieldKeys): string => {
+  switch (fieldType) {
+    case "DateField":
+      return "Date"
+    case "SelectField":
+      return "Select"
+    case "RichText":
+      return "Rich Text"
+    case "ImageUpload":
+      return "Image"
+    case "ImageGallery":
+      return "Image Gallery"
+    case "FileUpload":
+      return "File"
+    case "FileLibrary":
+      return "File Library"
+    case "URL":
+      return "Link"
+    case "VideoEmbed":
+      return "Video"
+    case "CollectionReference":
+      return "Reference"
+  }
+
+  return fieldType
+}
 
 export type AllFieldTypes =
   | TextData
