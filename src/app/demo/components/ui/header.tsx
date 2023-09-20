@@ -41,18 +41,20 @@ const Header = ({ children }: { children: React.ReactElement }) => {
           </Link>
         </div>
       )}
-      <div className="hidden sm:flex sm:items-center sm:flex-grow sm:pl-16 gap-4">
-        <Link href="/docs">
-          <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
-            Documentation
-          </Button>
-        </Link>
-        <Link href="/demo">
-          <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
-            Try the Demo
-          </Button>
-        </Link>
-        <div className="grow flex justify-end">{children}</div>
+      <div className="hidden sm:flex grow items-center justify-between sm:pl-16">
+        <div className="flex justify-start gap-4">
+          <Link href="/docs">
+            <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
+              Documentation
+            </Button>
+          </Link>
+          <Link href="/demo">
+            <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
+              Try the Demo
+            </Button>
+          </Link>
+        </div>
+        <div className="flex">{children}</div>
       </div>
     </header>
   )

@@ -29,7 +29,6 @@ function CollectionsIntro() {
         <CollectionForm
           onCancel={() => setIsCreatingCollection(false)}
           onComplete={() => {
-            setIsCreatingCollection(false)
             window.location.reload()
           }}
         />

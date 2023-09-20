@@ -2,7 +2,6 @@
 import React, { Fragment, useState, useEffect } from "react"
 import { Button } from "../../ui"
 import { Collection, CollectionData, Field, FieldBlank, AvailableFieldType, SelectField, CollectionReferenceField, FieldKeys } from "../../types"
-import * as FieldTypes from "../../field-types"
 import ItemFormPreview from "./ItemFormPreview"
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable"
@@ -21,7 +20,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   const [fields, setFields] = useState<(Field | FieldBlank)[]>(collection ? collection.fields : [])
   const [errors, setErrors] = useState<ErrorState>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [editFieldType, setEditFieldType] = useState<number | null>(null)
   const isEditMode = Boolean(collection)
 
   const addOption = (fieldIndex: number) => {
@@ -178,14 +176,16 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     getCollections()
   }, [])
 
+  console.log({ fields })
+
   return (
     <>
       {fields.length === 0 ? (
         <>
           {collectionName ? (
             <CollectionItemNameSelect
-              onSelect={() => {
-                setFields([{ name: collectionName, typeName: "Text" }])
+              onSelect={(itemName) => {
+                setFields([{ name: itemName, typeName: "Text" }])
               }}
             />
           ) : (
@@ -231,7 +231,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
                           </>
                         ) : (
                           <SortableItem index={fieldIndex - 1}>
-                            {/* the 1st field item name is not sortable */}
+                            {/* the 1st field (item name) is not sortable */}
                             <CollectionFormField
                               autoFocus={fieldIndex === fields.length - 1}
                               field={field}
@@ -265,7 +265,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
                   isFirstField={fields.length === 1}
                   onComplete={(fieldName, fieldType) => {
                     setErrors({})
-                    setFields([...fields, { name: fieldName, typeName: fieldType }])
+                    setFields((prevFields) => [...prevFields, { name: fieldName, typeName: fieldType }])
                   }}
                 />
               </div>
