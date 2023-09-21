@@ -18,7 +18,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   const [errors, setErrors] = useState<ErrorState>({})
   const isEditMode = Boolean(collection)
 
-  const [collections, loading, fetchError] = useFetchCollectionsCount()
+  const [collections, loading, fetchError] = useFetchCollectionsCount(true)
   const [submitCollection, isSubmitting, submitError] = useSubmitCollection()
 
   useEffect(() => {
