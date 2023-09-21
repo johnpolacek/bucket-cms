@@ -1,18 +1,15 @@
 "use client"
-import React, { Fragment, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "../../ui"
-import { Collection, CollectionData, Field, FieldBlank, AvailableFieldType, SelectField, CollectionReferenceField, FieldKeys } from "../../types"
+import { Collection, CollectionData, Field, FieldBlank, SelectField, CollectionReferenceField, FieldKeys } from "../../types"
 import ItemFormPreview from "./ItemFormPreview"
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable"
-import { SortableItem } from "./SortableItem"
-import CollectionFormField from "./CollectionFormField"
 import { ErrorState } from "./CollectionFormField"
 import CollectionNameSelect from "./CollectionNameSelect"
 import CollectionNameEdit from "./CollectionNameEdit"
 import CollectionItemNameSelect from "./CollectionItemNameSelect"
 import CollectionFieldNewDialog from "./CollectionFieldNewDialog"
 import { cn } from "../../ui/utils"
+import CollectionFormFieldSort from "./CollectionFormFieldSort"
 
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
@@ -40,77 +37,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     const newFields = [...fields]
     newFields.push(newField)
     setFields(newFields)
-  }
-
-  const addOption = (fieldIndex: number) => {
-    setErrors({})
-    const newFields = [...fields]
-    ;(newFields[fieldIndex] as SelectField).options.push("")
-    setFields(newFields)
-  }
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  )
-
-  const handleDragEnd = (event: any) => {
-    const { active, over } = event
-    if (over && active.id !== over.id) {
-      setFields((fields) => arrayMove(fields, parseInt(active.id) + 1, parseInt(over.id) + 1))
-    }
-  }
-
-  const handleFieldNameChange = (fieldIndex: number, name: string) => {
-    const updatedFields = [...fields]
-    updatedFields[fieldIndex].name = name
-    setErrors({})
-    setFields(updatedFields)
-  }
-
-  const handleFieldTypeChange = (index: number, typeName: FieldKeys) => {
-    const updatedFields = [...fields]
-    updatedFields[index].typeName = typeName
-    if (updatedFields[index].typeName === "SelectField") {
-      ;(updatedFields[index] as FieldBlank).options = [""]
-    } else if (updatedFields[index].typeName !== "CollectionReference") {
-      delete (updatedFields[index] as FieldBlank).options
-    }
-    setErrors({})
-    setFields(updatedFields)
-  }
-
-  const handleOptionChange = (fieldIndex: number, optionIndex: number, value: string) => {
-    const updatedFields = [...fields]
-    const updatedOptions = [...(updatedFields[fieldIndex] as SelectField).options]
-    updatedOptions[optionIndex] = value
-    ;(updatedFields[fieldIndex] as SelectField).options = updatedOptions
-    setErrors({})
-    setFields(updatedFields)
-  }
-
-  const handleCollectionChange = (fieldIndex: number, value: string) => {
-    const updatedFields = [...fields]
-    const updatedOptions = [value]
-    ;(updatedFields[fieldIndex] as CollectionReferenceField).options = updatedOptions
-    setErrors({})
-    setFields(updatedFields)
-  }
-
-  const handleDeleteField = (index: number) => {
-    const updatedFields = [...fields]
-    updatedFields.splice(index, 1)
-    setErrors({})
-    setFields(updatedFields)
-  }
-
-  const handleDeleteOption = (fieldIndex: number, optionIndex: number) => {
-    const updatedFields = [...fields]
-    ;(updatedFields[fieldIndex] as SelectField).options.splice(optionIndex, 1)
-    setErrors({})
-    setFields(updatedFields)
   }
 
   const validateForm = () => {
@@ -220,62 +146,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
 
           <div className="px-8 bg-white rounded border w-full max-w-[1100px] mx-auto mt-8 sm:grid sm:grid-cols-2 gap-12 lg:scale-110">
             <div className="flex flex-col gap-2 py-8 px-4">
-              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <SortableContext items={fields.slice(1, fields.length >= 3 ? undefined : 1).map((_, index) => index.toString())} strategy={verticalListSortingStrategy}>
-                  <div className="flex flex-col gap-4">
-                    {fields.map((field, fieldIndex) => (
-                      <Fragment key={fieldIndex}>
-                        {fieldIndex === 0 ? (
-                          <>
-                            <label htmlFor="item-label" className="mt-4 -mb-3 opacity-70 font-medium">
-                              Item Label
-                            </label>
-                            <CollectionFormField
-                              field={field}
-                              fieldIndex={fieldIndex}
-                              errors={errors}
-                              handleFieldNameChange={handleFieldNameChange}
-                              addOption={addOption}
-                              handleOptionChange={handleOptionChange}
-                              handleCollectionChange={handleCollectionChange}
-                              handleDeleteOption={handleDeleteOption}
-                              handleDeleteField={handleDeleteField}
-                              collectionReferences={collections}
-                            />
-                            <div className="text-xs opacity-60">
-                              The first field in your collection is for the label it will have on the Item Form, such as "Product Name", "Book Title" or "Full Name".
-                            </div>
-                          </>
-                        ) : (
-                          <SortableItem index={fieldIndex - 1}>
-                            {/* the 1st field (item name) is not sortable */}
-                            <CollectionFormField
-                              autoFocus={fieldIndex === fields.length - 1}
-                              field={field}
-                              fieldIndex={fieldIndex}
-                              errors={errors}
-                              handleFieldNameChange={handleFieldNameChange}
-                              onFieldTypeEdit={handleFieldTypeChange}
-                              addOption={addOption}
-                              handleOptionChange={handleOptionChange}
-                              handleCollectionChange={handleCollectionChange}
-                              handleDeleteOption={handleDeleteOption}
-                              handleDeleteField={handleDeleteField}
-                              collectionReferences={collections}
-                            />
-                          </SortableItem>
-                        )}
-                        {fieldIndex === 0 && (
-                          <>
-                            <div className="mt-4 -mb-2 opacity-70 font-medium">Item Fields</div>
-                            <div className="text-xs opacity-60 pb-2">Add other fields to collect data for your collection.</div>
-                          </>
-                        )}
-                      </Fragment>
-                    ))}
-                  </div>
-                </SortableContext>
-              </DndContext>
+              <CollectionFormFieldSort collections={collections} fields={fields} setFields={setFields} />
 
               <div className="mt-2 pl-6">
                 <CollectionFieldNewDialog isFirstField={fields.length === 1} onComplete={onAddNewField} />
