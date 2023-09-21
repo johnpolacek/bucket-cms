@@ -44,7 +44,7 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
         {step === 0 ? (
           <div>
             <Label htmlFor="fieldName" className="block pb-1 text-2xl font-bold text-blue-600 text-center">
-              Enter a name for your {isFirstField ? "first" : "new"} field
+              Enter a label for your {isFirstField ? "next" : "new"} field
             </Label>
             <Input
               className="text-lg text-center h-auto py-3 mx-auto max-w-[360px]"
@@ -54,6 +54,7 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
               onChange={(e) => setFieldName(e.target.value)}
               placeholder="Enter field name"
               autoFocus={true}
+              autoComplete="off"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && fieldName) {
                   setStep(1)
