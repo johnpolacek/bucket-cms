@@ -34,7 +34,7 @@ function CollectionFieldTypeChooser({ initial, onChoose }: { initial?: FieldKeys
         <CollectionFieldSelect autoFocus={initial === "RichText"} type="RichText" description="Text with rich formatting options" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "SelectField"} type="SelectField" description="Choose from a group of preset options" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "Labels"} type="Labels" description="A freeform series or labels or tags" onChoose={onChoose} />
-        <CollectionFieldSelect autoFocus={initial === "DateField"} type="DateField" description="Choose from a group of preset options" onChoose={onChoose} />
+        <CollectionFieldSelect autoFocus={initial === "DateField"} type="DateField" description="Choose a date" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "Toggle"} type="Toggle" description="A true/false or on/off option" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "ImageUpload"} type="ImageUpload" description="Upload an image" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "ImageGallery"} type="ImageGallery" description="Upload a group of images" onChoose={onChoose} />

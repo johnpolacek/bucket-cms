@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "cross-env TEST_ENV=test npx playwright test",
-    "test-watch": "cross-env TEST_ENV=test npx playwright test --headed",
-    "test-write": "cross-env TEST_ENV=test npx playwright codegen localhost:3000/",
+    "test": "npx playwright test",
+    "test-watch": "npx playwright test --headed",
+    "test-write": "npx playwright codegen localhost:3000/",
     "deploy": "npx playwright test --headed --workers 1 && git push origin main"
   },
   "dependencies": {
