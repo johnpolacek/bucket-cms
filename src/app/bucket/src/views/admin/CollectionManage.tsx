@@ -1,37 +1,18 @@
 "use client"
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import ItemForm from "./ItemForm"
 import { Button } from "../../ui"
 import { CollectionItemData } from "../../types"
 import { Transition } from "@headlessui/react"
+import { useDeleteCollectionItem, useFetchCollectionItems } from "../../hooks"
 
 function CollectionManage({ collectionName, onFinish, onCreateItem }: { collectionName: string; onFinish: () => void; onCreateItem: (collectionName: string) => void }) {
-  const [items, setItems] = useState<Array<CollectionItemData>>([])
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
-  const [isDeleting, setIsDeleting] = useState(false)
   const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
 
-  useEffect(() => {
-    fetchItems()
-  }, [collectionName])
-
-  const fetchItems = async () => {
-    try {
-      const response = await fetch(`/api/bucket/items/read?collectionName=${collectionName}`)
-      if (!response.ok) {
-        throw new Error("Failed to fetch items")
-      }
-      const data = await response.json()
-      setItems(data.items)
-    } catch (error: any) {
-      setError(error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { items, loading, error, refresh } = useFetchCollectionItems(collectionName)
+  const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionName)
 
   const handleCancelEdit = () => {
     setEditItem(null)
@@ -39,33 +20,17 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
 
   const handleCompleteEdit = () => {
     setEditItem(null)
-    fetchItems() // Refresh the items list after editing
+    refresh()
   }
 
   const handleDeleteItem = async (itemId: string) => {
     if (confirmDeleteItemId === itemId) {
-      setIsDeleting(true) // Set isDeleting to true before starting the deletion process
-      try {
-        const response = await fetch(`/api/bucket/item/delete?itemId=${itemId}&collectionName=${collectionName}`, {
-          method: "DELETE",
-        })
-
-        if (!response.ok) {
-          throw new Error("Failed to delete item")
-        }
-
-        // Refresh items list after successful deletion
-        await fetchItems()
-      } catch (error: any) {
-        console.error(error)
-        alert("An error occurred while trying to delete the item. Please try again.")
-      } finally {
-        // Reset the confirmDeleteItemId and isDeleting state after action is taken
-        setConfirmDeleteItemId(null)
-        setIsDeleting(false)
+      await deleteItem(itemId)
+      if (!deleteError) {
+        refresh()
       }
+      setConfirmDeleteItemId(null)
     } else {
-      // Show inline confirmation message
       setConfirmDeleteItemId(itemId)
     }
   }
@@ -76,7 +41,6 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
         const response = await fetch(`/api/bucket/collection/delete?collectionName=${collectionName}`, {
           method: "DELETE",
         })
-
         if (!response.ok) {
           throw new Error("Failed to delete collection")
         } else {

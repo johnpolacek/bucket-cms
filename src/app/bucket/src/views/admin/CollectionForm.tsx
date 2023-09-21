@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import { Button } from "../../ui"
-import { Collection, CollectionData, Field, FieldBlank, SelectField, CollectionReferenceField, FieldKeys } from "../../types"
+import { Collection, Field, FieldBlank, SelectField, CollectionReferenceField, FieldKeys } from "../../types"
 import ItemFormPreview from "./ItemFormPreview"
 import { ErrorState } from "./CollectionFormField"
 import CollectionNameSelect from "./CollectionNameSelect"
@@ -10,14 +10,16 @@ import CollectionItemNameSelect from "./CollectionItemNameSelect"
 import CollectionFieldNewDialog from "./CollectionFieldNewDialog"
 import { cn } from "../../ui/utils"
 import CollectionFormFieldSort from "./CollectionFormFieldSort"
+import { useFetchCollectionsCount, useSubmitCollection } from "../../hooks"
 
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
-  const [collections, setCollections] = useState<CollectionData[]>([])
   const [fields, setFields] = useState<(Field | FieldBlank)[]>([])
   const [errors, setErrors] = useState<ErrorState>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const isEditMode = Boolean(collection)
+
+  const [collections, loading, fetchError] = useFetchCollectionsCount()
+  const [submitCollection, isSubmitting, submitError] = useSubmitCollection()
 
   useEffect(() => {
     if (collection) {
@@ -77,49 +79,13 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   }
 
   const handleSubmit = async () => {
-    setIsSubmitting(true)
     if (validateForm()) {
-      const endpoint = isEditMode ? "/api/bucket/collection/update" : "/api/bucket/collection/create"
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: collectionName,
-            fields,
-          }),
-        })
-
-        if (response.ok) {
-          onComplete()
-        } else {
-          const errorData = await response.json()
-          setErrors({
-            errorMessage: errorData.error,
-          })
-          setIsSubmitting(false)
-        }
-      } catch (error) {
-        setErrors({
-          errorMessage: (error as Error).message || "Sorry, there was an error.",
-        })
-        setIsSubmitting(false)
+      const success = await submitCollection(collectionName, fields, isEditMode)
+      if (success) {
+        onComplete()
       }
-    } else {
-      setIsSubmitting(false)
     }
   }
-
-  useEffect(() => {
-    const getCollections = async () => {
-      const response = await fetch("/api/bucket/collections/count")
-      const responseData = await response.json()
-      setCollections(responseData.collections)
-    }
-    getCollections()
-  }, [])
 
   return (
     <>
@@ -145,33 +111,37 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           <CollectionNameEdit initialValue={collectionName} onChange={(newCollectionName: string) => setCollectionName(newCollectionName)} />
 
           <div className="px-8 bg-white rounded border w-full max-w-[1100px] mx-auto mt-8 sm:grid sm:grid-cols-2 gap-12 lg:scale-110">
-            <div className="flex flex-col gap-2 py-8 px-4">
-              <CollectionFormFieldSort collections={collections} fields={fields} setFields={setFields} />
+            {collections && (
+              <div className="flex flex-col gap-2 py-8 px-4">
+                <CollectionFormFieldSort collections={collections} fields={fields} setFields={setFields} />
 
-              <div className="mt-2 pl-6">
-                <CollectionFieldNewDialog isFirstField={fields.length === 1} onComplete={onAddNewField} />
-              </div>
-
-              {errors.fields && (
-                <div className="flex flex-col gap-1 pt-4">
-                  {errors.fields.map((error, index) => (
-                    <div key={index} className="text-red-500 text-sm">
-                      {error}
-                    </div>
-                  ))}
+                <div className="mt-2 pl-6">
+                  <CollectionFieldNewDialog isFirstField={fields.length === 1} onComplete={onAddNewField} />
                 </div>
-              )}
-              {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
-              <div className="flex justify-end gap-4 mt-12 mb-8">
-                <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={onCancel}>
-                  Cancel
-                </Button>
-                <Button className="bg-blue-600 text-white hover:bg-blue-700" size="lg" disabled={isSubmitting} onClick={handleSubmit}>
-                  Save Collection
-                </Button>
+                {errors.fields && (
+                  <div className="flex flex-col gap-1 pt-4">
+                    {errors.fields.map((error, index) => (
+                      <div key={index} className="text-red-500 text-sm">
+                        {error}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
+                {fetchError && <div className="py-4 text-red-500 text-sm">{fetchError.message}</div>}
+                {submitError && <div className="py-4 text-red-500 text-sm">{submitError}</div>}
+
+                <div className="flex justify-end gap-4 mt-12 mb-8">
+                  <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={onCancel}>
+                    Cancel
+                  </Button>
+                  <Button className="bg-blue-600 text-white hover:bg-blue-700" size="lg" disabled={isSubmitting} onClick={handleSubmit}>
+                    Save Collection
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
             <ItemFormPreview collectionName={collectionName} fields={fields} />
           </div>
         </div>
