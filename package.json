@@ -10,7 +10,7 @@
     "test": "npx playwright test",
     "test-watch": "npx playwright test --headed",
     "test-write": "npx playwright codegen localhost:3000/",
-    "deploy": "npx playwright test --workers 1 && git push origin main"
+    "deploy": "npx playwright test && git push origin main"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.395.0",
