@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { FieldKeys } from "./types"
+import { CollectionFetch } from "./types"
 
 export function isZodObjectOrArray(schema: any): schema is z.ZodObject<any> {
   return schema && (typeof schema.shape === "object" || schema instanceof z.ZodArray)
@@ -116,4 +117,80 @@ export async function uploadFileAndGetURL(file: File): Promise<string> {
     console.error(error)
     throw error
   }
+}
+
+export const generateSampleDataItems = (collection: CollectionFetch) => {
+  const itemsData = collection.fields.map((field: any) => {
+    if (field.typeName === "Text") {
+      return { [field.name]: { value: "A plain text string." } }
+    } else if (field.typeName === "RichText") {
+      return { [field.name]: { value: "<p>A <strong>rich</strong> <em>text</em> string.</p>" } }
+    } else {
+      // You can add more field types here as needed
+      return { [field.name]: { value: "Sample value for " + field.typeName } }
+    }
+  })
+
+  const mergedData = itemsData.reduce((acc, item) => ({ ...acc, ...item }), {})
+
+  return JSON.stringify(
+    {
+      items: [
+        {
+          itemId: "123",
+          itemName: `Your ${collection.name} Item name`,
+          data: mergedData,
+        },
+      ],
+    },
+    null,
+    2
+  )
+}
+
+export const generateSampleDataItem = (collection: CollectionFetch) => {
+  const itemsData = collection.fields.map((field: any) => {
+    if (field.typeName === "Text") {
+      return { [field.name]: { value: "A plain text string." } }
+    } else if (field.typeName === "RichText") {
+      return { [field.name]: { value: "<p>A <strong>rich</strong> <em>text</em> string.</p>" } }
+    } else {
+      // You can add more field types here as needed
+      return { [field.name]: { value: "Sample value for " + field.typeName } }
+    }
+  })
+
+  const mergedData = itemsData.reduce((acc, item) => ({ ...acc, ...item }), {})
+
+  return JSON.stringify(
+    {
+      itemName: `Your ${collection.name} Item name`,
+      data: mergedData,
+    },
+    null,
+    2
+  )
+}
+
+export const generateTypeScriptInterface = (collection: CollectionFetch) => {
+  const fieldsData = collection.fields.map((field: any) => {
+    if (field.typeName === "Text") {
+      return `    ${field.name}: { value: string; }`
+    } else if (field.typeName === "RichText") {
+      return `    ${field.name}: { value: string; }` // This can be changed to a richer type if you have one for RichText
+    } else {
+      // You can add more field types here as needed
+      return `    ${field.name}: any;`
+    }
+  })
+
+  const fieldsInterface = fieldsData.join("\n")
+
+  return `interface CollectionItem {
+  itemId: string;
+  itemName: string;
+  data: {
+${fieldsInterface}
+  };
+}`
 }
