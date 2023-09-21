@@ -13,11 +13,6 @@ interface CollectionFieldSelectProps {
 
 const CollectionFieldSelect = ({ type, description, onChoose, autoFocus }: CollectionFieldSelectProps) => (
   <button
-    onKeyDown={(e) => {
-      if (e.key === "Enter") {
-        onChoose(type)
-      }
-    }}
     autoFocus={autoFocus}
     onClick={() => onChoose(type)}
     className="flex flex-col sm:flex-row text-xl p-2 pb-4 sm:p-4 border border-blue-200 rounded-lg hover:scale-[1.025] transition-all ease-in-out outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"

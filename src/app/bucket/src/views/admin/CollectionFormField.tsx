@@ -118,12 +118,12 @@ function CollectionFormField({
         </div>
       )}
       {field.typeName === "SelectField" && (
-        <div>
-          {(field as SelectField).options.map((option, optionIndex) => {
-            const numOptions = (field as SelectField).options.length
+        <div className="-mt-2">
+          {((field as SelectField)?.options || [""]).map((option, optionIndex) => {
+            const numOptions = (field as SelectField)?.options?.length || 1
             return (
-              <div key={optionIndex} className="flex w-full gap-2 items-center mt-2">
-                <Label className="w-2/3 text-right">Option {optionIndex + 1}:</Label>
+              <div key={optionIndex} className="flex w-full gap-2 items-center mt-2 pl-16">
+                <Label className="w-1/2 text-right">Option {optionIndex + 1}:</Label>
                 <Input
                   autoFocus={true}
                   onChange={(e) => {
@@ -144,7 +144,7 @@ function CollectionFormField({
               </div>
             )
           })}
-          <div className="text-right my-4">
+          <div className="pl-[50%] ml-10 mb-4">
             <Button variant="outline" className="text-green-600 hover:text-green-700 border-green-300 text-xs px-2 py-1 mt-2 h-auto" onClick={() => addOption(fieldIndex)}>
               + Add Option
             </Button>

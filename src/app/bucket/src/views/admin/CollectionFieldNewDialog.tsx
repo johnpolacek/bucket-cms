@@ -7,31 +7,21 @@ import { FieldKeys } from "../../types"
 
 function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?: boolean; onComplete: (fieldName: string, fieldType: FieldKeys) => void }) {
   const [fieldName, setFieldName] = useState("")
-  const [fieldType, setFieldType] = useState<FieldKeys | "">("")
   const [step, setStep] = useState(0)
-  const [open, setOpen] = React.useState(Boolean(isFirstField))
+  const [open, setOpen] = useState(isFirstField)
+  const [isComplete, setIsComplete] = useState(false)
 
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Enter" && fieldName && fieldType) {
-        setOpen(false)
-        onComplete(fieldName, fieldType)
-      }
+    if (open) {
+      setIsComplete(false)
     }
-
-    window.addEventListener("keydown", handleKeyDown)
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [fieldName, fieldType])
+  }, [open])
 
   return (
     <AlertDialog
       open={open}
       onOpenChange={() => {
         setFieldName("")
-        setFieldType("")
         setStep(0)
       }}
     >
@@ -49,40 +39,41 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
 
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center uppercase text-sm tracking-wide opacity-50 pb-4">Add Field</AlertDialogTitle>
-          <AlertDialogDescription className="flex flex-col justify-center items-center grow h-full">
-            {step === 0 ? (
-              <div>
-                <Label htmlFor="fieldName" className="block pb-1 text-2xl font-bold text-blue-600 text-center">
-                  Enter a name for your {isFirstField ? "first" : "new"} field
-                </Label>
-                <Input
-                  className="text-lg text-center h-auto py-3 mx-auto max-w-[360px]"
-                  id="fieldName"
-                  type="text"
-                  value={fieldName}
-                  onChange={(e) => setFieldName(e.target.value)}
-                  placeholder="Enter field name"
-                  autoFocus={true}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setStep(1)
-                    }
-                  }}
-                />
-              </div>
-            ) : (
-              <TransitionWrapper>
-                <CollectionFieldTypeChooser
-                  onChoose={(selected) => {
-                    setFieldType(selected)
-                    setOpen(false)
-                    onComplete(fieldName, selected)
-                  }}
-                />
-              </TransitionWrapper>
-            )}
-          </AlertDialogDescription>
         </AlertDialogHeader>
+
+        {step === 0 ? (
+          <div>
+            <Label htmlFor="fieldName" className="block pb-1 text-2xl font-bold text-blue-600 text-center">
+              Enter a name for your {isFirstField ? "first" : "new"} field
+            </Label>
+            <Input
+              className="text-lg text-center h-auto py-3 mx-auto max-w-[360px]"
+              id="fieldName"
+              type="text"
+              value={fieldName}
+              onChange={(e) => setFieldName(e.target.value)}
+              placeholder="Enter field name"
+              autoFocus={true}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && fieldName) {
+                  setStep(1)
+                }
+              }}
+            />
+          </div>
+        ) : (
+          <TransitionWrapper>
+            <CollectionFieldTypeChooser
+              onChoose={(selected) => {
+                if (!isComplete) {
+                  console.log("onChoose onComplete", { fieldName, selected })
+                  onComplete(fieldName, selected)
+                  setOpen(false)
+                }
+              }}
+            />
+          </TransitionWrapper>
+        )}
         <div className="flex flex-col items-end justify-end">
           <div>
             {step === 0 && (

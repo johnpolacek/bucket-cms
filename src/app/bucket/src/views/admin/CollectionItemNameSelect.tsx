@@ -18,6 +18,7 @@ function CollectionItemNameSelect({ onSelect }: { onSelect: (itemName: string) =
           type="text"
           value={itemName}
           autoFocus={true}
+          autoComplete="off"
           onChange={(e) => setItemName(e.target.value)}
           placeholder="Enter name for item label"
           onKeyDown={(e) => {

@@ -16,6 +16,7 @@ function CollectionNameSelect({ onSelect }: { onSelect: (collectionName: string)
           className="text-lg text-center h-auto py-3 max-w-[360px]"
           id="collectionName"
           type="text"
+          autoComplete="off"
           value={collectionName}
           onChange={(e) => setCollectionName(e.target.value)}
           placeholder="Enter collection name"

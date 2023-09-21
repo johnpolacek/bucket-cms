@@ -8,22 +8,7 @@ import { EditIcon } from "../../ui/icon"
 import { getFieldTypeDisplayName } from "../../util"
 
 function CollectionFieldEditDialog({ fieldType, onComplete }: { fieldType: FieldKeys; onComplete: (fieldType: FieldKeys) => void }) {
-  const [newFieldType, setNewFieldType] = useState(fieldType)
   const [open, setOpen] = React.useState(false)
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Enter" && fieldType) {
-        setOpen(false)
-        onComplete(newFieldType)
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown)
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [fieldType])
 
   return (
     <AlertDialog open={open}>
@@ -48,7 +33,6 @@ function CollectionFieldEditDialog({ fieldType, onComplete }: { fieldType: Field
             <CollectionFieldTypeChooser
               initial={fieldType}
               onChoose={(selected) => {
-                setNewFieldType(selected)
                 setOpen(false)
                 onComplete(selected)
               }}

@@ -17,10 +17,30 @@ import { cn } from "../../ui/utils"
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
   const [collections, setCollections] = useState<CollectionData[]>([])
-  const [fields, setFields] = useState<(Field | FieldBlank)[]>(collection ? collection.fields : [])
+  const [fields, setFields] = useState<(Field | FieldBlank)[]>([])
   const [errors, setErrors] = useState<ErrorState>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isEditMode = Boolean(collection)
+
+  useEffect(() => {
+    if (collection) {
+      setFields(collection.fields)
+    }
+  }, [])
+
+  const onAddNewField = (fieldName: string, fieldType: FieldKeys) => {
+    setErrors({})
+    const newField = { name: fieldName, typeName: fieldType }
+    if (fieldType === "SelectField") {
+      ;(newField as SelectField).options = []
+    }
+    if (fieldType === "CollectionReference") {
+      ;(newField as CollectionReferenceField).options = []
+    }
+    const newFields = [...fields]
+    newFields.push(newField)
+    setFields(newFields)
+  }
 
   const addOption = (fieldIndex: number) => {
     setErrors({})
@@ -46,7 +66,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   const handleFieldNameChange = (fieldIndex: number, name: string) => {
     const updatedFields = [...fields]
     updatedFields[fieldIndex].name = name
-    setFields(updatedFields)
     setErrors({})
     setFields(updatedFields)
   }
@@ -176,8 +195,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     getCollections()
   }, [])
 
-  console.log({ fields })
-
   return (
     <>
       {fields.length === 0 ? (
@@ -261,13 +278,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
               </DndContext>
 
               <div className="mt-2 pl-6">
-                <CollectionFieldNewDialog
-                  isFirstField={fields.length === 1}
-                  onComplete={(fieldName, fieldType) => {
-                    setErrors({})
-                    setFields((prevFields) => [...prevFields, { name: fieldName, typeName: fieldType }])
-                  }}
-                />
+                <CollectionFieldNewDialog isFirstField={fields.length === 1} onComplete={onAddNewField} />
               </div>
 
               {errors.fields && (
