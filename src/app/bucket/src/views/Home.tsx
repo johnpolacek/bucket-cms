@@ -30,7 +30,7 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
   }
 
   return (
-    <main className="flex flex-col grow items-center relative w-full h-full">
+    <main className={`flex flex-col grow items-center relative w-full h-full ${isLoading && "hidden"}`}>
       {error ? (
         missingBucket ? (
           <BucketNotFound bucketName={missingBucket} onBucketCreated={() => window.location.reload()} />
@@ -52,8 +52,10 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
                             <AdminHome onUpdateCollection={() => setRefreshToken((prevToken) => prevToken + 1)} />
                           </>
                         )
-                      ) : (
-                        <CollectionsIntro />
+                      ) : isLoading ? null : (
+                        <>
+                          <CollectionsIntro />
+                        </>
                       )
                     ) : null
                   ) : (

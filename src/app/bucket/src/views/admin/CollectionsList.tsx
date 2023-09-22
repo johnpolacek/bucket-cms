@@ -10,8 +10,8 @@ function CollectionsList({
   onManage,
 }: {
   onCreateCollection: () => void
-  onCreateItem: (collectionName: string) => void
-  onManage: (collectionName: string) => void
+  onCreateItem: (collection: CollectionData) => void
+  onManage: (collection: CollectionData) => void
 }) {
   const [collections, isLoading, error] = useFetchCollectionsCount(true)
   const [deletedCollections, setDeletedCollections] = useState<string[]>([])
@@ -81,10 +81,10 @@ function CollectionsList({
                         <div className="flex gap-3 pr-4 sm:w-[320px] justify-end -mr-4 sm:mr-0">
                           {confirmDeleteCollectionName !== collection.collectionName && (
                             <>
-                              <Button onClick={() => onCreateItem(collection.collectionName)} className="text-green-600" variant="outline">
+                              <Button onClick={() => onCreateItem(collection)} className="text-green-600" variant="outline">
                                 + New
                               </Button>
-                              <Button onClick={() => onManage(collection.collectionName)} className="text-blue-600" variant="outline">
+                              <Button onClick={() => onManage(collection)} className="text-blue-600" variant="outline">
                                 Manage
                               </Button>
                             </>

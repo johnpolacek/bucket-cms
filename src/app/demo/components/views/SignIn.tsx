@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react"
 import Header from "../ui/header"
 import GithubLink from "../ui/github-link"
 import { Button } from "../ui/button"
-import Image from "next/image"
+import { BrandImage, PageHeading } from "@/app/bucket/src/views/brand"
 import { cn } from "../ui/utils"
 
 function SignIn({ isTestEnv }: { isTestEnv: boolean }) {
@@ -15,8 +15,8 @@ function SignIn({ isTestEnv }: { isTestEnv: boolean }) {
         <GithubLink />
       </Header>
       <div className="grow text-center border-t py-12">
-        <Image className="opacity-90 rounded-full overflow-hidden border border-blue-300 mx-auto mb-4" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
-        <h2 className="text-4xl font-bold text-blue-800 pt-6 pb-2">Welcome to Bucket</h2>
+        <BrandImage />
+        <PageHeading>Welcome to Bucket</PageHeading>
         <p className="text-blue-800 opacity-70 font-medium pb-12">Please sign in with an authentication provider to access the demo</p>
         <div className="flex flex-col gap-4 w-[240px] mx-auto">
           <Button

@@ -76,7 +76,7 @@ function CollectionFormField({
                 />
               )}
             </div>
-            <Button variant="ghost" className={cn("text-red-600 hover:text-red-700 text-xl p-2", fieldIndex > 1 ? "" : "opacity-0 pointer-events-none")} onClick={() => handleDeleteField(fieldIndex)}>
+            <Button variant="ghost" className={cn("text-red-600 hover:text-red-700 text-xl p-2", fieldIndex > 0 ? "" : "opacity-0 pointer-events-none")} onClick={() => handleDeleteField(fieldIndex)}>
               ×
             </Button>
           </>

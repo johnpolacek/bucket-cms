@@ -2,17 +2,17 @@
 import React, { useState } from "react"
 import ItemForm from "./ItemForm"
 import { Button } from "../../ui"
-import { CollectionItemData } from "../../types"
+import { CollectionData, CollectionItemData } from "../../types"
 import { Transition } from "@headlessui/react"
 import { useDeleteCollectionItem, useFetchCollectionItems } from "../../hooks"
 
-function CollectionManage({ collectionName, onFinish, onCreateItem }: { collectionName: string; onFinish: () => void; onCreateItem: (collectionName: string) => void }) {
+function CollectionManage({ collectionData, onFinish, onCreateItem }: { collectionData: CollectionData; onFinish: () => void; onCreateItem: (collection: CollectionData) => void }) {
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
   const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
 
-  const { items, loading, error, refresh } = useFetchCollectionItems(collectionName)
-  const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionName)
+  const { items, loading, error, refresh } = useFetchCollectionItems(collectionData)
+  const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionData)
 
   const handleCancelEdit = () => {
     setEditItem(null)
@@ -38,7 +38,7 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
   const handleDeleteCollection = async () => {
     if (confirmDeleteCollection) {
       try {
-        const response = await fetch(`/api/bucket/collection/delete?collectionName=${collectionName}`, {
+        const response = await fetch(`/api/bucket/collection/delete?collectionName=${collectionData.collectionName}`, {
           method: "DELETE",
         })
         if (!response.ok) {
@@ -77,13 +77,13 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
           >
             <div>
               <h3 className="text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
-              <h4 className="text-center font-semibold text-4xl pb-6">{collectionName}</h4>
+              <h4 className="text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
               <div className="border-t sm:min-w-[480px]">
                 {items.length === 0 && (
                   <div className="py-16 w-full text-center text-lg italic border-b">
                     <div className="pb-6 opacity-60">This collection is empty...</div>
                     <Button
-                      onClick={() => onCreateItem(collectionName)}
+                      onClick={() => onCreateItem(collectionData)}
                       variant="outline"
                       className="bg-green-500 text-white text-xl h-auto py-4 px-6 hover:bg-green-400 hover:scale-110 hover:text-white transition-all ease-in-out"
                     >
@@ -102,7 +102,7 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
                         </div>
                       ) : (
                         <Button variant="ghost" className="text-red-500" onClick={handleDeleteCollection}>
-                          Delete {collectionName}
+                          Delete {collectionData.collectionName}
                         </Button>
                       )}
                     </div>
@@ -143,7 +143,7 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
                 ))}
                 {items.length > 0 && (
                   <div className="w-full text-right my-4">
-                    <Button onClick={() => onCreateItem(collectionName)} variant="outline" className="text-green-600">
+                    <Button onClick={() => onCreateItem(collectionData)} variant="outline" className="text-green-600">
                       + New
                     </Button>
                   </div>
@@ -159,7 +159,7 @@ function CollectionManage({ collectionName, onFinish, onCreateItem }: { collecti
 
       {editItem && (
         <div className="py-4">
-          <ItemForm collectionName={collectionName} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
+          <ItemForm collectionData={collectionData} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
         </div>
       )}
     </>

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { options } from "../../../../../app/bucket/options"
 import { initializeS3Client, getBucketName } from "../../s3/util"
-import { CreateBucketCommand, PutBucketAclCommand, DeletePublicAccessBlockCommand, PutBucketPolicyCommand } from "@aws-sdk/client-s3"
+import { CreateBucketCommand, DeletePublicAccessBlockCommand, PutBucketPolicyCommand } from "@aws-sdk/client-s3"
 
 export async function POST(req: NextRequest) {
   const s3 = initializeS3Client()
@@ -14,17 +14,17 @@ export async function POST(req: NextRequest) {
 
   if (req.method === "POST") {
     try {
-      // Create the bucket
-      const bucketName = await getBucketName()
+      // Create the public bucket for public images and files
+      const bucketNamePublic = await getBucketName(true)
       const createBucketCommand = new CreateBucketCommand({
-        Bucket: bucketName,
+        Bucket: bucketNamePublic,
         ObjectOwnership: "ObjectWriter",
       })
       await s3.send(createBucketCommand)
 
       // Delete the block public access
       const deletePublicAccessBlockCommand = new DeletePublicAccessBlockCommand({
-        Bucket: bucketName,
+        Bucket: bucketNamePublic,
       })
       await s3.send(deletePublicAccessBlockCommand)
 
@@ -37,16 +37,24 @@ export async function POST(req: NextRequest) {
             Effect: "Allow",
             Principal: "*",
             Action: "s3:GetObject",
-            Resource: `arn:aws:s3:::${bucketName}/*`,
+            Resource: `arn:aws:s3:::${bucketNamePublic}/*`,
           },
         ],
       }
 
       const putBucketPolicyCommand = new PutBucketPolicyCommand({
-        Bucket: bucketName,
+        Bucket: bucketNamePublic,
         Policy: JSON.stringify(bucketPolicy),
       })
       await s3.send(putBucketPolicyCommand)
+
+      // Create the private bucket
+      const bucketName = await getBucketName(true)
+      const createPrivateBucketCommand = new CreateBucketCommand({
+        Bucket: bucketName,
+        ObjectOwnership: "ObjectWriter",
+      })
+      await s3.send(createPrivateBucketCommand)
 
       return NextResponse.json({ success: true }, { status: 200 })
     } catch (error: any) {

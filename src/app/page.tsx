@@ -35,9 +35,9 @@ export default function Home() {
           </div>
           <div className="w-[640px] border-4 border-blue-100 rounded-lg overflow-hidden mx-auto opacity-80">
             <video className="scale-[1.33]" width="100%" height="100%" loop muted autoPlay playsInline>
-              <source src="https://s3.amazonaws.com/bucket.build-demo/bucket-cms-create-collection.mp4" type="video/mp4" />
+              <source src="https://s3.amazonaws.com/bucket-cms/bucket-cms-create-collection.mp4" type="video/mp4" />
               <img
-                src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-cli.jpg"
+                src="https://s3.amazonaws.com/bucket-cms/create-bucket-cms-cli.jpg"
                 alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
                 width="1041 "
                 height="599"
@@ -49,9 +49,9 @@ export default function Home() {
         <div className="grid grid-cols-3 pt-8 my-16 max-w-[1300px] mx-auto px-4">
           <div className="w-[640px] col-span-2 border-4 border-blue-100 rounded-lg overflow-hidden mx-auto opacity-80">
             <video width="100%" height="100%" loop muted autoPlay playsInline>
-              <source src="https://s3.amazonaws.com/bucket.build-demo/bucket-cms-own-your-data.mp4" type="video/mp4" />
+              <source src="https://s3.amazonaws.com/bucket-cms/bucket-cms-own-your-data.mp4" type="video/mp4" />
               <img
-                src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-cli.jpg"
+                src="https://s3.amazonaws.com/bucket-cms/create-bucket-cms-cli.jpg"
                 alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
                 width="1041 "
                 height="599"
@@ -76,9 +76,9 @@ export default function Home() {
           </div>
           <div className="w-[640px] p-4 bg-black rounded-lg overflow-hidden mx-auto opacity-80">
             <video width="100%" height="100%" loop muted autoPlay playsInline>
-              <source src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-demo.mp4" type="video/mp4" />
+              <source src="https://s3.amazonaws.com/bucket-cms/create-bucket-cms-demo.mp4" type="video/mp4" />
               <img
-                src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-cli.jpg"
+                src="https://s3.amazonaws.com/bucket-cms/create-bucket-cms-cli.jpg"
                 alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
                 width="1041 "
                 height="599"

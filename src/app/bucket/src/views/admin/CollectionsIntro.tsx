@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import Image from "next/image"
+import { BrandImage } from "../brand/BrandImage"
 import { Button } from "../../ui"
 import CollectionForm from "./CollectionForm"
 import { Transition } from "@headlessui/react"
@@ -34,7 +34,7 @@ function CollectionsIntro() {
         />
       ) : (
         <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="flex flex-col items-center gap-4">
-          <Image className="opacity-90 rounded-full overflow-hidden border border-blue-300 mx-auto mb-2" src="/bucket-cms-logo.png" width={210} height={210} alt="" />
+          <BrandImage />
           <h1 className="text-3xl font-bold opacity-80 mb-4">Welcome!</h1>
           <p className="text-xl opacity-60 mb-2 text-center">
             You haven't created any collections yet.

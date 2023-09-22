@@ -16,9 +16,7 @@ export async function PUT(req: NextRequest) {
   if (req.method === "PUT") {
     try {
       const json = await req.json()
-
       const { collectionName, itemName, data, itemId } = json
-      console.log({ collectionName, itemName, data, itemId })
 
       // Validate the itemName
       if (!itemName || typeof itemName !== "string" || !itemName.trim()) {

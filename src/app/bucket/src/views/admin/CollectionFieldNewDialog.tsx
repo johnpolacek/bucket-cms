@@ -30,7 +30,7 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
           + Add Field
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="min-h-[50vh] w-full max-w-[900px] p-8 focus-visible:ring-0 outline-none">
+      <AlertDialogContent className="min-h-[50vh] w-full max-w-[900px] p-8 focus-visible:ring-0 outline-none max-h-[96vh]">
         {!isFirstField && open && (
           <AlertDialogCancel onClick={() => setOpen(false)} aria-label="cancel" className="absolute top-0 right-0 py-4 px-6 hover:bg-transparent text-2xl h-auto border-none shadow-none font-mono">
             ×
@@ -67,7 +67,6 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
             <CollectionFieldTypeChooser
               onChoose={(selected) => {
                 if (!isComplete) {
-                  console.log("onChoose onComplete", { fieldName, selected })
                   onComplete(fieldName, selected)
                   setOpen(false)
                 }

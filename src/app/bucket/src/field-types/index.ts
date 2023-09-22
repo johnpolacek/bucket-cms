@@ -4,6 +4,9 @@ export { DateField } from "./Date"
 export { SelectField } from "./Select"
 export { Toggle } from "./Toggle"
 export { RichText } from "./RichText"
+export { Email } from "./Email"
+export { Phone } from "./Phone"
+export { Address } from "./Address"
 export { URL } from "./URL"
 export { Statistic } from "./Statistic"
 export { ImageUpload } from "./ImageUpload"
@@ -20,6 +23,9 @@ import { SelectData } from "./Select"
 import { ToggleData } from "./Toggle"
 import { RichTextData } from "./RichText"
 import { URLData } from "./URL"
+import { EmailData } from "./Email"
+import { PhoneData } from "./Phone"
+import { AddressData } from "./Address"
 import { StatisticData } from "./Statistic"
 import { ImageData } from "./ImageUpload"
 import { ImageGalleryData } from "./ImageGallery"
@@ -35,6 +41,9 @@ export type AllFieldTypes =
   | SelectData
   | ToggleData
   | RichTextData
+  | EmailData
+  | PhoneData
+  | AddressData
   | URLData
   | StatisticData
   | ImageData

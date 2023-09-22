@@ -1,8 +1,8 @@
 "use client"
 import React, { useEffect } from "react"
 import { CollectionFetch } from "../../types"
-import Prism from "prismjs"
 import { generateSampleDataItem, generateSampleDataItems, generateTypeScriptInterface } from "../../util"
+import Prism from "prismjs"
 import "prismjs/components/prism-typescript"
 
 function CollectionDataFetch({ collection }: { collection: CollectionFetch }) {

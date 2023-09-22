@@ -11,6 +11,7 @@ import CollectionFieldNewDialog from "./CollectionFieldNewDialog"
 import { cn } from "../../ui/utils"
 import CollectionFormFieldSort from "./CollectionFormFieldSort"
 import { useFetchCollectionsCount, useSubmitCollection } from "../../hooks"
+import { Label, Switch } from "../../ui"
 
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
@@ -107,10 +108,10 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
         </>
       ) : (
         <div className={cn("flex flex-col items-center transition-all duration-500", fields.length > 1 ? "opacity-100" : "opacity-0")}>
-          <h2 className="uppercase font-semibold text-sm tracking-wide opacity-50 pb-1">Create Collection</h2>
+          <h2 className="uppercase font-semibold text-sm tracking-wide opacity-50 -mt-2 pb-4">Create Collection</h2>
           <CollectionNameEdit initialValue={collectionName} onChange={(newCollectionName: string) => setCollectionName(newCollectionName)} />
 
-          <div className="px-8 bg-white rounded border w-full max-w-[1100px] mx-auto mt-8 sm:grid sm:grid-cols-2 gap-12 lg:scale-110">
+          <div className="px-8 bg-white rounded border w-full max-w-[1100px] mx-auto mt-4 sm:grid sm:grid-cols-2 gap-12 lg:scale-110">
             {collections && (
               <div className="flex flex-col gap-2 py-8 px-4">
                 <CollectionFormFieldSort collections={collections} fields={fields} setFields={setFields} />

@@ -1,30 +1,30 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import { Button, Label } from "../../ui"
-import { Collection, CollectionFetch, CollectionItemData, CollectionReferenceField, Field, ItemFormData, SelectField } from "../../types"
+import { Collection, CollectionData, CollectionFetch, CollectionItemData, CollectionReferenceField, Field, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { TextData } from "../../field-types/Text"
 import { Transition } from "@headlessui/react"
 import { isZodObjectOrArray, getDefaultDataFromSchema } from "../../util"
 
-function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
+function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collectionData: CollectionData; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
   const [collection, setCollection] = useState<Collection | null>(null)
-  const [formData, setFormData] = useState<ItemFormData | null>({ collectionName, fields: [] })
+  const [formData, setFormData] = useState<ItemFormData | null>({ collectionName: collectionData.collectionName, fields: [] })
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})
   const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     const fetchCollectionAndPopulate = async () => {
-      if (collectionName) {
+      if (collectionData) {
         try {
-          const response = await fetch(`/api/bucket/collection/read?collectionName=${collectionName}`)
-          const collectionData: CollectionFetch = await response.json()
+          const response = await fetch(`/api/bucket/collection/read?collectionName=${collectionData.collectionName}`)
+          const collectionFetch: CollectionFetch = await response.json()
 
           // collection data had a typeName reference to a key of FieldTypes
           // we can use that to assign the FieldType to each field
-          const typedFields: Field[] = collectionData.fields.map((field) => {
+          const typedFields: Field[] = collectionFetch.fields.map((field) => {
             const fieldTypeKey = field.typeName as keyof typeof FieldTypes
             const fieldType = FieldTypes[fieldTypeKey]
             return {
@@ -33,18 +33,16 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
             }
           })
           const typedCollection: Collection = {
-            ...collectionData,
+            ...collectionFetch,
             fields: typedFields,
           }
 
           setCollection(typedCollection)
 
           const initialFormData = {
-            collectionName,
-            fields: collectionData.fields.map((field) => {
-              console.log("initialFormData field", { field })
+            collectionName: collectionFetch.name,
+            fields: collectionFetch.fields.map((field) => {
               const fieldType = FieldTypes[field.typeName as keyof typeof FieldTypes]
-              console.log({ fieldType })
               const defaultData = getDefaultDataFromSchema(fieldType.schema)
               return {
                 name: field.name,
@@ -62,7 +60,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
     }
 
     fetchCollectionAndPopulate()
-  }, [collectionName, itemToEdit])
+  }, [collectionData.collectionName, itemToEdit])
 
   useEffect(() => {
     if (collection && formData?.fields) {
@@ -74,13 +72,9 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       }, [])
 
       collectionNames.forEach(async ({ name, index }) => {
-        console.log(`Fetching items for collection: ${name} (index: ${index})`)
         const itemIds = await fetchItemsIds(name, index)
-        console.log({ itemIds })
         const newFormData = { ...formData }
-        console.log({ index, itemIds })
         newFormData.fields[index].options = itemIds
-        console.log({ newFormData })
         setFormData(newFormData)
       })
     }
@@ -93,7 +87,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
         throw new Error("Failed to fetch items")
       }
       const data = await response.json()
-      console.log(`Items for collection: ${collectionName} (index: ${fieldIndex})`, data.itemIds)
       return data.itemIds as string[]
     } catch (error: any) {
       setErrors(error.message)
@@ -125,7 +118,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
           // validation successful
         } catch (error: any) {
           allComponentsValid = false
-          newErrors[index] = error.message || `Validation failed for ${field.name}`
+          newErrors[index] = error.message[0].message || `Validation failed for ${field.name}`
         }
       }
     })
@@ -202,7 +195,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       {collection && (
         <Transition appear={true} show={true} enter="transition-all duration-150" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0">
           <div className="p-8 border bg-white sm:rounded-xl shadow max-w-[480px] mx-auto">
-            <h3 className="uppercase opacity-50 text-sm pb-1">{collectionName}</h3>
+            <h3 className="uppercase opacity-50 text-sm pb-1">{collectionData.collectionName}</h3>
             <h2 className="text-3xl pb-8">{itemToEdit ? "Edit Item" : "Create New Item"}</h2>
 
             {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}

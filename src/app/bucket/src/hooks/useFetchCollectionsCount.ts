@@ -13,6 +13,7 @@ function useFetchCollectionsCount(shouldFetch: boolean, refreshToken?: number): 
         const response = await fetch("/api/bucket/collections/count")
         const responseData = await response.json()
         if (!response.ok) {
+          console.log("responseData.error", responseData.error)
           if (responseData.error && responseData.error.bucketName) {
             setMissingBucketName(responseData.error.bucketName)
           }

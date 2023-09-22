@@ -1,5 +1,21 @@
 import React from "react"
-import { DateIcon, FileIcon, FileLibraryIcon, ImageIcon, ImageGalleryIcon, LabelIcon, ReferenceIcon, RichTextIcon, SelectIcon, ToggleIcon, URLIcon, VideoIcon } from "."
+import {
+  AddressIcon,
+  DateIcon,
+  EmailIcon,
+  FileIcon,
+  FileLibraryIcon,
+  ImageIcon,
+  ImageGalleryIcon,
+  LabelIcon,
+  PhoneIcon,
+  ReferenceIcon,
+  RichTextIcon,
+  SelectIcon,
+  ToggleIcon,
+  URLIcon,
+  VideoIcon,
+} from "."
 import { FieldKeys } from "../../types"
 
 const FieldIcon = ({ type }: { type: FieldKeys }) => {
@@ -52,6 +68,24 @@ const FieldIcon = ({ type }: { type: FieldKeys }) => {
       return (
         <span className="scale-105">
           <FileLibraryIcon />
+        </span>
+      )
+    case "Email":
+      return (
+        <span className="scale-105">
+          <EmailIcon />
+        </span>
+      )
+    case "Phone":
+      return (
+        <span className="scale-105">
+          <PhoneIcon />
+        </span>
+      )
+    case "Address":
+      return (
+        <span className="scale-105">
+          <AddressIcon />
         </span>
       )
     case "URL":

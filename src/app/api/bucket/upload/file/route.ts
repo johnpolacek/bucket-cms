@@ -43,10 +43,9 @@ export async function POST(req: NextRequest) {
   const fileName = `${Date.now()}-${file.name}` // To ensure uniqueness
 
   try {
-    console.log("Reading entire file...")
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
-    const bucketName = await getBucketName()
+    const bucketName = await getBucketName(true)
 
     const command = new PutObjectCommand({
       Bucket: bucketName,

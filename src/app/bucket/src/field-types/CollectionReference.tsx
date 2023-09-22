@@ -13,7 +13,6 @@ const schema = z.object({
 export type CollectionReferenceData = z.infer<typeof schema>
 
 const CollectionReferenceAdmin: React.FC<CollectionReferenceFieldTypeProps<CollectionReferenceData>> = ({ data, setData, options }): ReactElement => {
-  console.log("CollectionReferenceAdmin", { options })
   const [search, setSearch] = useState("")
 
   return (

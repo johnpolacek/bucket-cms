@@ -1,13 +1,14 @@
 import { useState } from "react"
+import { CollectionData } from "../types"
 
-function useDeleteCollectionItem(collectionName: string) {
+function useDeleteCollectionItem(collectionData: CollectionData) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
 
   const deleteItem = async (itemId: string) => {
     setIsDeleting(true)
     try {
-      const response = await fetch(`/api/bucket/item/delete?itemId=${itemId}&collectionName=${collectionName}`, {
+      const response = await fetch(`/api/bucket/item/delete?itemId=${itemId}&collectionName=${collectionData.collectionName}`, {
         method: "DELETE",
       })
 

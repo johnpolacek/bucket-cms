@@ -29,11 +29,14 @@ function CollectionFieldTypeChooser({ initial, onChoose }: { initial?: FieldKeys
   return (
     <>
       <div className="block pb-4 text-2xl font-bold text-blue-600 text-center">Choose your field type</div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3 max-h-[60vh] overflow-auto p-2">
         <CollectionFieldSelect autoFocus={initial === "Text"} type="Text" description="A plain text field" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "RichText"} type="RichText" description="Text with rich formatting options" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "SelectField"} type="SelectField" description="Choose from a group of preset options" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "Labels"} type="Labels" description="A freeform series or labels or tags" onChoose={onChoose} />
+        <CollectionFieldSelect autoFocus={initial === "Email"} type="Email" description="An email address" onChoose={onChoose} />
+        <CollectionFieldSelect autoFocus={initial === "Phone"} type="Phone" description="A phone number" onChoose={onChoose} />
+        <CollectionFieldSelect autoFocus={initial === "Address"} type="Address" description="A street or mailing address" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "DateField"} type="DateField" description="Choose a date" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "Toggle"} type="Toggle" description="A true/false or on/off option" onChoose={onChoose} />
         <CollectionFieldSelect autoFocus={initial === "ImageUpload"} type="ImageUpload" description="Upload an image" onChoose={onChoose} />

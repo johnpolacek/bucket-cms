@@ -130,7 +130,7 @@ function CollectionFormFieldSort({ collections, fields, setFields }: { collectio
                 {fieldIndex === 0 && (
                   <>
                     <div className="mt-4 -mb-2 opacity-70 font-medium">Item Fields</div>
-                    <div className="text-xs opacity-60 pb-2">Add other fields to collect data for your collection.</div>
+                    <div className="text-xs opacity-60 pb-2">Add fields to collect data for your collection.</div>
                   </>
                 )}
               </Fragment>

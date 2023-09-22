@@ -4,27 +4,28 @@ import CollectionsList from "./CollectionsList"
 import CollectionManage from "./CollectionManage"
 import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
+import { CollectionData } from "../../types"
 
 function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
-  const [manageCollection, setManageCollection] = useState("")
-  const [createItemInCollection, setCreateItemInCollection] = useState("")
+  const [manageCollection, setManageCollection] = useState<CollectionData | undefined>(undefined)
+  const [createItemInCollection, setCreateItemInCollection] = useState<CollectionData | undefined>(undefined)
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
 
   return (
     <div className="py-12">
       {manageCollection ? (
         <CollectionManage
-          onCreateItem={(collectionName) => {
-            setManageCollection("")
-            setCreateItemInCollection(collectionName)
+          onCreateItem={(collectionData) => {
+            setManageCollection(undefined)
+            setCreateItemInCollection(collectionData)
           }}
-          onFinish={() => setManageCollection("")}
-          collectionName={manageCollection}
+          onFinish={() => setManageCollection(undefined)}
+          collectionData={manageCollection}
         />
       ) : (
         <>
           {createItemInCollection ? (
-            <ItemForm collectionName={createItemInCollection} onCancel={() => setCreateItemInCollection("")} onComplete={() => setCreateItemInCollection("")} />
+            <ItemForm collectionData={createItemInCollection} onCancel={() => setCreateItemInCollection(undefined)} onComplete={() => setCreateItemInCollection(undefined)} />
           ) : isCreatingCollection ? (
             <CollectionForm
               onCancel={() => setIsCreatingCollection(false)}
