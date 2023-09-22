@@ -25,36 +25,17 @@ export default function Home() {
             <Button className="w-full bg-blue-600 text-white text px-6 py-3 h-auto hover:bg-blue-700 hover:scale-105 transition-all ease-in-out">Try the Demo</Button>
           </Link>
         </div>
-        <div className="grid grid-cols-2 pt-8 my-16 max-w-[960px] mx-auto px-4">
-          <div className="flex flex-col gap-8 justify-center pb-8 pr-12">
-            <h3 className="text-3xl font-bold text-blue-600">Break Free from the Cloud and Own Your Data</h3>
-            <p className="text-lg opacity-70">
-              Will Bucket CMS, the admin experience lives in your project, not in the cloud. No monthly fees. All your data, stored securely on your own S3 bucket as structured flat file JSON data.
-            </p>
-          </div>
-          <div className="w-[640px] p-4 bg-black rounded-lg overflow-hidden mx-auto opacity-80">
-            <video width="100%" height="100%" loop muted autoPlay playsInline>
-              <source src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-demo.mp4" type="video/mp4" />
-              <img
-                src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-cli.jpg"
-                alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
-                width="1041 "
-                height="599"
-              />
-            </video>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-2 pt-8 my-16 max-w-[960px] mx-auto px-4">
+        <div className="grid grid-cols-2 pt-8 my-16 max-w-[1000px] mx-auto px-4">
           <div className="flex flex-col gap-8 justify-center pb-8 pr-12">
             <h3 className="text-3xl font-bold text-blue-600">The Drop-In Headless CMS: No Database, No Problem.</h3>
             <p className="text-lg opacity-70">
               Introducing the drop-in headless CMS experience for Next.js. On-the-fly data schema. Type-safe validation with Zod. Automatically generated documentation. Streamlined development.
             </p>
           </div>
-          <div className="w-[640px] p-4 bg-black rounded-lg overflow-hidden mx-auto opacity-80">
-            <video width="100%" height="100%" loop muted autoPlay playsInline>
-              <source src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-demo.mp4" type="video/mp4" />
+          <div className="w-[640px] border-4 border-blue-100 rounded-lg overflow-hidden mx-auto opacity-80">
+            <video className="scale-[1.33]" width="100%" height="100%" loop muted autoPlay playsInline>
+              <source src="https://s3.amazonaws.com/bucket.build-demo/bucket-cms-create-collection.mp4" type="video/mp4" />
               <img
                 src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-cli.jpg"
                 alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
@@ -65,7 +46,27 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 pt-8 my-16 max-w-[960px] mx-auto px-4">
+        <div className="grid grid-cols-3 pt-8 my-16 max-w-[1300px] mx-auto px-4">
+          <div className="w-[640px] col-span-2 border-4 border-blue-100 rounded-lg overflow-hidden mx-auto opacity-80">
+            <video width="100%" height="100%" loop muted autoPlay playsInline>
+              <source src="https://s3.amazonaws.com/bucket.build-demo/bucket-cms-own-your-data.mp4" type="video/mp4" />
+              <img
+                src="https://s3.amazonaws.com/bucket.build-demo/create-bucket-cms-cli.jpg"
+                alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
+                width="1041 "
+                height="599"
+              />
+            </video>
+          </div>
+          <div className="flex flex-col gap-8 justify-center pb-8 -ml-8 pr-4 items-end">
+            <h3 className="text-3xl font-bold text-blue-600">Break Free from the Cloud and Own Your Data</h3>
+            <p className="text-lg opacity-70">
+              Will Bucket CMS, the admin experience lives in your project, not in the cloud. No monthly fees. All your data, stored securely on your own S3 bucket as structured flat file JSON data.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 pt-8 my-16 max-w-[1000px] mx-auto px-4">
           <div className="flex flex-col gap-8 justify-center pb-8 pr-12">
             <h3 className="text-3xl font-bold text-blue-600">
               Integrate Bucket CMS <br />
