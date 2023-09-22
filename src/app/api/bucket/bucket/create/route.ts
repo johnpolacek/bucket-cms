@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       await s3.send(putBucketPolicyCommand)
 
       // Create the private bucket
-      const bucketName = await getBucketName(true)
+      const bucketName = await getBucketName(false)
       const createPrivateBucketCommand = new CreateBucketCommand({
         Bucket: bucketName,
         ObjectOwnership: "ObjectWriter",
