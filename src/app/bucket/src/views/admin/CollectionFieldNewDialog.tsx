@@ -43,8 +43,8 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
 
         {step === 0 ? (
           <div>
-            <Label htmlFor="fieldName" className="block pb-1 text-2xl font-bold text-blue-600 text-center">
-              Enter a label for your {isFirstField ? "next" : "new"} field
+            <Label htmlFor="fieldName" className="block pb-4 text-2xl font-bold text-blue-600 text-center">
+              Enter a label for the {isFirstField ? "next" : "new"} field
             </Label>
             <Input
               className="text-lg text-center h-auto py-3 mx-auto max-w-[360px]"
@@ -61,6 +61,7 @@ function CollectionFieldNewDialog({ isFirstField, onComplete }: { isFirstField?:
                 }
               }}
             />
+            {isFirstField && <p className="text-sm text-center opacity-70 pt-8 max-w-[350px] mx-auto">No worries! You can change it later.</p>}
           </div>
         ) : (
           <TransitionWrapper>

@@ -174,7 +174,7 @@ export const generateSampleDataItem = (collection: CollectionFetch) => {
 
 export const generateTypeScriptInterface = (collection: CollectionFetch) => {
   const fieldsData = collection.fields.map((field: any) => {
-    if (field.typeName === "Text") {
+    if (field.typeName === "Text" || field.typeName === "Email") {
       return `    ${field.name}: { value: string; }`
     } else if (field.typeName === "RichText") {
       return `    ${field.name}: { value: string; }` // This can be changed to a richer type if you have one for RichText

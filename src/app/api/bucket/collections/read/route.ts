@@ -14,7 +14,6 @@ export async function GET(req: NextRequest) {
   const bucketNamePrivate = await getBucketName(false)
   const bucketNamePublic = await getBucketName(true)
 
-  console.log({ bucketNamePublic, bucketNamePrivate })
   try {
     const collectionsPublic = await readCollections(bucketNamePublic)
     const collectionsPrivate = await readCollections(bucketNamePrivate)

@@ -12,7 +12,7 @@ function CollectionDataFetch({ collection }: { collection: CollectionFetch }) {
 
   return (
     <div className="prose max-w-[720px] prose-pre:bg-[#eee] prose-pre:text-black prose-pre:opacity-70 w-full">
-      <div className="italic -mb-6">Typescript:</div>
+      <div className="italic">Typescript:</div>
       <pre className="!opacity-100 !bg-gray-100">
         <code className="language-ts">{generateTypeScriptInterface(collection)}</code>
       </pre>
@@ -59,7 +59,7 @@ function CollectionDataFetch({ collection }: { collection: CollectionFetch }) {
       <p>
         The <strong>bucket/item/read</strong> API route fetches data for a single Item in a Collection.
       </p>
-      <div className="italic">Endpoint:</div>
+      <div className="italic -mb-4">Endpoint:</div>
       <pre className="mb-4">
         <code>/api/bucket/item/read?collectionName={collection.name}&itemId=123</code>
       </pre>
@@ -74,14 +74,14 @@ function CollectionDataFetch({ collection }: { collection: CollectionFetch }) {
           </li>
         </ul>
       </div>
-      <div className="italic -mb-6">Response:</div>
+      <div className="italic">Response:</div>
       <pre className="!opacity-100 !bg-gray-100">
         <code className="language-ts">{generateSampleDataItem(collection)}</code>
       </pre>
       <p>
         The <strong>bucket/items/read</strong> API route fetches data for a multiple Items in a Collection.
       </p>
-      <div className="italic">Endpoint:</div>
+      <div className="italic -mb-4">Endpoint:</div>
       <pre className="!opacity-100 !bg-gray-100 mb-4">
         <code>/api/bucket/items/read?collectionName={collection.name}&token=123</code>
       </pre>
@@ -96,7 +96,7 @@ function CollectionDataFetch({ collection }: { collection: CollectionFetch }) {
           </li>
         </ul>
       </div>
-      <div className="italic -mb-6">Response:</div>
+      <div className="italic">Response:</div>
       <pre className="!opacity-100 !bg-gray-100">
         <code className="language-ts">{generateSampleDataItems(collection)}</code>
       </pre>

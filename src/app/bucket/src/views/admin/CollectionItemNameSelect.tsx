@@ -8,9 +8,9 @@ function CollectionItemNameSelect({ onSelect }: { onSelect: (itemName: string) =
 
   return (
     <TransitionWrapper>
-      <div className="p-12 bg-white shadow rounded border w-full max-w-[640px] mx-auto mt-8 flex flex-col justify-center items-center gap-4">
-        <Label htmlFor="itemName" className="block text-2xl font-bold text-blue-600 text-center max-w-[460px]">
-          Choose a name for how you will label the items in your collection
+      <div className="p-12 bg-white shadow rounded border w-full max-w-[540px] mx-auto mt-8 flex flex-col justify-center items-center gap-4">
+        <Label htmlFor="itemName" className="block text-2xl font-bold text-blue-600 text-center max-w-[360px]">
+          Choose a label to identify items in your collection
         </Label>
         <Input
           className="text-lg text-center h-auto py-3 max-w-[360px]"
@@ -35,7 +35,7 @@ function CollectionItemNameSelect({ onSelect }: { onSelect: (itemName: string) =
         >
           Next <span className="font-thin scale-150 relative -top-[2px] left-3">»</span>
         </Button>
-        <p className="text-sm text-center opacity-70 pt-8">Some examples of collection names are Case Study Title, Full Name, Product Name, Question or Speaker Name.</p>
+        <p className="text-sm text-center opacity-70 pt-4 max-w-[360px] mx-auto">Examples of collection item labels would be Name, Title, Full Name, Email, Product SKU, ID or Username.</p>
       </div>
     </TransitionWrapper>
   )

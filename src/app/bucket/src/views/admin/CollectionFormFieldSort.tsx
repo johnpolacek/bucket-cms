@@ -106,7 +106,9 @@ function CollectionFormFieldSort({ collections, fields, setFields }: { collectio
                       handleDeleteField={handleDeleteField}
                       collectionReferences={collections}
                     />
-                    <div className="text-xs opacity-60">The first field in your collection is for the label it will have on the Item Form, such as "Product Name", "Book Title" or "Full Name".</div>
+                    <div className="text-xs opacity-60">
+                      The item label is for the first field on the Admin Item Form. It should be a good text identifier such as "Product Name", "Book Title" or "Full Name".
+                    </div>
                   </>
                 ) : (
                   <SortableItem index={fieldIndex - 1}>
