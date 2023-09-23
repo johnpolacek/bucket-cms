@@ -147,7 +147,7 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && <ul></ul>}
               </div>
-              <div className="grow pl-12">{collectionFieldData && <CollectionDataDocumentation collection={collectionFieldData} />}</div>
+              <div className="grow pl-12 overflow-auto">{collectionFieldData && <CollectionDataDocumentation collection={collectionFieldData} />}</div>
             </div>
           </Transition>
         </div>
