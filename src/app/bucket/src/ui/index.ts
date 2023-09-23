@@ -1,5 +1,6 @@
 export * from "./accordion"
 export * from "./alert-dialog"
+export * from "./badge"
 export * from "./button"
 export * from "./input"
 export * from "./label"

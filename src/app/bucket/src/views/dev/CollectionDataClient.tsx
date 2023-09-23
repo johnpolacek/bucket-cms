@@ -2,7 +2,7 @@
 import React, { useEffect } from "react"
 import { CollectionFieldsData } from "../../types"
 import { generateSampleDataItem, generateSampleDataItems } from "../../util"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../ui"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Badge } from "../../ui"
 import Prism from "prismjs"
 import "prismjs/components/prism-typescript"
 
@@ -78,9 +78,14 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
-          <AccordionTrigger className="text-blue-600 text-xl">Update API</AccordionTrigger>
+          <AccordionTrigger className="text-blue-600 text-xl">
+            <div className="inline-flex gap-2">
+              <span>Update API</span>
+              <Badge className="scale-90 bg-black opacity-70 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
+            </div>
+          </AccordionTrigger>
           <AccordionContent>
-            <p>API route for client update data for an Item in a Collection.</p>
+            <p>API route for client update data for an Item in a Collection. Users should be required have an active authenticated session.</p>
             <div className="italic -mb-4">Endpoint:</div>
             <pre className="mb-4">
               <code className="font-bold">POST: /api/bucket/item/update</code>
