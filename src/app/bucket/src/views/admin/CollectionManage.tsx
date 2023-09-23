@@ -69,11 +69,11 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
 
       {!editItem && !loading && (
         <div className="flex items-center justify-center w-full">
-          <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="px-8">
+          <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="px-8 w-full">
             <h3 className="w-full text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
             <h4 className="w-full text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
-            <div className="grid grid-cols-2 w-full max-w-[1100px] mx-auto my-4 p-4 sm:p-12 divide-x gap-12 border rounded-xl shadow">
-              <div className="border-t">
+            <div className="flex w-full max-w-[1200px] mx-auto my-4 p-4 sm:p-12 divide-x gap-12 border rounded-xl shadow">
+              <div className="min-w-[420px] border-t">
                 {items.length === 0 && (
                   <div className="py-16 w-full text-center text-lg italic border-b">
                     <div className="pb-6 opacity-60">This collection is empty...</div>
@@ -147,15 +147,15 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && <ul></ul>}
               </div>
-              <div className="pl-12">{collectionFieldData && <CollectionDataDocumentation collection={collectionFieldData} />}</div>
+              <div className="grow pl-12">{collectionFieldData && <CollectionDataDocumentation collection={collectionFieldData} />}</div>
             </div>
           </Transition>
         </div>
       )}
 
-      {editItem && collectionFieldData && (
+      {editItem && (
         <div className="py-4">
-          <ItemForm collectionFieldData={collectionFieldData} collectionData={collectionData} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
+          <ItemForm collectionData={collectionData} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
         </div>
       )}
     </>

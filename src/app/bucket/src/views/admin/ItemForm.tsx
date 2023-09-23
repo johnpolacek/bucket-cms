@@ -9,18 +9,7 @@ import { Transition } from "@headlessui/react"
 import { isZodObjectOrArray, getDefaultDataFromSchema } from "../../util"
 import { useCollectionFieldData } from "../../hooks"
 
-function ItemForm({
-  collectionData,
-  onCancel,
-  onComplete,
-  itemToEdit,
-}: {
-  collectionFieldData: CollectionFieldsData
-  collectionData: CollectionData
-  onCancel: () => void
-  onComplete: () => void
-  itemToEdit?: CollectionItemData
-}) {
+function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collectionData: CollectionData; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
   const { collection, error } = useCollectionFieldData(collectionData) // Use the hook here
   const [formData, setFormData] = useState<ItemFormData | null>({
     collectionName: collectionData.collectionName,
