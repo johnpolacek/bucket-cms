@@ -1,4 +1,4 @@
-import { readCollectionItems } from "../../../../app/api/bucket/s3/util"
+import { readCollectionItems } from "../../../../app/api/bucket/s3/operations"
 
 interface FAQItem {
   itemId: string

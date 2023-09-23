@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { options } from "../../../../../app/bucket/options"
-import { getBucketName, readCollectionCounts } from "../../s3/util"
+import { getBucketName } from "../../s3/util"
+import { readCollectionCounts } from "../../s3/operations"
 
 export async function GET() {
   if (process.env.BLOCK_API_READ_ACCESS === "true") {

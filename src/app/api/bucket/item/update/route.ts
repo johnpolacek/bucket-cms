@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { options } from "../../../../../app/bucket/options"
-import { updateCollectionItem } from "../../s3/util"
+import { updateCollectionItem } from "../../s3/operations"
 
 export async function PUT(req: NextRequest) {
   const session = await getServerSession(options)

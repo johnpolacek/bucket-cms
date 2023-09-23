@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { options } from "../../../../../app/bucket/options"
-import { initializeS3Client, doesItemExist, getBucketName } from "../../s3/util"
+import { initializeS3Client, getBucketName } from "../../s3/util"
+import { doesItemExist } from "../../s3/operations"
 import { PutObjectCommand } from "@aws-sdk/client-s3"
 import slugify from "slugify"
 

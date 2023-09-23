@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { readCollectionItemIDs } from "../../../s3/util"
+import { readCollectionItemIDs } from "../../../s3/operations"
 
 export async function GET(req: NextRequest) {
   const collectionName = req.nextUrl.searchParams.get("collectionName")

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { readCollectionItem } from "../../s3/util"
+import { readCollectionItem } from "../../s3/operations"
 import { CollectionItemData } from "../../../../bucket/src/types"
 import { getServerSession } from "next-auth"
 import { options } from "../../../../../app/bucket/options"
