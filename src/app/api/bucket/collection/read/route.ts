@@ -7,9 +7,11 @@ import { initializeS3Client, getBucketName } from "../../s3/util"
 import { Collection } from "../../../../../app/bucket/src/types"
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(options)
-  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
-    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
+  if (process.env.BLOCK_API_READ_ACCESS === "true") {
+    const session = await getServerSession(options)
+    if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
+      return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
+    }
   }
 
   const s3 = initializeS3Client()

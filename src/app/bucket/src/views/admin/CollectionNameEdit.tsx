@@ -1,9 +1,8 @@
 "use client"
 import React, { useState } from "react"
-import { Input, Button, Label, Switch } from "../../ui"
+import { Input, Button } from "../../ui"
 import TransitionWrapper from "./TransitionWrapper"
 import { EditIcon } from "../../ui/icon/edit"
-import { CheckIcon } from "@radix-ui/react-icons"
 
 function CollectionNameEdit({ initialValue, onChange }: { initialValue: string; onChange: (collectionName: string) => void }) {
   const [collectionName, setCollectionName] = useState(initialValue)

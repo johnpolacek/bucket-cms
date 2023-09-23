@@ -18,10 +18,7 @@ export const getBucketName = async (isPublic?: boolean): Promise<string> => {
   let sandbox = ""
   let session = await getServerSession(options)
 
-  if (process.env.USE_SANDBOX === "true") {
-    if (!session || !session.user || !session.user.email) {
-      throw new Error("User email is required when USE_SANDBOX is enabled")
-    }
+  if (process.env.USE_SANDBOX === "true" && session?.user?.email) {
     sandbox = session.user.email
       .toLowerCase()
       .replace("@", "-")

@@ -15,10 +15,11 @@ function DevHome() {
       try {
         const response = await fetch("/api/bucket/collections/read")
         if (!response.ok) {
-          throw new Error("Failed to fetch collections")
+          // throw new Error("Failed to fetch collections")
+        } else {
+          const data = await response.json()
+          setCollections(data.collections)
         }
-        const data = await response.json()
-        setCollections(data.collections)
       } catch (error: any) {
         setError(error.message)
       }
