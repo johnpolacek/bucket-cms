@@ -14,6 +14,7 @@ export type View = "ADMIN" | "DEV"
 function Home(props: { view?: View; hideViewSwitch?: boolean }) {
   const [configValidation, setConfigValidation] = useState<undefined | ConfigValidation>(undefined)
   const [view, setView] = useState<View>(props.view || "ADMIN")
+  const [bucketName, setBucketName] = useState("")
   const isConfigured = Boolean(configValidation?.hasAWSSecret && configValidation?.hasAWSRegion && configValidation?.hasAWSBucket)
   const [refreshToken, setRefreshToken] = useState(0)
 
@@ -21,6 +22,7 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
 
   useEffect(() => {
     getConfigValidation()
+    getBucketName()
   }, [])
 
   const getConfigValidation = async () => {
@@ -29,8 +31,18 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
     setConfigValidation(configValidationResponseData)
   }
 
+  const getBucketName = async () => {
+    console.log("getBucketName env " + process.env.NODE_ENV)
+    const getBucketNameResponse = await fetch("/api/bucket/bucket/read")
+    const bucketData = await getBucketNameResponse.json()
+    if (bucketData.bucketName) {
+      setBucketName(bucketData.bucketName)
+    }
+  }
+
   return (
     <main className={`flex flex-col grow items-center relative w-full h-full ${isLoading && "hidden"}`}>
+      {bucketName && <div className="absolute top-2 right-4 text-xs bg-gray-200 px-2 py-1 text-black opacity-70">bucket: {bucketName}</div>}
       {error ? (
         missingBucket ? (
           <BucketNotFound bucketName={missingBucket} onBucketCreated={() => window.location.reload()} />
