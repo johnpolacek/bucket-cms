@@ -22,10 +22,9 @@ export async function POST(req: NextRequest) {
       }
 
       const collectionName = data.name
-      const isPrivate = data.isPrivate
 
       // Check if the file already exists
-      const bucketName = await getBucketName(isPrivate)
+      const bucketName = await getBucketName()
       const headCommand = new HeadObjectCommand({
         Bucket: bucketName,
         Key: `collections/${collectionName}.json`,
