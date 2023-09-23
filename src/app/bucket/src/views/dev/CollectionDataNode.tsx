@@ -1,19 +1,21 @@
 "use client"
-import React, { useEffect } from "react"
+import React from "react"
 import { CollectionFieldsData } from "../../types"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../ui"
 import Prism from "prismjs"
 import "prismjs/components/prism-typescript"
 
 function CollectionDataNode({ collection }: { collection: CollectionFieldsData }) {
-  useEffect(() => {
-    Prism.highlightAll()
-  }, [])
-
   return (
     <div className="prose max-w-[720px] prose-pre:bg-[#eee] prose-pre:text-black prose-pre:opacity-70 w-full pb-12">
       <h5 className="font-bold my-4">Server-Side Data Operations</h5>
-      <Accordion type="single" collapsible>
+      <Accordion
+        onValueChange={() => {
+          Prism.highlightAll()
+        }}
+        type="single"
+        collapsible
+      >
         <AccordionItem value="item-1">
           <AccordionTrigger className="text-blue-600 text-xl">Read</AccordionTrigger>
           <AccordionContent>
