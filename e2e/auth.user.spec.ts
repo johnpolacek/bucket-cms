@@ -13,6 +13,7 @@ test.describe("Authenticated User", () => {
   })
 
   test("can create a collection", async () => {
+    await page.pause()
     await page.getByRole("heading", { name: "Welcome!" }).click()
     await page.getByRole("button", { name: "+ Create Your First Collection" }).click()
     await page.getByPlaceholder("Enter collection name").fill("Testimonials")

@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import { Label } from "../../ui"
-import { CollectionFetch, Field, FieldBlank, SelectField } from "../../types"
+import { CollectionFieldsData, Field, FieldBlank, SelectField } from "../../types"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui"
 import * as FieldTypes from "../../field-types"
 import { generateSampleDataItem, generateTypeScriptInterface } from "../../util"
@@ -15,7 +15,7 @@ function ItemFormPreview({ collectionName, fields }: { collectionName: string; f
     Prism.highlightAll()
   }, [refresh])
 
-  const collection: CollectionFetch = {
+  const collection: CollectionFieldsData = {
     name: collectionName,
     fields,
   }

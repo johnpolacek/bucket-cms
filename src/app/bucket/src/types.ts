@@ -62,7 +62,7 @@ export interface Collection {
   fields: Field[]
 }
 
-export interface CollectionFetch extends Collection {} // If they are same, just extend. Otherwise, keep them separate.
+export interface CollectionFieldsData extends Collection {} // If they are same, just extend. Otherwise, keep them separate.
 
 export interface AvailableFieldType {
   name: string
@@ -71,7 +71,7 @@ export interface AvailableFieldType {
 
 export interface ItemFormFieldData {
   name: string
-  data: Partial<AllFieldTypes> // If you're not sure of the exact shape, use Partial
+  data: Partial<AllFieldTypes>
   options?: string[]
 }
 

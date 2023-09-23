@@ -1,3 +1,4 @@
+export * from "./useCollectionFieldData"
 export * from "./useDeleteCollectionItem"
 export * from "./useFetchCollectionItems"
 export * from "./useFetchCollectionsCount"

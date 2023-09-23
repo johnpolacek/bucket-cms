@@ -1,66 +1,52 @@
 "use client"
 import React, { useState, useEffect } from "react"
 import { Button, Label } from "../../ui"
-import { Collection, CollectionData, CollectionFetch, CollectionItemData, CollectionReferenceField, Field, ItemFormData, SelectField } from "../../types"
+import { CollectionData, CollectionFieldsData, CollectionItemData, CollectionReferenceField, Field, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { TextData } from "../../field-types/Text"
 import { Transition } from "@headlessui/react"
 import { isZodObjectOrArray, getDefaultDataFromSchema } from "../../util"
+import { useCollectionFieldData } from "../../hooks"
 
-function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collectionData: CollectionData; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
-  const [collection, setCollection] = useState<Collection | null>(null)
-  const [formData, setFormData] = useState<ItemFormData | null>({ collectionName: collectionData.collectionName, fields: [] })
+function ItemForm({
+  collectionData,
+  onCancel,
+  onComplete,
+  itemToEdit,
+}: {
+  collectionFieldData: CollectionFieldsData
+  collectionData: CollectionData
+  onCancel: () => void
+  onComplete: () => void
+  itemToEdit?: CollectionItemData
+}) {
+  const { collection, error } = useCollectionFieldData(collectionData) // Use the hook here
+  const [formData, setFormData] = useState<ItemFormData | null>({
+    collectionName: collectionData.collectionName,
+    fields: [],
+  })
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})
   const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
-    const fetchCollectionAndPopulate = async () => {
-      if (collectionData) {
-        try {
-          const response = await fetch(`/api/bucket/collection/read?collectionName=${collectionData.collectionName}`)
-          const collectionFetch: CollectionFetch = await response.json()
-
-          // collection data had a typeName reference to a key of FieldTypes
-          // we can use that to assign the FieldType to each field
-          const typedFields: Field[] = collectionFetch.fields.map((field) => {
-            const fieldTypeKey = field.typeName as keyof typeof FieldTypes
-            const fieldType = FieldTypes[fieldTypeKey]
-            return {
-              ...field,
-              type: fieldType,
-            }
-          })
-          const typedCollection: Collection = {
-            ...collectionFetch,
-            fields: typedFields,
+    if (collection && !formData?.fields.length) {
+      const initialFormData = {
+        collectionName: collection.name,
+        fields: collection.fields.map((field) => {
+          const fieldType = FieldTypes[field.typeName as keyof typeof FieldTypes]
+          const defaultData = getDefaultDataFromSchema(fieldType.schema)
+          return {
+            name: field.name,
+            data: itemToEdit?.data[field.name as keyof AllFieldTypes] || defaultData,
+            options: (field as SelectField).options || undefined,
           }
-
-          setCollection(typedCollection)
-
-          const initialFormData = {
-            collectionName: collectionFetch.name,
-            fields: collectionFetch.fields.map((field) => {
-              const fieldType = FieldTypes[field.typeName as keyof typeof FieldTypes]
-              const defaultData = getDefaultDataFromSchema(fieldType.schema)
-              return {
-                name: field.name,
-                data: itemToEdit?.data[field.name as keyof AllFieldTypes] || defaultData,
-                options: (field as SelectField).options || undefined,
-              }
-            }),
-          }
-
-          setFormData(initialFormData)
-        } catch (error: any) {
-          setErrors({ errorMessage: error.message || "Failed to load collection data" })
-        }
+        }),
       }
+      setFormData(initialFormData)
     }
-
-    fetchCollectionAndPopulate()
-  }, [collectionData.collectionName, itemToEdit])
+  }, [collection, itemToEdit])
 
   useEffect(() => {
     if (collection && formData?.fields) {
@@ -192,6 +178,7 @@ function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collec
 
   return (
     <>
+      {error && <div className="py-4 text-red-500 text-sm">{error}</div>}
       {collection && (
         <Transition appear={true} show={true} enter="transition-all duration-150" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0">
           <div className="p-8 border bg-white sm:rounded-xl shadow max-w-[480px] mx-auto">

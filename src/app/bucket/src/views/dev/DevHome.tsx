@@ -1,11 +1,11 @@
 "use client"
 import React, { useEffect, useState, useRef } from "react"
-import { CollectionFetch } from "../../types"
+import { CollectionFieldsData } from "../../types"
 import DevHomeNav from "./DevHomeNav"
 import Docs from "./Docs"
 
 function DevHome() {
-  const [collections, setCollections] = useState<CollectionFetch[]>([])
+  const [collections, setCollections] = useState<CollectionFieldsData[]>([])
   const [error, setError] = useState<string | null>(null)
   const [activeSection, setActiveSection] = useState("")
   const scrollableDivRef = useRef<HTMLDivElement>(null)

@@ -1,5 +1,5 @@
 import React from "react"
-import { CollectionFetch } from "../../types"
+import { CollectionFieldsData } from "../../types"
 import DocsSectionIntroduction from "./DocsSectionIntroduction"
 import DocsSectionCollections from "./DocsSectionCollections"
 import DocsSectionYourCollections from "./DocsSectionYourCollections"
@@ -8,7 +8,7 @@ import DocsSectionFields from "./DocsSectionFields"
 import DocsSectionFieldTypes from "./DocsSectionFieldsTypes"
 import DocsSectionItems from "./DocsSectionItems"
 
-function Docs({ collections }: { collections: CollectionFetch[] }) {
+function Docs({ collections }: { collections: CollectionFieldsData[] }) {
   return (
     <>
       <h2 className="px-8 text-sm font-semibold text-blue-500 uppercase tracking-widest">Overview</h2>

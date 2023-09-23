@@ -46,7 +46,9 @@ function DocsSectionFetchingData() {
         modify, and manage your content as you see fit.
       </p>
 
-      <h5 className="font-mono text-lg font-bold mb-2 pt-4">/api/bucket/items/read?collectionName=FAQ&token=123</h5>
+      <pre className="!opacity-80 !bg-gray-100 mb-4 text-base">
+        <code>/api/bucket/items/read?collectionName=FAQ&token=123</code>
+      </pre>
       <div>
         <span className="italic">Parameters:</span>{" "}
         <ul className="-mt-1">

@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { FieldKeys } from "./types"
-import { CollectionFetch } from "./types"
+import { CollectionFieldsData } from "./types"
 
 export function isZodObjectOrArray(schema: any): schema is z.ZodObject<any> {
   return schema && (typeof schema.shape === "object" || schema instanceof z.ZodArray)
@@ -119,7 +119,7 @@ export async function uploadFileAndGetURL(file: File): Promise<string> {
   }
 }
 
-export const generateSampleDataItems = (collection: CollectionFetch) => {
+export const generateSampleDataItems = (collection: CollectionFieldsData) => {
   const itemsData = collection.fields.map((field: any) => {
     if (field.typeName === "Text") {
       return { [field.name]: { value: "A plain text string." } }
@@ -148,7 +148,7 @@ export const generateSampleDataItems = (collection: CollectionFetch) => {
   )
 }
 
-export const generateSampleDataItem = (collection: CollectionFetch) => {
+export const generateSampleDataItem = (collection: CollectionFieldsData) => {
   const itemsData = collection.fields.map((field: any) => {
     if (field.typeName === "Text") {
       return { [field.name]: { value: "A plain text string." } }
@@ -172,7 +172,7 @@ export const generateSampleDataItem = (collection: CollectionFetch) => {
   )
 }
 
-export const generateTypeScriptInterface = (collection: CollectionFetch) => {
+export const generateTypeScriptInterface = (collection: CollectionFieldsData) => {
   const fieldsData = collection.fields.map((field: any) => {
     if (field.typeName === "Text" || field.typeName === "Email") {
       return `    ${field.name}: { value: string; }`
@@ -186,9 +186,13 @@ export const generateTypeScriptInterface = (collection: CollectionFetch) => {
 
   const fieldsInterface = fieldsData.join("\n")
 
-  return `interface CollectionItem {
-  itemId: string;
-  itemName: string;
+  return `interface CollectionItemData {
+  itemId: string
+  itemName: string
+  data: AllFieldTypes[] // union of all possible field types
+}
+
+interface ${collection.name.split(" ").join("")}ItemData extends CollectionItemData {
   data: {
 ${fieldsInterface}
   };

@@ -6,9 +6,12 @@ function ContactForm() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     try {
       const response = await fetch("/api/bucket/contact", {
         method: "POST",
@@ -25,10 +28,11 @@ function ContactForm() {
       if (!response.ok) {
         throw new Error("Network response was not ok")
       }
-      // Handle success (e.g. show a success message, redirect, etc.)
+      setSuccess(true) // Set success to true on successful form submission
     } catch (error) {
-      // Handle error (e.g. show an error message)
       console.error("There was an error:", error)
+    } finally {
+      setLoading(false) // Set loading to false once form submission is complete
     }
   }
 
@@ -55,10 +59,18 @@ function ContactForm() {
         </div>
       </div>
       <div className="w-full flex justify-end">
-        <Button className="h-auto text-xl py-3 px-8" type="submit">
-          Send to Bucket
-        </Button>
+        {loading ? (
+          <Button className="h-auto text-xl py-3 px-8" type="button" disabled>
+            Sending...
+          </Button>
+        ) : (
+          <Button className="h-auto text-xl py-3 px-8" type="submit">
+            Send to Bucket
+          </Button>
+        )}
       </div>
+
+      {success && <div className="mt-4 text-green-500">Your message has been sent successfully!</div>}
     </form>
   )
 }

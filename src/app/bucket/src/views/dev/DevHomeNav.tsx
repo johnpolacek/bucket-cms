@@ -1,7 +1,7 @@
 import React from "react"
-import { CollectionFetch } from "../../types"
+import { CollectionFieldsData } from "../../types"
 
-function DevHomeNav({ collections, activeSection }: { collections: CollectionFetch[]; activeSection: string }) {
+function DevHomeNav({ collections, activeSection }: { collections: CollectionFieldsData[]; activeSection: string }) {
   return (
     <nav className="hidden sm:block py-8 pl-10 pr-16 border-r max-w-[320px] bg-gray-50">
       <h2 className="text-xs uppercase font-bold tracking-widest pb-6">Bucket CMS Docs</h2>

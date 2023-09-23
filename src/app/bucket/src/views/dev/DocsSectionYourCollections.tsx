@@ -1,9 +1,9 @@
 import React from "react"
-import { CollectionFetch } from "../../types"
+import { CollectionFieldsData } from "../../types"
 import CollectionData from "./CollectionData"
 import DocsSectionFetchingData from "./DocsSectionFetchingData"
 
-function DocsSectionYourCollections({ collections }: { collections: CollectionFetch[] }) {
+function DocsSectionYourCollections({ collections }: { collections: CollectionFieldsData[] }) {
   return (
     <>
       <DocsSectionFetchingData />

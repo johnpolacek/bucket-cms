@@ -4,9 +4,11 @@ import ItemForm from "./ItemForm"
 import { Button } from "../../ui"
 import { CollectionData, CollectionItemData } from "../../types"
 import { Transition } from "@headlessui/react"
-import { useDeleteCollectionItem, useFetchCollectionItems } from "../../hooks"
+import { useCollectionFieldData, useDeleteCollectionItem, useFetchCollectionItems } from "../../hooks"
+import CollectionDataDocumentation from "../dev/CollectionDataDocumentation"
 
 function CollectionManage({ collectionData, onFinish, onCreateItem }: { collectionData: CollectionData; onFinish: () => void; onCreateItem: (collection: CollectionData) => void }) {
+  const { collection: collectionFieldData, error: collectionError } = useCollectionFieldData(collectionData)
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
   const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
@@ -67,18 +69,11 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
 
       {!editItem && !loading && (
         <div className="flex items-center justify-center w-full">
-          <Transition
-            appear={true}
-            show={true}
-            enter="transition-all duration-300"
-            enterFrom="opacity-0 translate-y-4"
-            enterTo="opacity-100 translate-y-0"
-            className="my-8 bg-white p-4 sm:p-8 sm:rounded-xl shadow"
-          >
-            <div>
-              <h3 className="text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
-              <h4 className="text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
-              <div className="border-t sm:min-w-[480px]">
+          <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="px-8">
+            <h3 className="w-full text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
+            <h4 className="w-full text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
+            <div className="grid grid-cols-2 w-full max-w-[1100px] mx-auto my-4 p-4 sm:p-12 divide-x gap-12 border rounded-xl shadow">
+              <div className="border-t">
                 {items.length === 0 && (
                   <div className="py-16 w-full text-center text-lg italic border-b">
                     <div className="pb-6 opacity-60">This collection is empty...</div>
@@ -152,14 +147,15 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && <ul></ul>}
               </div>
+              <div className="pl-12">{collectionFieldData && <CollectionDataDocumentation collection={collectionFieldData} />}</div>
             </div>
           </Transition>
         </div>
       )}
 
-      {editItem && (
+      {editItem && collectionFieldData && (
         <div className="py-4">
-          <ItemForm collectionData={collectionData} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
+          <ItemForm collectionFieldData={collectionFieldData} collectionData={collectionData} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
         </div>
       )}
     </>
