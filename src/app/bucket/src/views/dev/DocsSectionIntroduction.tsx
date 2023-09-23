@@ -10,8 +10,8 @@ function DocsSectionIntroduction() {
         <a className="text-blue-600" href="https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/">
           Amazon S3
         </a>
-        , designed for public-facing Next.js websites. Using a single S3 bucket for all your content storage needs simplifies the traditional CMS architecture by eliminating the need for complex
-        server setups and databases. As a result, content retrieval is faster due to the absence of database queries, and the global reach of S3 ensures consistent delivery speeds.
+        , designed for Next.js sites. Using a single S3 bucket for all your content storage needs simplifies the traditional CMS architecture by eliminating the need for complex server setups and
+        databases. As a result, content retrieval is faster due to the absence of database queries, and the global reach of S3 ensures consistent delivery speeds.
       </p>
       <p>
         The system scales with the demands of the website, benefiting from S3's scalability and security features. With built-in versioning in S3, changes are tracked, providing a mechanism for data
