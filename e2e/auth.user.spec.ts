@@ -23,8 +23,6 @@ test.describe("Authenticated User", () => {
     await page.getByPlaceholder("Enter field name").press("Enter")
     await page.getByRole("button", { name: "Tt Text A plain text field" }).click()
     await page.getByRole("heading", { name: "Testimonials" }).click()
-    await page.getByText("Item Label").click()
-    await page.getByLabel("Item Label").click()
     await page.getByRole("button", { name: "+ Add Field" }).click()
     await page.getByPlaceholder("Enter field name").fill("Photo")
     await page.getByRole("button", { name: "Next" }).click()
