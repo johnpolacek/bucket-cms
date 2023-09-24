@@ -1,3 +1,4 @@
+export * from "./createCollectionItem"
 export * from "./doesItemExist"
 export * from "./readCollectionCounts"
 export * from "./readCollectionItem"

@@ -80,12 +80,51 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
         <AccordionItem value="item-2">
           <AccordionTrigger className="text-blue-600 text-xl">
             <div className="inline-flex gap-2">
+              <span>Create API</span>
+              <Badge className="scale-90 bg-black opacity-70 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent>
+            <p>API route for client to create a new Item in a Collection. Users are required have an active authenticated session.</p>
+            <div className="italic -mb-4">Endpoint:</div>
+            <pre className="mb-4">
+              <code className="font-bold">POST: /api/bucket/item/create</code>
+            </pre>
+            <div>
+              <span className="italic">Parameters:</span>{" "}
+              <ul className="-mt-1">
+                <li>
+                  <span className="bg-gray-100 rounded font-mono text-sm p-1">collectionName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
+                  Collection ("{collection.name}")
+                </li>
+                <li>
+                  <span className="bg-gray-100 rounded font-mono text-sm p-1">itemName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
+                  {collection.name} Item
+                </li>
+                <li>
+                  <span className="bg-gray-100 rounded font-mono text-sm p-1">data</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">Field[]</span> - An array of field data for{" "}
+                  {collection.name}
+                </li>
+              </ul>
+            </div>
+            <div className="italic">Response:</div>
+            <pre className="!opacity-100 !bg-gray-100">
+              <code className="language-ts">{`{
+  "success": true,
+  "itemId": "item-name-slug"
+}`}</code>
+            </pre>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger className="text-blue-600 text-xl">
+            <div className="inline-flex gap-2">
               <span>Update API</span>
               <Badge className="scale-90 bg-black opacity-70 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
             </div>
           </AccordionTrigger>
           <AccordionContent>
-            <p>API route for client update data for an Item in a Collection. Users should be required have an active authenticated session.</p>
+            <p>API route for client to update Item data in a Collection. Users are required have an active authenticated session.</p>
             <div className="italic -mb-4">Endpoint:</div>
             <pre className="mb-4">
               <code className="font-bold">POST: /api/bucket/item/update</code>

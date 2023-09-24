@@ -16,7 +16,7 @@ function CollectionDataNode({ collection }: { collection: CollectionFieldsData }
         type="single"
         collapsible
       >
-        <AccordionItem value="item-1">
+        <AccordionItem value="read">
           <AccordionTrigger className="text-blue-600 text-xl">Read</AccordionTrigger>
           <AccordionContent>
             <p>
@@ -60,7 +60,38 @@ function CollectionDataNode({ collection }: { collection: CollectionFieldsData }
             <p className="italic">Returns: CollectionItemData[]</p>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-2">
+        <AccordionItem value="create">
+          <AccordionTrigger className="text-blue-600 text-xl">Create</AccordionTrigger>
+          <AccordionContent>
+            <p>
+              The <strong>createCollectionItem</strong> utility adds a new Item to a Collection.
+            </p>
+            <pre className="!opacity-100 !bg-gray-100">
+              <code className="language-ts">{`const result = await creteCollectionItem("${collection.name}", "Your Item Name", data")`}</code>
+            </pre>
+            <div>
+              <span className="italic">Parameters:</span>{" "}
+              <ul className="-mt-1">
+                <li>
+                  <span className="bg-gray-100 rounded font-mono text-sm p-1">collectionName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
+                  Collection
+                </li>
+                <li>
+                  <span className="bg-gray-100 rounded font-mono text-sm p-1">itemName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The value for the name of
+                  the Item
+                </li>
+                <li>
+                  <span className="bg-gray-100 rounded font-mono text-sm p-1">data</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">Field[]</span> - An array of field data for the
+                  Item
+                </li>
+              </ul>
+            </div>
+            <p className="italic">
+              Returns: <code>{`{ success: boolean, itemId: string}`}</code>
+            </p>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="update">
           <AccordionTrigger className="text-blue-600 text-xl">Update</AccordionTrigger>
           <AccordionContent>
             <p>
