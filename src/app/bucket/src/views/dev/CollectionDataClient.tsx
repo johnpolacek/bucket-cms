@@ -17,7 +17,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
         type="single"
         collapsible
       >
-        <AccordionItem value="item-1">
+        <AccordionItem value="read">
           <AccordionTrigger className="text-blue-600 text-xl">Read API</AccordionTrigger>
           <AccordionContent>
             <p>
@@ -77,7 +77,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
             </pre>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-2">
+        <AccordionItem value="create">
           <AccordionTrigger className="text-blue-600 text-xl">
             <div className="inline-flex gap-2">
               <span>Create API</span>
@@ -116,7 +116,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
             </pre>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-2">
+        <AccordionItem value="update">
           <AccordionTrigger className="text-blue-600 text-xl">
             <div className="inline-flex gap-2">
               <span>Update API</span>
