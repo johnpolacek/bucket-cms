@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { options } from "../../../../../app/bucket/options"
-import { initializeS3Client, getBucketName } from "../../s3/util"
 import { createCollectionItem } from "../../s3/operations"
 
 export async function POST(req: NextRequest) {
@@ -9,8 +8,6 @@ export async function POST(req: NextRequest) {
   if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
     return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
   }
-
-  const s3 = initializeS3Client()
 
   try {
     const { itemName, collectionName, data } = await req.json()
