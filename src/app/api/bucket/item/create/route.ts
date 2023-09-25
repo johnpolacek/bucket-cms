@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Validation failed", errors: newErrors }, { status: 400 })
     }
 
-    // If validation succeeds, proceed to create the collection item
+    // If validation succeeds, create the collection item
     const result = await createCollectionItem(collectionName, itemName, data)
 
     return NextResponse.json(result, { status: 200 })

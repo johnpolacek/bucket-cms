@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, ReactElement } from "react"
 import { FieldType, FieldTypeProps } from "../types"
 import { Label, Input, Button } from "../ui"
