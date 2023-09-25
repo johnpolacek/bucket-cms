@@ -26,7 +26,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 pt-8 my-16 max-w-[1000px] mx-auto px-4">
+        <div className="grid grid-cols-2 pt-8 my-8 max-w-[1000px] mx-auto px-4 relative -left-[5%]">
           <div className="flex flex-col gap-8 justify-center pb-8 pr-12">
             <h3 className="text-3xl font-bold text-blue-600">The Drop-In Headless CMS: No Database, No Problem.</h3>
             <p className="text-lg opacity-70">
@@ -46,7 +46,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 pt-8 my-16 max-w-[1300px] mx-auto px-4">
+        <div className="grid grid-cols-3 pt-8 my-8 max-w-[1300px] mx-auto px-4 relative -left-[5%]">
           <div className="w-[640px] col-span-2 border-4 border-blue-100 rounded-lg overflow-hidden mx-auto opacity-80">
             <video width="100%" height="100%" loop muted autoPlay playsInline>
               <source src="https://s3.amazonaws.com/bucket-cms/bucket-cms-own-your-data.mp4" type="video/mp4" />
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 pt-8 my-16 max-w-[1000px] mx-auto px-4">
+        <div className="grid grid-cols-2 pt-8 my-8 max-w-[1000px] mx-auto px-4 relative -left-[5%]">
           <div className="flex flex-col gap-8 justify-center pb-8 pr-12">
             <h3 className="text-3xl font-bold text-blue-600">
               Integrate Bucket CMS <br />
