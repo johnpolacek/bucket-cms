@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { options } from "../../../../../app/bucket/options"
-import { GetObjectCommand } from "@aws-sdk/client-s3"
-import { Readable } from "stream"
-import { initializeS3Client, getBucketName } from "../../s3/util"
+import { readCollectionSchema } from "../../s3/operations"
 import { Collection } from "../../../../../app/bucket/src/types"
 
 export async function GET(req: NextRequest) {
@@ -14,8 +12,6 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  const s3 = initializeS3Client()
-
   // Extracting collectionName from the query parameters
   const collectionName = req.nextUrl.searchParams.get("collectionName")
 
@@ -24,32 +20,15 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const bucketName = await getBucketName()
-    const command = new GetObjectCommand({
-      Bucket: bucketName,
-      Key: `collections/${collectionName}.json`,
-    })
+    const collection: Collection | null = await readCollectionSchema(collectionName)
 
-    const { Body } = await s3.send(command)
-
-    if (Body instanceof Readable) {
-      const data = await new Promise<string>((resolve, reject) => {
-        const chunks: any[] = []
-        Body.on("data", (chunk) => chunks.push(chunk))
-        Body.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")))
-        Body.on("error", reject)
-      })
-
-      const jsonData: Collection = JSON.parse(data)
-      return NextResponse.json(jsonData, { status: 200 })
+    if (!collection) {
+      throw new Error("Collection not found")
     }
 
-    return NextResponse.json({ error: "Failed to retrieve collection data" }, { status: 500 })
-  } catch (error) {
-    if (typeof error === "object" && error !== null && "code" in error && error.code === "NoSuchKey") {
-      return NextResponse.json({ error: "Collection not found" }, { status: 404 })
-    } else {
-      return NextResponse.json({ error: `Failed to retrieve collection: ${String(error)}` }, { status: 500 })
-    }
+    return NextResponse.json(collection, { status: 200 })
+  } catch (error: any) {
+    console.error(error)
+    return NextResponse.json({ error: `Failed to retrieve collection: ${String(error.message || error)}` }, { status: 500 })
   }
 }
