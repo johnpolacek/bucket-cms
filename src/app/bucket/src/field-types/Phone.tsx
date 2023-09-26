@@ -32,7 +32,7 @@ export const Phone: FieldType<PhoneData> = {
             onChange={(e) => setData && setData({ ...data, countryCode: e.target.value })}
           />
         </div>
-        <Input className="grow" type="tel" placeholder="" defaultValue={data?.phoneNumber || ""} onChange={(e) => setData && setData({ ...data, phoneNumber: e.target.value })} />
+        <Input className="grow" maxLength={10} type="tel" placeholder="" defaultValue={data?.phoneNumber || ""} onChange={(e) => setData && setData({ ...data, phoneNumber: e.target.value })} />
       </div>
     )
   },

@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { Collection, ItemFormData } from "../types"
+import { Collection, ItemFormData, ItemFormFieldData } from "../types"
 import * as FieldTypes from "../field-types"
 
 interface ValidationResponse {
@@ -11,7 +11,7 @@ export function isZodObjectOrArray(schema: any): schema is z.ZodObject<any> {
   return schema && (typeof schema.shape === "object" || schema instanceof z.ZodArray)
 }
 
-export const validateFields = (formData: ItemFormData, collection: Collection | null | undefined): ValidationResponse => {
+export function validateFields(formData: ItemFormData, collection: Collection | null | undefined): ValidationResponse {
   let allFieldsValid = true
   const newErrors: string[] = []
 
@@ -27,7 +27,15 @@ export const validateFields = (formData: ItemFormData, collection: Collection | 
     const fieldTypeSchema = FieldTypes[fieldType as keyof typeof FieldTypes]?.schema
     if (fieldTypeSchema) {
       try {
-        fieldTypeSchema.parse(field.data)
+        const validationResult = fieldTypeSchema.safeParse(field.data)
+        if (validationResult.success) {
+          return { isValid: true }
+        } else {
+          return {
+            isValid: false,
+            errorMessage: validationResult.error.issues[0]?.message || "Invalid data",
+          }
+        }
         // validation successful
       } catch (error: any) {
         allFieldsValid = false
