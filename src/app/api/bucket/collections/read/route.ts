@@ -9,19 +9,17 @@ export async function GET() {
     return response
   }
 
-  const bucketNamePrivate = await getBucketName(false)
-  const bucketNamePublic = await getBucketName(true)
+  const bucketName = await getBucketName()
 
   try {
-    const collectionsPublic = await readCollections(bucketNamePublic)
-    const collectionsPrivate = await readCollections(bucketNamePrivate)
+    const collections = await readCollections(bucketName)
 
-    return NextResponse.json({ collections: [...collectionsPublic, ...collectionsPrivate] }, { status: 200 })
+    return NextResponse.json({ collections }, { status: 200 })
   } catch (error: any) {
     console.error("Error fetching collections from S3:", error) // Log the error for debugging
 
     if (error.name === "NoSuchBucket") {
-      return NextResponse.json({ error: { message: "The specified bucket does not exist", bucketNamePublic } }, { status: 400 })
+      return NextResponse.json({ error: { message: "The specified bucket does not exist", bucketName } }, { status: 400 })
     }
 
     return NextResponse.json({ error: error.message || "Failed to fetch collections" }, { status: 500 }) // Return the error message
