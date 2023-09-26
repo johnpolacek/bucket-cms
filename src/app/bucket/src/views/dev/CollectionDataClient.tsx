@@ -18,7 +18,13 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
         collapsible
       >
         <AccordionItem value="read">
-          <AccordionTrigger className="text-blue-600 text-xl">Read API</AccordionTrigger>
+          <AccordionTrigger className="text-blue-600 text-xl hover:no-underline">
+            <div className="inline-flex gap-2">
+              <span className="hover:underline">Read API</span>
+              <Badge className="scale-90 bg-green-500 hover:bg-green-500 hover:no-underline !no-underline">Public</Badge>
+              <span className="pt-1 text-sm text-gray-500">Users do not need be logged in to use this API</span>
+            </div>
+          </AccordionTrigger>
           <AccordionContent>
             <p>
               API route for client to fetch data for a{" "}
@@ -78,10 +84,11 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="create">
-          <AccordionTrigger className="text-blue-600 text-xl">
+          <AccordionTrigger className="text-blue-600 text-xl hover:no-underline">
             <div className="inline-flex gap-2">
-              <span>Create API</span>
-              <Badge className="scale-90 bg-black opacity-70 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
+              <span className="hover:underline">Create API</span>
+              <Badge className="scale-90 bg-black opacity-60 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
+              <span className="pt-1 text-sm text-gray-500">Users must be logged in to use this API</span>
             </div>
           </AccordionTrigger>
           <AccordionContent>
@@ -120,7 +127,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
           <AccordionTrigger className="text-blue-600 text-xl">
             <div className="inline-flex gap-2">
               <span>Update API</span>
-              <Badge className="scale-90 bg-black opacity-70 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
+              <Badge className="scale-90 bg-black opacity-60 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
             </div>
           </AccordionTrigger>
           <AccordionContent>
