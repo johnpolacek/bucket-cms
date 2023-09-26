@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server"
-import { checkPrivateWriteAccess } from "../../../../../app/bucket/src/util"
+import { checkPublicWriteAccess } from "../../../../../app/bucket/src/util"
 import { readCollectionSchema, updateCollectionItem } from "../../s3/operations"
 import { validateFields } from "../../../../../app/bucket/src/util"
 
 export async function PUT(req: NextRequest) {
   if (req.method === "PUT") {
     try {
-      const { error, response } = await checkPrivateWriteAccess(collectionName)
+      const json = await req.json()
+      const { collectionName, itemName, data, itemId } = json
+
+      const { error, response } = await checkPublicWriteAccess(collectionName)
       if (error) {
         return response
       }
-
-      const json = await req.json()
-      const { collectionName, itemName, data, itemId } = json
 
       // Fetch the collection schema
       const collection = await readCollectionSchema(collectionName)
