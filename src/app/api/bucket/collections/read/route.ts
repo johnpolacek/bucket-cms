@@ -16,7 +16,7 @@ export async function GET() {
 
     return NextResponse.json({ collections }, { status: 200 })
   } catch (error: any) {
-    console.error("Error fetching collections from S3:", error) // Log the error for debugging
+    console.error("Error fetching collections from S3:", error)
 
     if (error.name === "NoSuchBucket") {
       return NextResponse.json({ error: { message: "The specified bucket does not exist", bucketName } }, { status: 400 })
