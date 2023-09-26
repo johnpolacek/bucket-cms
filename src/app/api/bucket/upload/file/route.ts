@@ -1,27 +1,20 @@
-import { getServerSession } from "next-auth"
-import { options } from "../../../../../app/bucket/options"
 import { NextRequest, NextResponse } from "next/server"
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 import { ALLOWED_MIME_TYPES } from "../../s3/allowed-mime-types"
-import { getBucketName } from "../../s3/util"
-
-const s3 = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
-  },
-})
+import { initializeS3Client, getBucketName } from "../../s3/util"
+import { checkPublicUploadAccess } from "@/app/bucket/src/util"
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024 // 20 MB
 
 export async function POST(req: NextRequest) {
+  const s3 = initializeS3Client()
+
   const formData = await req.formData()
   const file = formData.get("file")
 
-  const session = await getServerSession(options)
-  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
-    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
+  const { error, response } = await checkPublicUploadAccess()
+  if (error) {
+    return response
   }
 
   if (!file) {

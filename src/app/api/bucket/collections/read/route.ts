@@ -1,15 +1,12 @@
-import { getServerSession } from "next-auth/next"
-import { options } from "../../../../../app/bucket/options"
-import { NextRequest, NextResponse } from "next/server"
+import { checkPublicReadAccess } from "../../../../bucket/src/util"
+import { NextResponse } from "next/server"
 import { getBucketName } from "../../s3/util"
 import { readCollections } from "../../s3/operations"
 
-export async function GET(req: NextRequest) {
-  if (process.env.BLOCK_API_READ_ACCESS === "true") {
-    const session = await getServerSession(options)
-    if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
-      return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
-    }
+export async function GET() {
+  const { error, response } = await checkPublicReadAccess()
+  if (error) {
+    return response
   }
 
   const bucketNamePrivate = await getBucketName(false)

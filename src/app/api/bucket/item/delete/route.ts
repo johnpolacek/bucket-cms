@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { getServerSession } from "next-auth"
-import { options } from "../../../../../app/bucket/options"
+import { checkPrivateWriteAccess } from "@/app/bucket/src/util"
 import { initializeS3Client, getBucketName } from "../../s3/util"
 
 export async function DELETE(req: NextRequest) {
-  const session = await getServerSession(options)
-  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
-    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
+  const { error, response } = await checkPrivateWriteAccess()
+  if (error) {
+    return response
   }
 
   const s3 = initializeS3Client()

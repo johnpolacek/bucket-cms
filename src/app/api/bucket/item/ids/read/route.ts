@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { readCollectionItemIDs } from "../../../s3/operations"
+import { checkPublicReadAccess } from "@/app/bucket/src/util"
 
 export async function GET(req: NextRequest) {
   const collectionName = req.nextUrl.searchParams.get("collectionName")
@@ -7,6 +8,11 @@ export async function GET(req: NextRequest) {
 
   if (!collectionName) {
     return NextResponse.json({ error: "Collection name is required as a query parameter" }, { status: 400 })
+  }
+
+  const { error, response } = await checkPublicReadAccess(collectionName)
+  if (error) {
+    return response
   }
 
   try {

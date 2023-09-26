@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { options } from "../../../../../app/bucket/options"
 import { initializeS3Client, getBucketName } from "../../s3/util"
+import { checkPrivateWriteAccess } from "@/app/bucket/src/util"
 import { CreateBucketCommand, DeletePublicAccessBlockCommand, PutBucketPolicyCommand } from "@aws-sdk/client-s3"
 
 export async function POST(req: NextRequest) {
-  const s3 = initializeS3Client()
-
-  const session = await getServerSession(options)
-  if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
-    return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
+  const { error, response } = await checkPrivateWriteAccess()
+  if (error) {
+    return response
   }
+
+  const s3 = initializeS3Client()
 
   if (req.method === "POST") {
     try {

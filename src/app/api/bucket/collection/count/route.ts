@@ -1,24 +1,21 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getServerSession } from "next-auth"
-import { options } from "../../../../../app/bucket/options"
+import { checkPublicReadAccess } from "@/app/bucket/src/util"
 import { ListObjectsV2Command } from "@aws-sdk/client-s3"
 import { initializeS3Client, getBucketName } from "../../s3/util"
 
 export async function GET(req: NextRequest) {
-  if (process.env.BLOCK_API_READ_ACCESS === "true") {
-    const session = await getServerSession(options)
-    if ((process.env.NODE_ENV !== "development" || process.env.USE_SANDBOX === "true") && !session?.user) {
-      return NextResponse.json({ error: `Not Authorized` }, { status: 401 })
-    }
-  }
-  const s3 = initializeS3Client()
-
-  // Extracting collectionName from the query parameters
   const collectionName = req.nextUrl.searchParams.get("collectionName")
 
   if (!collectionName) {
     return NextResponse.json({ error: "Collection name is required as a query parameter" }, { status: 400 })
   }
+
+  const { error, response } = await checkPublicReadAccess(collectionName)
+  if (error) {
+    return response
+  }
+
+  const s3 = initializeS3Client()
 
   try {
     const bucketName = await getBucketName()
