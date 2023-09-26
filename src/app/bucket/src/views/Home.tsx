@@ -32,7 +32,6 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
   }
 
   const getBucketName = async () => {
-    console.log("getBucketName env " + process.env.NODE_ENV)
     const getBucketNameResponse = await fetch("/api/bucket/bucket/read")
     const bucketData = await getBucketNameResponse.json()
     if (bucketData.bucketName) {

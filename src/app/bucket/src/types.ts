@@ -90,3 +90,8 @@ export interface CollectionData {
   collectionName: string
   itemCount: number
 }
+\
+export interface CollectionAccessSettings {
+  publicBlockRead: string[]
+  publicAllowWrite: string[]
+}
