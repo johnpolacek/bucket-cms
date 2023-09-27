@@ -6,12 +6,14 @@ import { CollectionData, CollectionItemData } from "../../types"
 import { Transition } from "@headlessui/react"
 import { useCollectionFieldData, useDeleteCollectionItem, useFetchCollectionItems } from "../../hooks"
 import CollectionDataDocumentation from "../dev/CollectionDataDocumentation"
+import { cn } from "../../ui/utils"
 
 function CollectionManage({ collectionData, onFinish, onCreateItem }: { collectionData: CollectionData; onFinish: () => void; onCreateItem: (collection: CollectionData) => void }) {
   const { collection: collectionFieldData, error: collectionError } = useCollectionFieldData(collectionData)
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
   const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
+  const [showDocs, setShowDocs] = useState(true)
 
   const { items, loading, error, refresh } = useFetchCollectionItems(collectionData)
   const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionData)
@@ -72,8 +74,8 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
           <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="px-8 w-full">
             <h3 className="w-full text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
             <h4 className="w-full text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
-            <div className="flex w-full max-w-[1200px] mx-auto my-4 p-4 sm:p-12 divide-x gap-12 border rounded-xl shadow">
-              <div className="min-w-[420px] border-t">
+            <div className={cn("flex w-full max-w-[1280px] mx-auto my-4 p-4 sm:p-12 divide-x border rounded-xl shadow transition-all ease-in-out", showDocs ? "gap-12" : "gap-8")}>
+              <div className={cn("border-t transition-all ease-in-out", showDocs ? "w-1/2 grow" : "w-full grow")}>
                 {items.length === 0 && (
                   <div className="py-16 w-full text-center text-lg italic border-b">
                     <div className="pb-6 opacity-60">This collection is empty...</div>
@@ -147,7 +149,22 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && <ul></ul>}
               </div>
-              <div className="grow pl-12 overflow-auto">{collectionFieldData && <CollectionDataDocumentation collection={collectionFieldData} />}</div>
+              <div className={cn("pl-12 overflow-auto relative transition-all ease-in-out", showDocs ? "grow" : "shrink")}>
+                <Button onClick={() => setShowDocs(!showDocs)} variant="outline" className={cn("top-0 text-gray-600", showDocs ? "absolute right-2" : "relative justify-start right-6")}>
+                  {showDocs ? (
+                    <>
+                      <span>hide docs </span>
+                      <span className="font-light text-xl relative -right-1 -top-px">»</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-light text-xl relative -left-1 -top-px">«</span>
+                      <span className="whitespace-nowrap"> show docs</span>
+                    </>
+                  )}
+                </Button>
+                {collectionFieldData && showDocs && <CollectionDataDocumentation collection={collectionFieldData} />}
+              </div>
             </div>
           </Transition>
         </div>
