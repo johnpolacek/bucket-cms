@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { FieldKeys, CollectionFieldsData } from "../types"
+import { Field, FieldKeys, CollectionFieldsData, SelectField } from "../types"
 
 export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any {
   if (!schema) {
@@ -19,7 +19,9 @@ export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any 
   } else if (schema instanceof z.ZodString) {
     return ""
   } else if (schema instanceof z.ZodNumber) {
-    return null // or 0, or undefined, depending on your needs
+    return null
+  } else if (schema instanceof z.ZodBoolean) {
+    return true
   } else if (schema instanceof z.ZodArray) {
     return []
   } else if ((schema as any) instanceof z.ZodEffects) {
@@ -68,27 +70,26 @@ export const getFieldTypeDisplayName = (fieldType: FieldKeys): string => {
   return fieldType
 }
 
+export const generateSamplePostDataItems = (collection: CollectionFieldsData) => {
+  return JSON.stringify(
+    {
+      collectionName: collection.name,
+      itemName: `Your Item name`,
+      data: collection.fields.map(generateSampleItemFieldData),
+    },
+    null,
+    2
+  )
+}
+
 export const generateSampleDataItems = (collection: CollectionFieldsData) => {
-  const itemsData = collection.fields.map((field: any) => {
-    if (field.typeName === "Text") {
-      return { [field.name]: { value: "A plain text string." } }
-    } else if (field.typeName === "RichText") {
-      return { [field.name]: { value: "<p>A <strong>rich</strong> <em>text</em> string.</p>" } }
-    } else {
-      // You can add more field types here as needed
-      return { [field.name]: { value: "Sample value for " + field.typeName } }
-    }
-  })
-
-  const mergedData = itemsData.reduce((acc, item) => ({ ...acc, ...item }), {})
-
   return JSON.stringify(
     {
       items: [
         {
           itemId: "123",
-          itemName: `Your ${collection.name} Item name`,
-          data: mergedData,
+          itemName: `Your Item name`,
+          data: collection.fields.map(generateSampleItemFieldData),
         },
       ],
     },
@@ -98,38 +99,74 @@ export const generateSampleDataItems = (collection: CollectionFieldsData) => {
 }
 
 export const generateSampleDataItem = (collection: CollectionFieldsData) => {
-  const itemsData = collection.fields.map((field: any) => {
-    if (field.typeName === "Text") {
-      return { [field.name]: { value: "A plain text string." } }
-    } else if (field.typeName === "RichText") {
-      return { [field.name]: { value: "<p>A <strong>rich</strong> <em>text</em> string.</p>" } }
-    } else {
-      // You can add more field types here as needed
-      return { [field.name]: { value: "Sample value for " + field.typeName } }
-    }
-  })
-
-  const mergedData = itemsData.reduce((acc, item) => ({ ...acc, ...item }), {})
-
   return JSON.stringify(
     {
-      itemName: `Your ${collection.name} Item name`,
-      data: mergedData,
+      itemName: `Your Item name`,
+      data: collection.fields.map(generateSampleItemFieldData),
     },
     null,
     2
   )
 }
 
+const generateSampleItemFieldData = (field: Field, index: number) => {
+  if (index === 0) {
+    return { [field.name]: { value: "Your Item Name" } }
+  } else if (field.typeName === "Text") {
+    return { [field.name]: { value: "A plain text string." } }
+  } else if (field.typeName === "RichText") {
+    return { [field.name]: { value: "<p>A <strong>rich</strong> <em>text</em> string.</p>" } }
+  } else if (field.typeName === "Email") {
+    return { [field.name]: { value: "user@email.com" } }
+  } else if (field.typeName === "Phone") {
+    return { [field.name]: { countryCode: "1", phoneNumber: "2223334444" } }
+  } else if (field.typeName === "Address") {
+    return { [field.name]: { street: "123 Main Street", city: "Springfield", state: "IL", postalCode: "60001", country: "United States" } }
+  } else {
+    // You can add more field types here as needed
+    return { [field.name]: { value: "Sample value for " + field.typeName } }
+  }
+}
+
 export const generateTypeScriptInterface = (collection: CollectionFieldsData) => {
-  const fieldsData = collection.fields.map((field: any) => {
+  const fieldsData = collection.fields.map((field: Field) => {
+    console.log(field.typeName)
     if (field.typeName === "Text" || field.typeName === "Email") {
-      return `    ${field.name}: { value: string; }`
+      return `    '${field.name}': { value: string; }`
     } else if (field.typeName === "RichText") {
-      return `    ${field.name}: { value: string; }` // This can be changed to a richer type if you have one for RichText
+      return `    '${field.name}': { value: string; }`
+    } else if (field.typeName === "DateField") {
+      return `    '${field.name}': { value: Date; }`
+    } else if (field.typeName === "Labels") {
+      return `    '${field.name}': { value: string[]; }`
+    } else if (field.typeName === "URL") {
+      return `    '${field.name}': { value: string; }`
+    } else if (field.typeName === "VideoEmbed") {
+      return `    '${field.name}': { value: string; }`
+    } else if (field.typeName === "CollectionReference") {
+      console.log(field)
+      return `    '${field.name}': { value: string; } // ${(field as SelectField).options[0]} collection item id`
+    } else if (field.typeName === "Toggle") {
+      return `    '${field.name}': { value: boolean; }`
+    } else if (field.typeName === "Phone") {
+      return `    '${field.name}': { countryCode: string; phoneNumber: string; }`
+    } else if (field.typeName === "Address") {
+      return `    '${field.name}': { street: string; city: string; state: string; postalCode: string; country: string; }`
+    } else if (field.typeName === "ImageUpload") {
+      return `    '${field.name}': { url: string; alt: string; height: number; width: number; }`
+    } else if (field.typeName === "ImageGallery") {
+      return `    '${field.name}': { url: string; alt: string; height: number; width: number; }[]`
+    } else if (field.typeName === "FileUpload") {
+      return `    '${field.name}': { name: string; url: string; }`
+    } else if (field.typeName === "FileLibrary") {
+      return `    '${field.name}': { name: string; url: string; }[]`
+    } else if (field.typeName === "Statistic") {
+      return `    '${field.name}': { metric: string; value: string; }[]`
+    } else if (field.typeName === "SelectField") {
+      return `    '${field.name}': { value: ${(field as SelectField).options.map((item) => `"${item}"`).join(" | ")}; }`
     } else {
       // You can add more field types here as needed
-      return `    ${field.name}: any;`
+      return `    '${field.name}': any;`
     }
   })
 

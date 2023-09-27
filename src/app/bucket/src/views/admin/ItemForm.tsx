@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Button, Label } from "../../ui"
 import { Collection, CollectionData, CollectionItemData, CollectionReferenceField, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
@@ -44,8 +44,13 @@ function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collec
     }
   }, [collection, itemToEdit])
 
+  const hasLoadedCollectionReferences = useRef(false) // Create a ref to track whether the effect has run
+
   useEffect(() => {
-    if (collection && formData?.fields) {
+    if (collection && !hasLoadedCollectionReferences.current) {
+      // Check if collection is not null and the effect hasn't run before
+      hasLoadedCollectionReferences.current = true // Set the ref to true so the effect won't run again
+
       const collectionNames = collection.fields.reduce<CollectionNameIndexPair[]>((acc, field, index) => {
         if (field.typeName === "CollectionReference") {
           const collectionReferenceField = field as CollectionReferenceField
@@ -68,7 +73,7 @@ function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collec
         }
       })()
     }
-  }, [collection, formData?.fields, fetchItemsIds])
+  }, [collection, fetchItemsIds])
 
   const handleSubmit = async () => {
     if (!formData) {

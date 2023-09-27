@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect } from "react"
 import { CollectionFieldsData } from "../../types"
-import { generateSampleDataItem, generateSampleDataItems } from "../../util"
+import { generateSampleDataItem, generateSampleDataItems, generateSamplePostDataItems } from "../../util"
 import { Badge } from "../../ui"
 import { useCollectionAccessSettings } from "../../hooks/useCollectionAccessSettings"
 import Prism from "prismjs"
@@ -111,7 +111,10 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
             </pre>
             <div>
               <span className="italic">Parameters:</span>{" "}
-              <ul className="-mt-1">
+              <pre className="!opacity-100 !bg-gray-100">
+                <code className="language-ts">{generateSamplePostDataItems(collection)}</code>
+              </pre>
+              {/* <ul className="-mt-1">
                 <li>
                   <span className="bg-gray-100 rounded font-mono text-sm p-1">collectionName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
                   Collection ("{collection.name}")
@@ -124,7 +127,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
                   <span className="bg-gray-100 rounded font-mono text-sm p-1">data</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">Field[]</span> - An array of field data for{" "}
                   {collection.name}
                 </li>
-              </ul>
+              </ul> */}
             </div>
             <div className="italic">Response:</div>
             <pre className="!opacity-100 !bg-gray-100">
