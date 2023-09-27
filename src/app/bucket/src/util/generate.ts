@@ -70,16 +70,24 @@ export const getFieldTypeDisplayName = (fieldType: FieldKeys): string => {
   return fieldType
 }
 
-export const generateSamplePostDataItems = (collection: CollectionFieldsData) => {
-  return JSON.stringify(
-    {
-      collectionName: collection.name,
-      itemName: `Your Item name`,
-      data: collection.fields.map(generateSampleItemFieldData),
-    },
-    null,
-    2
-  )
+export const generateSamplePostDataItems = (collection: CollectionFieldsData, isUpdate?: boolean) => {
+  type Data = {
+    collectionName: string
+    itemName: string
+    data: any[]
+    itemId?: string
+  }
+  const data: Data = {
+    collectionName: collection.name,
+    itemName: `Your Item name`,
+    data: collection.fields.map(generateSampleItemFieldData),
+  }
+
+  if (isUpdate) {
+    data["itemId"] = `your-item-name`
+  }
+
+  return JSON.stringify(data, null, 2)
 }
 
 export const generateSampleDataItems = (collection: CollectionFieldsData) => {

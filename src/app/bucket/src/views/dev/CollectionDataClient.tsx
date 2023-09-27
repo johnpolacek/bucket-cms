@@ -114,20 +114,6 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
               <pre className="!opacity-100 !bg-gray-100">
                 <code className="language-ts">{generateSamplePostDataItems(collection)}</code>
               </pre>
-              {/* <ul className="-mt-1">
-                <li>
-                  <span className="bg-gray-100 rounded font-mono text-sm p-1">collectionName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
-                  Collection ("{collection.name}")
-                </li>
-                <li>
-                  <span className="bg-gray-100 rounded font-mono text-sm p-1">itemName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
-                  {collection.name} Item
-                </li>
-                <li>
-                  <span className="bg-gray-100 rounded font-mono text-sm p-1">data</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">Field[]</span> - An array of field data for{" "}
-                  {collection.name}
-                </li>
-              </ul> */}
             </div>
             <div className="italic">Response:</div>
             <pre className="!opacity-100 !bg-gray-100">
@@ -153,23 +139,9 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
             </pre>
             <div>
               <span className="italic">Parameters:</span>{" "}
-              <ul className="-mt-1">
-                <li>
-                  <span className="bg-gray-100 rounded font-mono text-sm p-1">collectionName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
-                  Collection ("{collection.name}")
-                </li>
-                <li>
-                  <span className="bg-gray-100 rounded font-mono text-sm p-1">itemName</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The name of the
-                  {collection.name} Item
-                </li>
-                <li>
-                  <span className="bg-gray-100 rounded font-mono text-sm p-1">data</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">Field[]</span> - An array of field data for{" "}
-                  {collection.name}
-                </li>
-                <li>
-                  <span className="bg-gray-100 rounded font-mono text-sm p-1">itemId</span> : <span className="bg-gray-100 rounded font-mono text-sm p-1">string</span> - The id of the Item
-                </li>
-              </ul>
+              <pre className="!opacity-100 !bg-gray-100">
+                <code className="language-ts">{generateSamplePostDataItems(collection)}</code>
+              </pre>
             </div>
             <div className="italic">Response:</div>
             <pre className="!opacity-100 !bg-gray-100">
