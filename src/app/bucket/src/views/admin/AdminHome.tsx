@@ -5,20 +5,24 @@ import CollectionManage from "./CollectionManage"
 import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
 import { CollectionData } from "../../types"
+import { useFetchCollectionsCount } from "../../hooks"
 
 function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
   const [manageCollection, setManageCollection] = useState<CollectionData | undefined>(undefined)
   const [createItemInCollection, setCreateItemInCollection] = useState<CollectionData | undefined>(undefined)
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
+  const [collections, isLoading, error] = useFetchCollectionsCount(true)
 
   return (
     <div className="py-12">
       {manageCollection ? (
         <CollectionManage
+          collections={collections}
           onCreateItem={(collectionData) => {
             setManageCollection(undefined)
             setCreateItemInCollection(collectionData)
           }}
+          onManage={setManageCollection}
           onFinish={() => setManageCollection(undefined)}
           collectionData={manageCollection}
         />
@@ -35,7 +39,9 @@ function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
               }}
             />
           ) : (
-            <CollectionsList onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
+            collections && (
+              <CollectionsList collections={collections} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
+            )
           )}
         </>
       )}

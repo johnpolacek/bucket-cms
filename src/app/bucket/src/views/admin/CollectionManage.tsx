@@ -7,8 +7,21 @@ import { Transition } from "@headlessui/react"
 import { useCollectionFieldData, useDeleteCollectionItem, useFetchCollectionItems } from "../../hooks"
 import CollectionDataDocumentation from "../dev/CollectionDataDocumentation"
 import { cn } from "../../ui/utils"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../ui"
 
-function CollectionManage({ collectionData, onFinish, onCreateItem }: { collectionData: CollectionData; onFinish: () => void; onCreateItem: (collection: CollectionData) => void }) {
+function CollectionManage({
+  collections,
+  collectionData,
+  onManage,
+  onFinish,
+  onCreateItem,
+}: {
+  collections: CollectionData[] | null
+  collectionData: CollectionData
+  onManage: (collection: CollectionData) => void
+  onFinish: () => void
+  onCreateItem: (collection: CollectionData) => void
+}) {
   const { collection: collectionFieldData, error: collectionError } = useCollectionFieldData(collectionData)
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
@@ -61,12 +74,32 @@ function CollectionManage({ collectionData, onFinish, onCreateItem }: { collecti
     }
   }
 
+  const otherCollections = collections?.filter((c) => c.collectionName !== collectionData.collectionName)
+
   return (
     <>
-      <div className="flex justify-center pt-12">
+      <div className="flex justify-center pt-12 gap-2">
         <Button className="-mt-8 sm:-mt-16 bg-[rgba(255,255,255,.75)] hover:bg-white scale-110 sm:scale-100" variant="outline" onClick={onFinish}>
           <span className="text-2xl -mt-[2px] pr-2 opacity-50 font-thin scale-x-125">‹</span> Back to Admin
         </Button>
+        {otherCollections && otherCollections.length && (
+          <div className="-mt-8 sm:-mt-16 inline-block">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button variant="outline" className="text-gray-600 pr-6">
+                  Go to... <span className="text-2xl pt-4 opacity-70 font-thin scale-x-125 -rotate-90">‹</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {otherCollections?.map((c: CollectionData, index) => (
+                  <DropdownMenuItem key={c.collectionName} onSelect={() => onManage(otherCollections[index])}>
+                    {c.collectionName}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
       </div>
 
       {!editItem && !loading && (
