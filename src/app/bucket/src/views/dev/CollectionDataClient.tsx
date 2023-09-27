@@ -44,7 +44,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
               <strong>
                 <em>single Item</em>
               </strong>{" "}
-              in a Collection.
+              in a Collection. {collectionAccess?.publicBlockRead.includes(collection.name) && "Users are required have an active authenticated session."}
             </p>
             <div className="italic -mb-4">Endpoint:</div>
             <pre className="mb-4">
@@ -104,7 +104,10 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
             </div>
           </div>
           <div>
-            <p>API route for client to create a new Item in a Collection. Users are required have an active authenticated session.</p>
+            <p>
+              API route for client to create a new Item in a Collection.{" "}
+              {collectionAccess && !collectionAccess.publicAllowWrite.includes(collection.name) && "Users are required have an active authenticated session."}
+            </p>
             <div className="italic -mb-4">Endpoint:</div>
             <pre className="mb-4">
               <code className="font-bold">POST: /api/bucket/item/create</code>
@@ -132,7 +135,10 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
             </div>
           </div>
           <div>
-            <p>API route for client to update Item data in a Collection.</p>
+            <p>
+              API route for client to update Item data in a Collection.{" "}
+              {collectionAccess && !collectionAccess.publicAllowWrite.includes(collection.name) && "Users are required have an active authenticated session."}
+            </p>
             <div className="italic -mb-4">Endpoint:</div>
             <pre className="mb-4">
               <code className="font-bold">POST: /api/bucket/item/update</code>

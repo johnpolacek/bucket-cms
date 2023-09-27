@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { Field, FieldKeys, CollectionFieldsData, SelectField } from "../types"
+import { getBucketName } from "@/app/api/bucket/s3/util"
 
 export function getDefaultDataFromSchema(schema: z.ZodType<any, any, any>): any {
   if (!schema) {
@@ -126,6 +127,14 @@ const generateSampleItemFieldData = (field: Field, index: number) => {
     return { [field.name]: { value: "<p>A <strong>rich</strong> <em>text</em> string.</p>" } }
   } else if (field.typeName === "Email") {
     return { [field.name]: { value: "user@email.com" } }
+  } else if (field.typeName === "Toggle") {
+    return { [field.name]: { value: true } }
+  } else if (field.typeName === "ImageUpload") {
+    return { [field.name]: { value: "https://s3.amazonaws.com/your-bucket-cms-public/images/1234567890-yourimage.jpg" } }
+  } else if (field.typeName === "SelectField") {
+    return { [field.name]: { value: (field as SelectField).options[0] } }
+  } else if (field.typeName === "DateField") {
+    return { [field.name]: { value: new Date().toISOString().split("T")[0] } }
   } else if (field.typeName === "Phone") {
     return { [field.name]: { countryCode: "1", phoneNumber: "2223334444" } }
   } else if (field.typeName === "Address") {
