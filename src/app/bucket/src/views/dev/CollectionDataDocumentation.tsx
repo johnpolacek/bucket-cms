@@ -24,12 +24,12 @@ function CollectionDataDocumentation({ collection }: { collection: CollectionFie
           Schema
         </TabsTrigger>
         <TabsTrigger className="text-lg px-6 py-2 !shadow-none !rounded-none border-b-2 border-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-400" value="api">
-          API Routes
+          API
         </TabsTrigger>
       </TabsList>
       <TabsContent value="schema">
         <TransitionWrapper>
-          <div className="border rounded-xl bg-white max-w-[480px] not-prose text-left my-6">
+          <div className="border rounded-xl bg-white max-w-[720px] w-full not-prose text-left my-6">
             <Table>
               <TableHeader className="bg-gray-100">
                 <TableRow>
