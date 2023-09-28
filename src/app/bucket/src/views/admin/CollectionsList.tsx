@@ -50,7 +50,7 @@ function CollectionsList({
 
   return (
     <div className="flex flex-col">
-      <Transition appear={true} show={true} enter="transition-all delay-300 duration-300" enterFrom="opacity-0" enterTo="opacity-100">
+      <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0" enterTo="opacity-100">
         <h3 className="text-center font-semibold text-3xl mt-4 sm:mt-0">Your Collections</h3>
       </Transition>
       <>
