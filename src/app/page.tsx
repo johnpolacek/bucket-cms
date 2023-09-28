@@ -3,6 +3,7 @@ import Header from "./demo/components/ui/header"
 import GithubLink from "./demo/components/ui/github-link"
 import { Button } from "./demo/components/ui/button"
 import CLICommandCopy from "./demo/components/ui/cli-command-copy"
+import ExamplesView from "./demo/examples/examples-view"
 
 export default function Home() {
   return (
@@ -12,8 +13,10 @@ export default function Home() {
       </Header>
       <main className="flex min-h-screen flex-col items-center gap-8 py-16 px-8">
         <h1 className="text-3xl font-light text-center text-blue-500 pb-2">Maybe you don’t need a big cloud CMS</h1>
-        <h2 className="text-6xl font-extrabold -mt-6 text-blue-700 pb-4">How about a Bucket?</h2>
-        <p className="text-lg opacity-70 max-w-[700px] text-center px-4 pb-8">Bucket is the world’s first portable drop-in headless CMS designed for Next.js (no database necessary)</p>
+        <h2 className="text-6xl font-extrabold -mt-6 text-blue-700">How about a Bucket?</h2>
+        <p className="text-xl opacity-70 max-w-[720px] text-center px-4 pb-8 leading-normal -mt-6">
+          Bucket is the world’s first portable drop-in headless CMS designed for Next.js <span className="italic">(no database necessary)</span>
+        </p>
         <div className="grid grid-cols-2 gap-4 -mt-4">
           <div className="col-span-2">
             <CLICommandCopy commandText="npx create-bucket-cms" />
@@ -46,6 +49,8 @@ export default function Home() {
           </div>
         </div>
 
+        <ExamplesView />
+
         <div className="grid grid-cols-3 pt-8 my-8 max-w-[1300px] mx-auto px-4 relative -left-[2%]">
           <div className="w-[640px] col-span-2 border-4 border-blue-100 rounded-lg overflow-hidden mx-auto opacity-80">
             <video width="100%" height="100%" loop muted autoPlay playsInline>
@@ -61,7 +66,7 @@ export default function Home() {
           <div className="flex flex-col gap-8 justify-center pb-8 -ml-8 pr-4 items-end">
             <h3 className="text-3xl font-bold text-blue-600">Break Free from the Cloud and Own Your Data</h3>
             <p className="text-lg opacity-70">
-              Will Bucket CMS, the admin experience lives in your project, not in the cloud. No monthly fees. All your data, stored securely on your own S3 bucket as structured flat file JSON data.
+              Will Bucket CMS, the admin experience lives in your project, not in the cloud. No monthly fees. All of your data gets stored securely on your own S3 bucket as structured data.
             </p>
           </div>
         </div>
