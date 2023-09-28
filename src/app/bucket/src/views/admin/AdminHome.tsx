@@ -14,38 +14,42 @@ function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
   const [collections, isLoading, error] = useFetchCollectionsCount(true)
 
   return (
-    <div className="py-12">
-      {manageCollection ? (
-        <CollectionManage
-          collections={collections}
-          onCreateItem={(collectionData) => {
-            setManageCollection(undefined)
-            setCreateItemInCollection(collectionData)
-          }}
-          onManage={setManageCollection}
-          onFinish={() => setManageCollection(undefined)}
-          collectionData={manageCollection}
-        />
-      ) : (
-        <>
-          {createItemInCollection ? (
-            <ItemForm collectionData={createItemInCollection} onCancel={() => setCreateItemInCollection(undefined)} onComplete={() => setCreateItemInCollection(undefined)} />
-          ) : isCreatingCollection ? (
-            <CollectionForm
-              onCancel={() => setIsCreatingCollection(false)}
-              onComplete={() => {
-                setIsCreatingCollection(false)
-                onUpdateCollection()
+    <>
+      {!isLoading && (
+        <div className="py-12">
+          {manageCollection ? (
+            <CollectionManage
+              collections={collections}
+              onCreateItem={(collectionData) => {
+                setManageCollection(undefined)
+                setCreateItemInCollection(collectionData)
               }}
+              onManage={setManageCollection}
+              onFinish={() => setManageCollection(undefined)}
+              collectionData={manageCollection}
             />
           ) : (
-            collections && (
-              <CollectionsList collections={collections} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
-            )
+            <>
+              {createItemInCollection ? (
+                <ItemForm collectionData={createItemInCollection} onCancel={() => setCreateItemInCollection(undefined)} onComplete={() => setCreateItemInCollection(undefined)} />
+              ) : isCreatingCollection ? (
+                <CollectionForm
+                  onCancel={() => setIsCreatingCollection(false)}
+                  onComplete={() => {
+                    setIsCreatingCollection(false)
+                    onUpdateCollection()
+                  }}
+                />
+              ) : (
+                collections && (
+                  <CollectionsList collections={collections} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
+                )
+              )}
+            </>
           )}
-        </>
+        </div>
       )}
-    </div>
+    </>
   )
 }
 
