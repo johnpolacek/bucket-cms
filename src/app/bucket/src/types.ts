@@ -8,6 +8,7 @@ export interface ConfigValidation {
   hasAWSSecret: boolean
   hasAWSRegion: boolean
   hasAWSBucket: boolean
+  isConfigured: boolean
 }
 
 export type FieldKeys = keyof typeof FieldTypesModule

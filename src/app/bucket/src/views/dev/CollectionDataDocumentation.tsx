@@ -1,14 +1,13 @@
 "use client"
 import React, { useEffect, useState } from "react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../ui/table"
+import { Badge, Tabs, TabsContent, TabsList, TabsTrigger, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../ui"
 import { CollectionFieldsData } from "../../types"
 import CollectionDataClient from "./CollectionDataClient"
-import CollectionDataNode from "./CollectionDataNode"
 import { generateTypeScriptInterface } from "../../util"
 import Prism from "prismjs"
 import "prismjs/components/prism-typescript"
 import TransitionWrapper from "../admin/TransitionWrapper"
+import DocsSectionBuild from "./DocsSectionBuild"
 
 function CollectionDataDocumentation({ collection }: { collection: CollectionFieldsData }) {
   const [refresh, setRefresh] = useState(0)
@@ -25,6 +24,10 @@ function CollectionDataDocumentation({ collection }: { collection: CollectionFie
         </TabsTrigger>
         <TabsTrigger className="text-lg px-6 py-2 !shadow-none !rounded-none border-b-2 border-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-400" value="api">
           API
+        </TabsTrigger>
+        <TabsTrigger className="text-lg px-6 py-2 !shadow-none !rounded-none border-b-2 border-transparent data-[state=active]:border-b-2 data-[state=active]:border-blue-400" value="build">
+          Build
+          <Badge className="px-1 py-0 text-sm font-mono rounded-sm scale-75 relative -top-1 font-normal">AI</Badge>
         </TabsTrigger>
       </TabsList>
       <TabsContent value="schema">
@@ -57,6 +60,11 @@ function CollectionDataDocumentation({ collection }: { collection: CollectionFie
       <TabsContent value="api">
         <TransitionWrapper>
           <CollectionDataClient collection={collection} />
+        </TransitionWrapper>
+      </TabsContent>
+      <TabsContent value="build">
+        <TransitionWrapper>
+          <DocsSectionBuild />
         </TransitionWrapper>
       </TabsContent>
     </Tabs>
