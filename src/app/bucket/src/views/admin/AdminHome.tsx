@@ -6,11 +6,13 @@ import CollectionForm from "./CollectionForm"
 import ItemForm from "./ItemForm"
 import { CollectionData } from "../../types"
 import { useFetchCollectionsCount } from "../../hooks"
+import CollectionEdit from "./CollectionEdit"
 
 function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
   const [manageCollection, setManageCollection] = useState<CollectionData | undefined>(undefined)
   const [createItemInCollection, setCreateItemInCollection] = useState<CollectionData | undefined>(undefined)
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
+  const [editCollection, setEditCollection] = useState<CollectionData | undefined>(undefined)
   const [collections, isLoading, error] = useFetchCollectionsCount(true)
 
   return (
@@ -42,7 +44,19 @@ function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
                 />
               ) : (
                 collections && (
-                  <CollectionsList collections={collections} onCreateCollection={() => setIsCreatingCollection(true)} onCreateItem={setCreateItemInCollection} onManage={setManageCollection} />
+                  <>
+                    {editCollection ? (
+                      <CollectionEdit collectionData={editCollection} onCancel={() => setEditCollection(undefined)} onComplete={() => setEditCollection(undefined)} />
+                    ) : (
+                      <CollectionsList
+                        collections={collections}
+                        onCreateCollection={() => setIsCreatingCollection(true)}
+                        onCreateItem={setCreateItemInCollection}
+                        onManage={setManageCollection}
+                        onEdit={setEditCollection}
+                      />
+                    )}
+                  </>
                 )
               )}
             </>

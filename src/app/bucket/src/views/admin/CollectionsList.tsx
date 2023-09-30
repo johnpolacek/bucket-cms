@@ -7,11 +7,13 @@ function CollectionsList({
   onCreateCollection,
   onCreateItem,
   onManage,
+  onEdit,
   collections,
 }: {
   onCreateCollection: () => void
   onCreateItem: (collection: CollectionData) => void
   onManage: (collection: CollectionData) => void
+  onEdit: (collection: CollectionData) => void
   collections: CollectionData[]
 }) {
   const [deletedCollections, setDeletedCollections] = useState<string[]>([])
@@ -79,12 +81,18 @@ function CollectionsList({
                       <div className="flex gap-3 pr-4 sm:w-[320px] justify-end -mr-4 sm:mr-0">
                         {confirmDeleteCollectionName !== collection.collectionName && (
                           <>
-                            <Button onClick={() => onCreateItem(collection)} className="text-green-600" variant="outline">
+                            <Button onClick={() => onCreateItem(collection)} className="w-[90px] text-green-600" variant="outline">
                               + New
                             </Button>
-                            <Button onClick={() => onManage(collection)} className="text-blue-600" variant="outline">
-                              Manage
-                            </Button>
+                            {collection.itemCount === 0 ? (
+                              <Button onClick={() => onEdit(collection)} className="w-[90px] text-blue-600" variant="outline">
+                                Edit
+                              </Button>
+                            ) : (
+                              <Button onClick={() => onManage(collection)} className="w-[90px] text-blue-600" variant="outline">
+                                Manage
+                              </Button>
+                            )}
                           </>
                         )}
                         {collection.itemCount === 0 && (
