@@ -11,6 +11,10 @@ export interface ConfigValidation {
   isConfigured: boolean
 }
 
+export interface AIConfigValidation {
+  isAIConfigured: boolean
+}
+
 export type FieldKeys = keyof typeof FieldTypesModule
 export type SetDataFunction<T> = (data: Partial<T>) => void
 

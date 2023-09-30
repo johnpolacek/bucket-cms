@@ -20,7 +20,7 @@ function Home(props: { view?: View; hideViewSwitch?: boolean }) {
 
   return (
     <main className={`flex flex-col grow items-center relative w-full h-full ${isLoading && "hidden"}`}>
-      {bucketName && <div className="absolute top-2 right-4 text-xs bg-gray-200 px-2 py-1 text-black opacity-70">bucket: {bucketName}</div>}
+      {bucketName && <div className="absolute top-2 right-4 text-xs bg-gray-200 px-2 py-1 text-gray-700 opacity-70 font-mono font-bold">bucket: {bucketName}</div>}
       {error ? (
         missingBucket ? (
           <BucketNotFound bucketName={missingBucket} onBucketCreated={() => window.location.reload()} />

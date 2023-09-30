@@ -32,7 +32,7 @@ function CollectionDataDocumentation({ collection }: { collection: CollectionFie
       </TabsList>
       <TabsContent value="schema">
         <TransitionWrapper>
-          <div className="border rounded-xl bg-white max-w-[720px] w-full not-prose text-left my-6">
+          <div className="border rounded-xl bg-white w-full not-prose text-left my-6">
             <Table>
               <TableHeader className="bg-gray-100">
                 <TableRow>
@@ -51,7 +51,7 @@ function CollectionDataDocumentation({ collection }: { collection: CollectionFie
             </Table>
           </div>
           <div>
-            <pre className="!opacity-100 rounded !bg-white text-left !px-0 !text-sm max-w-[640px]">
+            <pre className="!opacity-100 rounded !bg-white text-left !px-0 !text-sm w-full">
               <code className="language-ts">{generateTypeScriptInterface(collection)}</code>
             </pre>
           </div>
@@ -64,7 +64,7 @@ function CollectionDataDocumentation({ collection }: { collection: CollectionFie
       </TabsContent>
       <TabsContent value="build">
         <TransitionWrapper>
-          <DocsSectionBuild />
+          <DocsSectionBuild collection={collection} />
         </TransitionWrapper>
       </TabsContent>
     </Tabs>

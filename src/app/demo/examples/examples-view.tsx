@@ -1,5 +1,5 @@
 import React from "react"
-import { CheckCircle } from "@/app/bucket/src/ui/icon/check-circle"
+import { CheckCircledIcon } from "@radix-ui/react-icons"
 import TestimonialsSection from "./testimonials"
 
 const ExamplesView: React.FC = () => {
@@ -16,97 +16,97 @@ const ExamplesView: React.FC = () => {
         <ul className="grid grid-cols-4 gap-2">
           <li className="flex text-lg gap-2 items-center whitespace-nowrap font-semibold">
             <span className="text-blue-500 scale-125">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             <span className="text-xl">Client Testimonials</span>
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Case Studies
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             FAQ Sections
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Featured Products
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Job Boards
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Portfolios
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             File Assets
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Feature Requests
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Contact Forms
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Team Bios
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Image Gallery
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Resource Library
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Events List
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Project Showcase
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Brand Pages
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
-              <CheckCircle />
+              <CheckCircledIcon />
             </span>{" "}
             Author Profiles
           </li>

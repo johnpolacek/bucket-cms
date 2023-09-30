@@ -29,7 +29,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
   }, [])
 
   return (
-    <div className="prose max-w-[720px] prose-pre:bg-[#eee] prose-pre:text-black prose-pre:opacity-70 w-full">
+    <div className="prose prose-pre:bg-[#eee] prose-pre:text-black prose-pre:opacity-70 w-full">
       <div>
         <div className="mt-6">
           <div className="text-blue-600 text-2xl hover:no-underline">
@@ -122,7 +122,7 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
             <pre className="!opacity-100 !bg-gray-100">
               <code className="language-ts">{`{
   "success": true,
-  "itemId": "item-name-slug"
+  "itemId": "${collection.name.toLowerCase().split(" ").join("-")}-id-slug"
 }`}</code>
             </pre>
           </div>

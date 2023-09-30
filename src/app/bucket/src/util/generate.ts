@@ -147,7 +147,6 @@ const generateSampleItemFieldData = (field: Field, index: number) => {
 
 export const generateTypeScriptInterface = (collection: CollectionFieldsData) => {
   const fieldsData = collection.fields.map((field: Field) => {
-    console.log(field.typeName)
     if (field.typeName === "Text" || field.typeName === "Email") {
       return `    '${field.name}': { value: string; }`
     } else if (field.typeName === "RichText") {
@@ -161,7 +160,6 @@ export const generateTypeScriptInterface = (collection: CollectionFieldsData) =>
     } else if (field.typeName === "VideoEmbed") {
       return `    '${field.name}': { value: string; }`
     } else if (field.typeName === "CollectionReference") {
-      console.log(field)
       return `    '${field.name}': { value: string; } // ${(field as SelectField).options[0]} collection item id`
     } else if (field.typeName === "Toggle") {
       return `    '${field.name}': { value: boolean; }`
@@ -196,6 +194,55 @@ export const generateTypeScriptInterface = (collection: CollectionFieldsData) =>
 }
 
 interface ${collection.name.split(" ").join("")}ItemData extends CollectionItemData {
+  data: {
+${fieldsInterface}
+  };
+}`
+}
+
+export const generateTypeScriptDataInterface = (collection: CollectionFieldsData) => {
+  const fieldsData = collection.fields.map((field: Field) => {
+    if (field.typeName === "Text" || field.typeName === "Email") {
+      return `    '${field.name}': { value: string; }`
+    } else if (field.typeName === "RichText") {
+      return `    '${field.name}': { value: string; }`
+    } else if (field.typeName === "DateField") {
+      return `    '${field.name}': { value: Date; }`
+    } else if (field.typeName === "Labels") {
+      return `    '${field.name}': { value: string[]; }`
+    } else if (field.typeName === "URL") {
+      return `    '${field.name}': { value: string; }`
+    } else if (field.typeName === "VideoEmbed") {
+      return `    '${field.name}': { value: string; }`
+    } else if (field.typeName === "CollectionReference") {
+      return `    '${field.name}': { value: string; } // ${(field as SelectField).options[0]} collection item id`
+    } else if (field.typeName === "Toggle") {
+      return `    '${field.name}': { value: boolean; }`
+    } else if (field.typeName === "Phone") {
+      return `    '${field.name}': { countryCode: string; phoneNumber: string; }`
+    } else if (field.typeName === "Address") {
+      return `    '${field.name}': { street: string; city: string; state: string; postalCode: string; country: string; }`
+    } else if (field.typeName === "ImageUpload") {
+      return `    '${field.name}': { url: string; alt: string; height: number; width: number; }`
+    } else if (field.typeName === "ImageGallery") {
+      return `    '${field.name}': { url: string; alt: string; height: number; width: number; }[]`
+    } else if (field.typeName === "FileUpload") {
+      return `    '${field.name}': { name: string; url: string; }`
+    } else if (field.typeName === "FileLibrary") {
+      return `    '${field.name}': { name: string; url: string; }[]`
+    } else if (field.typeName === "Statistic") {
+      return `    '${field.name}': { metric: string; value: string; }[]`
+    } else if (field.typeName === "SelectField") {
+      return `    '${field.name}': { value: ${(field as SelectField).options.map((item) => `"${item}"`).join(" | ")}; }`
+    } else {
+      // You can add more field types here as needed
+      return `    '${field.name}': any;`
+    }
+  })
+
+  const fieldsInterface = fieldsData.join("\n")
+
+  return `interface ${collection.name.split(" ").join("")}Data {
   data: {
 ${fieldsInterface}
   };

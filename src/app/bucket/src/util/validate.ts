@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { Collection, ItemFormData, ItemFormFieldData } from "../types"
 import * as FieldTypes from "../field-types"
+import * as parser from "@babel/parser"
 
 interface ValidationResponse {
   allFieldsValid: boolean
@@ -45,4 +46,16 @@ export function validateFields(formData: ItemFormData, collection: Collection | 
   })
 
   return { allFieldsValid, newErrors }
+}
+
+export function isValidJSX(str: string) {
+  try {
+    parser.parse(str, {
+      sourceType: "module",
+      plugins: ["jsx"],
+    })
+    return true
+  } catch (e) {
+    return false
+  }
 }

@@ -1,31 +1,13 @@
 "use client"
 import React, { useEffect, useState, useRef } from "react"
-import { CollectionFieldsData } from "../../types"
+import { useCollectionsList } from "../../hooks"
 import DevHomeNav from "./DevHomeNav"
 import Docs from "./Docs"
 
 function DevHome() {
-  const [collections, setCollections] = useState<CollectionFieldsData[]>([])
-  const [error, setError] = useState<string | null>(null)
   const [activeSection, setActiveSection] = useState("")
   const scrollableDivRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        const response = await fetch("/api/bucket/collections/read")
-        if (!response.ok) {
-          // throw new Error("Failed to fetch collections")
-        } else {
-          const data = await response.json()
-          setCollections(data.collections)
-        }
-      } catch (error: any) {
-        setError(error.message)
-      }
-    }
-    fetchCollections()
-  }, [])
+  const { collections, error } = useCollectionsList()
 
   useEffect(() => {
     const handleScroll = () => {

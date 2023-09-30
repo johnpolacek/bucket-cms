@@ -107,7 +107,20 @@ function CollectionManage({
           <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="px-8 w-full">
             <h3 className="w-full text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
             <h4 className="w-full text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
-            <div className={cn("flex w-full max-w-[1280px] mx-auto my-4 p-4 sm:p-12 divide-x border rounded-xl shadow transition-all ease-in-out", showDocs ? "gap-12" : "gap-8")}>
+            <div className={cn("flex w-full max-w-[1280px] relative mx-auto my-4 p-4 sm:p-12 divide-x border rounded-xl shadow transition-all ease-in-out", showDocs ? "gap-12" : "gap-8")}>
+              <Button onClick={() => setShowDocs(!showDocs)} variant="outline" className={cn("md:hidden top-2 scale-90 text-gray-600 absolute right-2", showDocs ?? "justify-start right-6")}>
+                {showDocs ? (
+                  <>
+                    <span>hide docs </span>
+                    <span className="font-light text-xl relative -right-1 -top-px">»</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-light text-xl relative -left-1 -top-px">«</span>
+                    <span className="whitespace-nowrap"> show docs</span>
+                  </>
+                )}
+              </Button>
               <div className={cn("border-t transition-all ease-in-out", showDocs ? "w-1/2 grow" : "w-full grow")}>
                 {items.length === 0 && (
                   <div className="py-16 w-full text-center text-lg italic border-b">
@@ -182,20 +195,7 @@ function CollectionManage({
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && <ul></ul>}
               </div>
-              <div className={cn("pl-12 overflow-auto relative transition-all ease-in-out", showDocs ? "grow" : "shrink")}>
-                <Button onClick={() => setShowDocs(!showDocs)} variant="outline" className={cn("top-0 text-gray-600", showDocs ? "absolute right-2" : "relative justify-start right-6")}>
-                  {showDocs ? (
-                    <>
-                      <span>hide docs </span>
-                      <span className="font-light text-xl relative -right-1 -top-px">»</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="font-light text-xl relative -left-1 -top-px">«</span>
-                      <span className="whitespace-nowrap"> show docs</span>
-                    </>
-                  )}
-                </Button>
+              <div className={cn("pl-12 overflow-auto relative transition-all ease-in-out", showDocs ? "w-1/2 grow" : "w-auto shrink")}>
                 {collectionFieldData && showDocs && <CollectionDataDocumentation collection={collectionFieldData} />}
               </div>
             </div>
