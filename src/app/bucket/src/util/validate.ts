@@ -1,7 +1,6 @@
 import { z } from "zod"
 import { Collection, ItemFormData, ItemFormFieldData } from "../types"
 import * as FieldTypes from "../field-types"
-import * as parser from "@babel/parser"
 
 interface ValidationResponse {
   allFieldsValid: boolean

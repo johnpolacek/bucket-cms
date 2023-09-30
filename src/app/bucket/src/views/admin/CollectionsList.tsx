@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Button } from "../../ui"
 import { CollectionData } from "../../types"
 import { Transition } from "@headlessui/react"
+import { cn } from "../../ui/utils"
 
 function CollectionsList({
   onCreateCollection,
@@ -81,15 +82,19 @@ function CollectionsList({
                       <div className="flex gap-3 pr-4 sm:w-[320px] justify-end -mr-4 sm:mr-0">
                         {confirmDeleteCollectionName !== collection.collectionName && (
                           <>
-                            <Button onClick={() => onCreateItem(collection)} className="w-[90px] text-green-600" variant="outline">
+                            <Button
+                              onClick={() => onCreateItem(collection)}
+                              className={cn("w-[90px]", collection.itemCount > 0 ? "text-green-600 hover:text-green-600" : "bg-green-500 hover:bg-green-600 text-white")}
+                              variant={collection.itemCount > 0 ? "outline" : "default"}
+                            >
                               + New
                             </Button>
                             {collection.itemCount === 0 ? (
-                              <Button onClick={() => onEdit(collection)} className="w-[90px] text-blue-600" variant="outline">
+                              <Button onClick={() => onEdit(collection)} className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
                                 Edit
                               </Button>
                             ) : (
-                              <Button onClick={() => onManage(collection)} className="w-[90px] text-blue-600" variant="outline">
+                              <Button onClick={() => onManage(collection)} className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
                                 Manage
                               </Button>
                             )}
