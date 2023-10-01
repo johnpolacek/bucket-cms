@@ -12,10 +12,10 @@ export default function Home() {
         <GithubLink />
       </Header>
       <main className="flex min-h-screen flex-col items-center gap-8 py-20 px-8 mb-8">
-        <h1 className="text-3xl font-light text-center text-blue-500 pb-2">Maybe you don’t need a big cloud CMS</h1>
+        <h1 className="text-3xl font-light text-center text-blue-500 pb-2">Maybe you don’t need a big cloud CMS...</h1>
         <h2 className="text-6xl font-extrabold -mt-6 text-blue-700">How about a Bucket?</h2>
-        <p className="text-xl opacity-70 max-w-[720px] text-center px-4 pb-8 leading-normal -mt-6">
-          Bucket is the world’s first portable drop-in headless CMS designed for Next.js <span className="italic">(no database necessary)</span>
+        <p className="text-xl opacity-70 max-w-[720px] text-center px-4 pb-8 leading-normal -mt-4">
+          Bucket is the world’s first AI-Powered Portable Drop-in Headless CMS designed for Next.js <span className="italic">(no database necessary)</span>
         </p>
         <div className="grid grid-cols-2 gap-4 -mt-4">
           <div className="col-span-2">
