@@ -8,6 +8,9 @@ const openai = process.env.OPENAI_API_KEY
   : null
 
 export async function getStream(body: ChatCompletionCreateParamsStreaming) {
+  if (!openai) {
+    return null
+  }
   const chatStream = await openai.chat.completions.create(body)
 
   const encoder = new TextEncoder()
