@@ -1,7 +1,3 @@
-import * as parser from "@babel/parser"
-
-import untruncateJson from "untruncate-json"
-
 import React, { useState } from "react"
 import { PaperPlaneIcon } from "@radix-ui/react-icons"
 import { Button, CodeBlock, Textarea, Loader } from "../../ui"
