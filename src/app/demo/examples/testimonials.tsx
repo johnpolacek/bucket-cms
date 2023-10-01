@@ -25,7 +25,7 @@ const Testimonial: React.FC<TestimonialProps> = ({ name, title, image, text }) =
   )
 }
 
-const TestimonialsSection: React.FC = () => {
+export const Testimonials: React.FC = () => {
   const testimonials = [
     {
       name: "Jane Smith",
@@ -64,5 +64,3 @@ const TestimonialsSection: React.FC = () => {
     </div>
   )
 }
-
-export default TestimonialsSection

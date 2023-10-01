@@ -1,36 +1,58 @@
-import React from "react"
+"use client"
+import React, { useEffect, useState } from "react"
 import { CheckCircledIcon } from "@radix-ui/react-icons"
-import TestimonialsSection from "./testimonials"
+import { CaseStudies, Testimonials, FAQ } from "../examples"
 
 const ExamplesView: React.FC = () => {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % 3)
+    }, 2500)
+
+    return () => clearInterval(intervalId) // Clean up the interval on component unmount
+  }, [])
+
   return (
     <section className="px-4 py-12 w-full max-w-[960px] mx-auto">
       <h3 className="text-4xl font-light italic text-blue-600 text-center pb-4">Perfect for...</h3>
       <div className="w-full flex flex-col justify-center gap-8">
         <div className="w-[720px] h-[360px] overflow-hidden rounded-xl bg-gray-100 mx-auto flex justify-center pt-8 border relative">
           <div className="absolute z-10 top-0 left-0 w-full h-full bg-gradient-to-br from-white via-blue-200 to-blue-900 opacity-10"></div>
-          <div className="scale-90 -rotate-3 relative left-2 -top-12 pointer-events-none">
-            <TestimonialsSection />
+          <div id="example1" className={`${currentIndex === 0 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-90 -rotate-3 absolute left-2 -top-12 pointer-events-none`}>
+            <Testimonials />
+          </div>
+          <div id="example2" className={`${currentIndex === 1 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-[.85] rotate-3 absolute left-2 -top-24 pointer-events-none`}>
+            <CaseStudies />
+          </div>
+          <div
+            id="example3"
+            className={`${currentIndex === 2 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-[.66] -rotate-3 absolute -left-32 -top-12 pointer-events-none w-full h-full`}
+          >
+            <div className="absolute -top-24 -left-4 w-[1280px]">
+              <FAQ />
+            </div>
           </div>
         </div>
         <ul className="grid grid-cols-4 gap-2">
-          <li className="flex text-lg gap-2 items-center whitespace-nowrap font-semibold">
-            <span className="text-blue-500 scale-125">
+          <li className="flex text-lg gap-2 items-center whitespace-nowrap">
+            <span className={`text-blue-500 transition-all duration-1000 ease-in-out ${currentIndex === 0 ? "scale-125" : "scale-100"}`}>
               <CheckCircledIcon />
             </span>{" "}
-            <span className="text-xl">Client Testimonials</span>
+            <span className={`transition-all duration-1000 ease-in-out ${currentIndex === 0 ? "text-xl font-semibold" : "text-lg font-normal"}`}>Client Testimonials</span>
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
-            <span className="text-blue-500">
+            <span className={`text-blue-500 transition-all duration-1000 ease-in-out ${currentIndex === 1 ? "scale-125" : "scale-100"}`}>
               <CheckCircledIcon />
             </span>{" "}
-            Case Studies
+            <span className={`transition-all duration-1000 ease-in-out ${currentIndex === 1 ? "text-xl font-semibold" : "text-lg font-normal"}`}>Case Studies</span>
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
-            <span className="text-blue-500">
+            <span className={`text-blue-500 transition-all duration-1000 ease-in-out ${currentIndex === 2 ? "scale-125" : "scale-100"}`}>
               <CheckCircledIcon />
             </span>{" "}
-            FAQ Sections
+            <span className={`transition-all duration-1000 ease-in-out ${currentIndex === 2 ? "text-xl font-semibold" : "text-lg font-normal"}`}>FAQ Sections</span>
           </li>
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className="text-blue-500">
