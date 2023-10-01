@@ -11,7 +11,7 @@ export default function Home() {
       <Header>
         <GithubLink />
       </Header>
-      <main className="flex min-h-screen flex-col items-center gap-8 py-16 px-8">
+      <main className="flex min-h-screen flex-col items-center gap-8 py-20 px-8 mb-8">
         <h1 className="text-3xl font-light text-center text-blue-500 pb-2">Maybe you don’t need a big cloud CMS</h1>
         <h2 className="text-6xl font-extrabold -mt-6 text-blue-700">How about a Bucket?</h2>
         <p className="text-xl opacity-70 max-w-[720px] text-center px-4 pb-8 leading-normal -mt-6">
@@ -29,7 +29,7 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 pt-8 my-8 max-w-[1000px] mx-auto px-4 relative -left-[4%]">
+        <div className="grid grid-cols-2 pt-16 my-8 max-w-[1000px] mx-auto px-4 relative -left-[4%]">
           <div className="flex flex-col gap-8 justify-center pb-8 pr-12">
             <h3 className="text-3xl font-bold text-blue-600">The Drop-In Headless CMS: No Database, No Problem.</h3>
             <p className="text-lg opacity-70">
