@@ -46,15 +46,3 @@ export function validateFields(formData: ItemFormData, collection: Collection | 
 
   return { allFieldsValid, newErrors }
 }
-
-export function isValidJSX(str: string) {
-  try {
-    parser.parse(str, {
-      sourceType: "module",
-      plugins: ["jsx"],
-    })
-    return true
-  } catch (e) {
-    return false
-  }
-}
