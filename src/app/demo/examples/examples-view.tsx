@@ -20,17 +20,17 @@ const ExamplesView: React.FC = () => {
       <div className="w-full flex flex-col justify-center gap-8">
         <div className="w-[720px] h-[360px] overflow-hidden rounded-xl bg-gray-100 mx-auto flex justify-center pt-8 border relative">
           <div className="absolute z-10 top-0 left-0 w-full h-full bg-gradient-to-br from-white via-blue-200 to-blue-900 opacity-10"></div>
-          <div id="example1" className={`${currentIndex === 0 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-90 -rotate-3 absolute left-2 -top-12 pointer-events-none`}>
+          <div id="example1" className={`${currentIndex === 0 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-90 -rotate-3 absolute -left-12 -top-4 pointer-events-none`}>
             <Testimonials />
           </div>
-          <div id="example2" className={`${currentIndex === 1 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-[.85] rotate-3 absolute left-2 -top-24 pointer-events-none`}>
+          <div id="example2" className={`${currentIndex === 1 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-[.85] rotate-3 absolute left-0 -top-32 pointer-events-none`}>
             <CaseStudies />
           </div>
           <div
             id="example3"
             className={`${currentIndex === 2 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-[.66] -rotate-3 absolute -left-32 -top-12 pointer-events-none w-full h-full`}
           >
-            <div className="absolute -top-24 -left-4 w-[1280px]">
+            <div className="absolute -top-16 -left-4 w-[1280px]">
               <FAQ />
             </div>
           </div>
