@@ -11,7 +11,7 @@ interface CodeBlockProps {
 export const CodeBlock: React.FC<CodeBlockProps> = ({ code, copy }) => {
   const [copied, setCopied] = useState(false)
 
-  const copyToClipboard = (e) => {
+  const copyToClipboard = (e: React.MouseEvent) => {
     e.preventDefault()
     navigator.clipboard
       .writeText(code)
