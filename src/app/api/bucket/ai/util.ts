@@ -1,9 +1,11 @@
 import OpenAI from "openai"
 import { ChatCompletionCreateParamsStreaming } from "openai/resources/chat/index.mjs"
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  : null
 
 export async function getStream(body: ChatCompletionCreateParamsStreaming) {
   const chatStream = await openai.chat.completions.create(body)
