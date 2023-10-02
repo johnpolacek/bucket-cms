@@ -20,6 +20,8 @@ Once you have a Next.js project, you can create Bucket CMS inside it:
 npx create-bucket-cms
 ```
 
+For more info, check out the [Bucket CMS Docs](https://www.bucket-cms.com/demo)
+
 
 
 

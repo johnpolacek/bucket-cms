@@ -13,6 +13,9 @@ const Footer = () => {
           <Link className="text-blue-600" href="/terms">
             Terms
           </Link>
+          <Link className="text-blue-600" href="https://github.com/johnpolacek/bucket-cms/blob/main/LICENSE.md">
+            License
+          </Link>
         </div>
       </div>
     </footer>
