@@ -10,7 +10,9 @@ export default async function Docs() {
         <GithubLink />
       </Header>
       <div className="w-full border opacity-50"></div>
-      <Bucket view="DEV" hideViewSwitch={true} />
+      <div className="min-h-screen">
+        <Bucket view="DEV" hideViewSwitch={true} />
+      </div>
       <Footer />
     </main>
   )
