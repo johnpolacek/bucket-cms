@@ -1,4 +1,5 @@
 import Header from "../demo/components/ui/header"
+import Footer from "../demo/components/ui/footer"
 import GithubLink from "../demo/components/ui/github-link"
 import { BrandImage, PageHeading } from "../bucket/src/views/brand"
 import ContactForm from "../demo/components/views/ContactForm"
@@ -17,6 +18,7 @@ export default function Contact() {
           <ContactForm />
         </TransitionWrapper>
       </div>
+      <Footer />
     </main>
   )
 }

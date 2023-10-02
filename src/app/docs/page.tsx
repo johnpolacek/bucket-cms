@@ -1,5 +1,6 @@
 import { Bucket } from "../bucket"
 import Header from "../demo/components/ui/header"
+import Footer from "../demo/components/ui/footer"
 import GithubLink from "../demo/components/ui/github-link"
 
 export default async function Docs() {
@@ -10,6 +11,7 @@ export default async function Docs() {
       </Header>
       <div className="w-full border opacity-50"></div>
       <Bucket view="DEV" hideViewSwitch={true} />
+      <Footer />
     </main>
   )
 }
