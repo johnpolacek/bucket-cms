@@ -20,7 +20,7 @@ const ExamplesView: React.FC = () => {
     <section className="px-4 py-12 w-full max-w-[960px] mx-auto">
       <h3 className="text-4xl font-light italic text-blue-600 text-center pb-4">Perfect for...</h3>
       <div className="w-full flex flex-col justify-center gap-8">
-        <div className="w-[720px] h-[360px] overflow-hidden rounded-xl bg-gray-100 mx-auto flex justify-center pt-8 border relative">
+        <div className="w-full h-[160px] sm:w-[720px] sm:h-[360px] overflow-hidden rounded-xl bg-gray-100 mx-auto flex justify-center pt-8 border relative">
           <div className="absolute z-10 top-0 left-0 w-full h-full bg-gradient-to-br from-white via-blue-200 to-blue-900 opacity-10"></div>
           <div className={`${currentIndex === 0 ? "opacity-100 z-10" : "opacity-0 z-0"} transition-all duration-1000 scale-90 -rotate-3 absolute -left-12 -top-4 pointer-events-none`}>
             <Testimonials />
@@ -39,7 +39,7 @@ const ExamplesView: React.FC = () => {
             <FeaturedProducts />
           </div>
         </div>
-        <ul className="grid grid-cols-4 gap-2">
+        <ul className="sm:grid grid-cols-4 gap-2">
           <li className="flex text-lg gap-2 items-center whitespace-nowrap">
             <span className={`text-blue-500 transition-all duration-1000 ease-in-out ${currentIndex === 0 ? "scale-125" : "scale-100"}`}>
               <CheckCircledIcon />
