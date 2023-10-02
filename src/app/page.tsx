@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Header from "./demo/components/ui/header"
+import Footer from "./demo/components/ui/footer"
 import GithubLink from "./demo/components/ui/github-link"
 import { Button } from "./demo/components/ui/button"
 import CLICommandCopy from "./demo/components/ui/cli-command-copy"
@@ -31,7 +32,10 @@ export default function Home() {
 
         <div className="grid grid-cols-2 pt-16 my-8 max-w-[1000px] mx-auto px-4 relative -left-[4%]">
           <div className="flex flex-col gap-8 justify-center pb-8 pr-12">
-            <h3 className="text-3xl font-bold text-blue-600">The Drop-In Headless CMS: No Database, No Problem.</h3>
+            <h3 className="text-3xl font-bold text-blue-600">
+              The Drop-In Headless CMS: <br />
+              No Database, No Problem
+            </h3>
             <p className="text-lg opacity-70">
               Introducing the drop-in headless CMS experience for Next.js. On-the-fly data schema. Type-safe validation with Zod. Automatically generated documentation. Streamlined development.
             </p>
@@ -92,6 +96,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <Footer />
     </>
   )
 }

@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Bucket CMS",
-  description: "Bucket is the world’s first portable drop-in CMS, no database necessary.",
+  description: "Bucket is the world’s first AI-Powered Portable Drop-in Headless CMS (no database necessary).",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
