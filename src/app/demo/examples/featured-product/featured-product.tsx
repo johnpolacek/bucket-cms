@@ -40,7 +40,7 @@ const featuredProductSampleData: FeaturedProductData = {
 
 const FeaturedProduct = ({ data }: { data: FeaturedProductData }) => {
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg border shadow-md m-8">
+    <div className="w-[720px] mx-auto p-6 bg-white rounded-lg border shadow-md m-8">
       <div className="flex justify-between items-start">
         <div>
           <div className="text-4xl font-bold">{data.Title.value}</div>
@@ -81,7 +81,7 @@ const FeaturedProduct = ({ data }: { data: FeaturedProductData }) => {
 
 export const FeaturedProducts: React.FC = () => {
   return (
-    <div>
+    <div className="w-[800px]">
       <FeaturedProduct data={featuredProductSampleData} />
     </div>
   )

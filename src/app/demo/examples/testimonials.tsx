@@ -11,8 +11,8 @@ type TestimonialProps = {
 const Testimonial: React.FC<TestimonialProps> = ({ name, title, image, text }) => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden border">
-      <div className="md:flex">
-        <div className="md:flex-shrink-0">
+      <div className="flex">
+        <div className="flex-shrink-0">
           <Image width={96} height={96} className="h-48 w-full object-cover" src={image} alt={name} />
         </div>
         <div className="p-6">
@@ -55,8 +55,8 @@ export const Testimonials: React.FC = () => {
 
   return (
     <div className="w-[960px] mx-auto text-center flex-none">
-      <h2 className="text-2xl lg:text-4xl font-light mb-8 opacity-70">What our customers say</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <h2 className="text-4xl font-light mb-8 opacity-70">What our customers say</h2>
+      <div className="grid grid-cols-2 gap-8">
         {testimonials.map((testimonial, index) => (
           <Testimonial key={index} {...testimonial} />
         ))}

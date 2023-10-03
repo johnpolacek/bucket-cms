@@ -19,7 +19,7 @@ interface CustomerCaseStudyData {
 
 const CustomerCaseStudyView: React.FC<CustomerCaseStudyData> = ({ data }) => {
   return (
-    <div className="pb-12 w-full">
+    <div className="pb-12 w-[1024px]">
       <div className="py-12 text-center">
         <h4 className="uppercase tracking-wide text-sm opacity-60">Case Study</h4>
         <h1 className="text-5xl font-semibold py-4">{data["Title"].value}</h1>
