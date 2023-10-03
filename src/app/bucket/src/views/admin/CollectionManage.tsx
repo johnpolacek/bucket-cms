@@ -26,7 +26,7 @@ function CollectionManage({
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
   const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
-  const [showDocs, setShowDocs] = useState(true)
+  const [showDocs, setShowDocs] = useState(window.innerWidth > 768)
 
   const { items, loading, error, refresh } = useFetchCollectionItems(collectionData)
   const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionData)
@@ -103,12 +103,16 @@ function CollectionManage({
       </div>
 
       {!editItem && !loading && (
-        <div className="flex items-center justify-center w-full">
-          <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="px-8 w-full">
-            <h3 className="w-full text-center uppercase tracking-wide opacity-50 text-sm -mt-2">Manage</h3>
+        <div className="flex items-center justify-center w-full mt-8 sm:mt-0">
+          <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="sm:px-8 w-full">
+            <h3 className="w-full text-center uppercase tracking-wide opacity-50 text-sm">Manage</h3>
             <h4 className="w-full text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
-            <div className={cn("flex w-full max-w-[1280px] relative mx-auto my-4 p-4 sm:p-12 divide-x border rounded-xl shadow transition-all ease-in-out", showDocs ? "gap-12" : "gap-8")}>
-              <Button onClick={() => setShowDocs(!showDocs)} variant="outline" className={cn("md:hidden top-2 scale-90 text-gray-600 absolute right-2", showDocs ?? "justify-start right-6")}>
+            <div className={cn("flex w-full max-w-[1280px] relative mx-auto sm:my-4 p-4 sm:p-12 sm:divide-x sm:border rounded-xl sm:shadow transition-all ease-in-out", showDocs ? "gap-12" : "gap-8")}>
+              <Button
+                onClick={() => setShowDocs(!showDocs)}
+                variant="outline"
+                className={cn("md:hidden -top-[104px] sm:top-2 scale-75 sm:scale-90 text-gray-600 absolute right-0 sm:right-2", showDocs ?? "justify-start right-6")}
+              >
                 {showDocs ? (
                   <>
                     <span>hide docs </span>
@@ -121,7 +125,7 @@ function CollectionManage({
                   </>
                 )}
               </Button>
-              <div className={cn("border-t transition-all ease-in-out", showDocs ? "w-1/2 grow" : "w-full grow")}>
+              <div className={cn("border-t transition-all ease-in-out grow", showDocs ? "w-full sm:w-1/2" : "w-full")}>
                 {items.length === 0 && (
                   <div className="py-16 w-full text-center text-lg italic border-b">
                     <div className="pb-6 opacity-60">This collection is empty...</div>
@@ -134,14 +138,16 @@ function CollectionManage({
                     </Button>
                     <div className="pt-8">
                       {confirmDeleteCollection ? (
-                        <div className="inline-flex items-center">
+                        <div className="inline-flex flex-col sm:flex-row items-center">
                           <span className="mr-2 font-bold italic">Confirm delete collection?</span>
-                          <Button variant="ghost" className="text-red-600 ml-2" onClick={handleDeleteCollection}>
-                            Yes
-                          </Button>
-                          <Button variant="outline" className="ml-2" onClick={() => setConfirmDeleteCollection(false)}>
-                            No
-                          </Button>
+                          <div className="flex">
+                            <Button variant="ghost" className="text-red-600 ml-2" onClick={handleDeleteCollection}>
+                              Yes
+                            </Button>
+                            <Button variant="outline" className="ml-2" onClick={() => setConfirmDeleteCollection(false)}>
+                              No
+                            </Button>
+                          </div>
                         </div>
                       ) : (
                         <Button variant="ghost" className="text-red-500" onClick={handleDeleteCollection}>
@@ -152,7 +158,7 @@ function CollectionManage({
                   </div>
                 )}
                 {items.map((item) => (
-                  <div key={item.itemId} className="flex flex-col sm:flex-row sm:justify-between items-center border-b py-4 px-8 gap-2">
+                  <div key={item.itemId} className="flex justify-between items-center border-b py-4 px-2 pr-8 sm:px-8 gap-2">
                     <div className="sm:pr-12 py-4 sm:py-0 text-center sm:text-left">{item.itemName}</div>
                     <div>
                       {!confirmDeleteItemId && (
@@ -161,18 +167,20 @@ function CollectionManage({
                         </Button>
                       )}
                       {confirmDeleteItemId === item.itemId ? (
-                        <div className="inline-flex items-center -mr-8">
+                        <div className="inline-flex flex-col sm:flex-row items-center -mr-8">
                           {isDeleting ? (
                             <div className="ml-2 text-gray-500 italic pr-4">Deleting...</div>
                           ) : (
                             <>
-                              <span className="mr-2 font-bold italic">Confirm delete?</span>
-                              <Button variant="ghost" className="text-red-600 ml-2" onClick={() => handleDeleteItem(item.itemId)}>
-                                Yes
-                              </Button>
-                              <Button variant="outline" className="ml-2" onClick={() => setConfirmDeleteItemId(null)}>
-                                No
-                              </Button>
+                              <div className="mr-2 font-bold italic">Confirm delete?</div>
+                              <div className="flex pt-2 sm:pt-0">
+                                <Button variant="ghost" className="text-red-600 ml-2" onClick={() => handleDeleteItem(item.itemId)}>
+                                  Yes
+                                </Button>
+                                <Button variant="outline" className="ml-2" onClick={() => setConfirmDeleteItemId(null)}>
+                                  No
+                                </Button>
+                              </div>
                             </>
                           )}
                         </div>
@@ -195,7 +203,12 @@ function CollectionManage({
                 {error && <p className="text-red-500">{error}</p>}
                 {!loading && !error && <ul></ul>}
               </div>
-              <div className={cn("pl-12 overflow-auto relative transition-all ease-in-out", showDocs ? "w-1/2 grow" : "w-auto shrink")}>
+              <div
+                className={cn(
+                  "min-h-screen sm:min-h-0 bg-white sm:block px-4 sm:pl-12 overflow-auto relative transition-all ease-in-out",
+                  showDocs ? "absolute z-10 top-0 left-0 sm:static w-full sm:block sm:w-1/2 grow" : "hidden w-auto shrink"
+                )}
+              >
                 {collectionFieldData && showDocs && <CollectionDataDocumentation collection={collectionFieldData} />}
               </div>
             </div>

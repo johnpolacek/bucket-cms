@@ -37,7 +37,7 @@ const Header = ({ children }: { children: React.ReactElement }) => {
           <Link href="/demo">
             <Button>Try the Demo</Button>
           </Link>
-          <Link href="/demo">
+          <Link href="/contact">
             <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
               Contact
             </Button>

@@ -9,15 +9,15 @@ import "prismjs/components/prism-typescript"
 
 const PublicAPI = () => (
   <>
-    <Badge className="scale-90 bg-green-500 hover:bg-green-500 hover:no-underline !no-underline">Public</Badge>
-    <span className="pt-1 text-sm text-gray-500">Users do not need to be logged in to use this API</span>
+    <Badge className="scale-90 -ml-1 sm:ml-0 bg-green-500 hover:bg-green-500 hover:no-underline !no-underline">Public</Badge>
+    <div className="pt-1 text-sm text-gray-500">Users do not need to be logged in to use this API</div>
   </>
 )
 
 const PrivateAPI = () => (
   <>
-    <Badge className="scale-90 bg-black opacity-60 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
-    <span className="pt-1 text-sm text-gray-500">Users need to be logged in in to use this API</span>
+    <Badge className="scale-90 -ml-1 sm:ml-0 bg-black opacity-60 hover:bg-black hover:no-underline !no-underline">Auth Required</Badge>
+    <div className="pt-1 text-sm text-gray-500">Users need to be logged in in to use this API</div>
   </>
 )
 
@@ -33,8 +33,8 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
       <div>
         <div className="mt-6">
           <div className="text-blue-600 text-2xl hover:no-underline">
-            <div className="inline-flex gap-2">
-              <span className="font-semibold">Read API</span>
+            <div className="sm:inline-flex gap-2">
+              <div className="font-semibold">Read API</div>
               {collectionAccess && <>{collectionAccess.publicBlockRead.includes(collection.name) ? <PrivateAPI /> : <PublicAPI />}</>}
             </div>
           </div>
@@ -98,8 +98,8 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
         </div>
         <div className="mt-12 pt-8 border-t">
           <div className="text-blue-600 text-2xl hover:no-underline">
-            <div className="inline-flex gap-2">
-              <span className="font-semibold">Create API</span>
+            <div className="sm:inline-flex gap-2">
+              <div className="font-semibold">Create API</div>
               {collectionAccess && <>{collectionAccess.publicAllowWrite.includes(collection.name) ? <PublicAPI /> : <PrivateAPI />}</>}
             </div>
           </div>
@@ -129,8 +129,8 @@ function CollectionDataClient({ collection }: { collection: CollectionFieldsData
         </div>
         <div className="mt-12 pt-8 border-t">
           <div className="text-blue-600 text-2xl">
-            <div className="inline-flex gap-2">
-              <span className="font-semibold">Update API</span>
+            <div className="sm:inline-flex gap-2">
+              <div className="font-semibold">Update API</div>
               {collectionAccess && <>{collectionAccess.publicAllowWrite.includes(collection.name) ? <PublicAPI /> : <PrivateAPI />}</>}
             </div>
           </div>

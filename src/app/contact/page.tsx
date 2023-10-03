@@ -11,7 +11,7 @@ export default function Contact() {
       <Header>
         <GithubLink />
       </Header>
-      <div className="py-12 border-t max-w-[480px] mx-auto text-center">
+      <div className="py-12 px-8 border-t max-w-[480px] mx-auto text-center">
         <TransitionWrapper>
           <BrandImage />
           <PageHeading>Say Hello</PageHeading>

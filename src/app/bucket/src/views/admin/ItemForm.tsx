@@ -155,9 +155,11 @@ function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collec
       {fetchError && <div className="py-4 text-red-500 text-sm">{fetchError}</div>}
       {collection && (
         <Transition appear={true} show={true} enter="transition-all duration-150" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0">
-          <div className="p-8 border bg-white sm:rounded-xl shadow max-w-[480px] mx-auto">
-            <h3 className="uppercase opacity-50 text-sm pb-1">{collectionData.collectionName}</h3>
-            <h2 className="text-3xl pb-8">{itemToEdit ? "Edit Item" : "Create New Item"}</h2>
+          <div className="p-8 sm:border bg-white sm:rounded-xl sm:shadow max-w-[480px] mx-auto">
+            <h2 className="text-xl uppercase pb-8 text-center opacity-50">
+              {itemToEdit ? "Edit " : " New "}
+              {collectionData.collectionName}
+            </h2>
 
             {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 

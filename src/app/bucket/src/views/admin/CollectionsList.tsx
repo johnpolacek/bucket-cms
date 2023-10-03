@@ -70,7 +70,7 @@ function CollectionsList({
             className="flex flex-col"
           >
             <div className="flex flex-col sm:flex-row justify-center">
-              <div className="my-8 border bg-white p-8 sm:rounded-xl shadow">
+              <div className="sm:my-8 sm:border bg-white p-8 sm:rounded-xl sm:shadow">
                 <div className="border-t">
                   {deleteError && <div className="text-red-500">{deleteError}</div>}
                   {collectionsList.map((collection: CollectionData) => (

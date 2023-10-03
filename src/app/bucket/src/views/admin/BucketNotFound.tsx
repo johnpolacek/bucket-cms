@@ -37,7 +37,7 @@ const BucketNotFound: React.FC<BucketNotFoundProps> = ({ bucketName, onBucketCre
         <BrandImage />
         <h3 className="text-3xl font-bold">Bucket needs a Bucket!</h3>
         <div className="text-center py-4">
-          <div className="pb-2 opacity-60">Your bucket’s name shall be:</div>
+          <div className="pb-2 opacity-60 text-sm sm:text-base">Your bucket’s name shall be:</div>
           <div className="font-mono bg-blue-100 px-4 py-2 rounded-lg opacity-80">{bucketName}</div>
         </div>
         <div className="text-center">
