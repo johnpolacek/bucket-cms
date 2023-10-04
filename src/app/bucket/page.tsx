@@ -1,5 +1,5 @@
-import { Bucket } from "."
+import { permanentRedirect } from "next/navigation"
 
 export default async function Home() {
-  return <Bucket />
+  return permanentRedirect("/bucket/admin")
 }

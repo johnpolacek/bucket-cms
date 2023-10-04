@@ -8,7 +8,7 @@ import { CollectionData } from "../../types"
 import { useFetchCollectionsCount } from "../../hooks"
 import CollectionEdit from "./CollectionEdit"
 
-function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
+function AdminHome() {
   const [manageCollection, setManageCollection] = useState<CollectionData | undefined>(undefined)
   const [createItemInCollection, setCreateItemInCollection] = useState<CollectionData | undefined>(undefined)
   const [isCreatingCollection, setIsCreatingCollection] = useState(false)
@@ -39,7 +39,6 @@ function AdminHome({ onUpdateCollection }: { onUpdateCollection: () => void }) {
                   onCancel={() => setIsCreatingCollection(false)}
                   onComplete={() => {
                     setIsCreatingCollection(false)
-                    onUpdateCollection()
                   }}
                 />
               ) : (

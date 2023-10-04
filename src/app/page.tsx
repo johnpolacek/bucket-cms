@@ -1,7 +1,5 @@
 import Link from "next/link"
-import Header from "./demo/components/ui/header"
 import Footer from "./demo/components/ui/footer"
-import GithubLink from "./demo/components/ui/github-link"
 import { Button } from "./demo/components/ui/button"
 import CLICommandCopy from "./demo/components/ui/cli-command-copy"
 import ExamplesView from "./demo/examples/examples-view"
@@ -11,9 +9,6 @@ export default function Home() {
 
   return (
     <>
-      <Header>
-        <GithubLink />
-      </Header>
       <main className="flex min-h-screen flex-col items-center gap-6 sm:gap-8 py-8 sm:py-20 px-2 sm:px-8 mb-8" style={textWrapBalance}>
         <h1 className="text-base sm:text-xl md:text-3xl font-light text-center text-blue-500 pb-2">Maybe you don’t need a big cloud CMS...</h1>
         <h2 className="text-4xl sm:text-6xl text-center font-extrabold -mt-6 text-blue-700">How about a Bucket?</h2>

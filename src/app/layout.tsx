@@ -1,5 +1,6 @@
 import "./globals.css"
 import "prismjs/themes/prism.css"
+import Header from "./demo/components/ui/header"
 
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header />
+        {children}
+      </body>
     </html>
   )
 }
