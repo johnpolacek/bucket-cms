@@ -91,8 +91,6 @@ function CollectionForm({ collection = null }: { collection?: Collection | null 
     }
   }
 
-  console.log({ fields })
-
   return (
     <>
       <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0" enterTo="opacity-100">

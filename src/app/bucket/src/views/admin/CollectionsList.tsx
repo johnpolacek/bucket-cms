@@ -6,13 +6,11 @@ import { cn } from "../../ui/utils"
 import Link from "next/link"
 
 function CollectionsList({
-  onCreateCollection,
   onCreateItem,
   onManage,
   onEdit,
   collections,
 }: {
-  onCreateCollection: () => void
   onCreateItem: (collection: CollectionData) => void
   onManage: (collection: CollectionData) => void
   onEdit: (collection: CollectionData) => void
