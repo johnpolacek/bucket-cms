@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import Link from "next/link"
 import { Button } from "./button"
 
-const HeaderMobileMenu = async () => {
+const HeaderMobileMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
