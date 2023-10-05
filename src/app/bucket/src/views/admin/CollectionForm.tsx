@@ -21,8 +21,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
   const [collections, loading, fetchError] = useFetchCollectionsCount(true)
   const [submitCollection, isSubmitting, submitError] = useSubmitCollection()
 
-  console.log({ collection })
-
   useEffect(() => {
     if (collection) {
       setFields(collection.fields)
@@ -89,6 +87,8 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     }
   }
 
+  console.log("CollectionForm", { collectionName, fields })
+
   return (
     <>
       {fields.length === 0 ? (
@@ -96,6 +96,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           {collectionName ? (
             <CollectionItemNameSelect
               onSelect={(itemName) => {
+                console.log("CollectionItemNameSelect onSelect", itemName)
                 setFields([{ name: itemName, typeName: "Text" }])
               }}
             />
@@ -108,7 +109,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           )}
         </>
       ) : (
-        <div className={cn("flex flex-col gap-8 items-center transition-all duration-500", fields.length > 1 ? "opacity-100" : "opacity-0")}>
+        <div className={cn("flex flex-col gap-8 items-center transition-all duration-500", fields.length > 0 ? "opacity-100" : "opacity-0")}>
           <h2 className="uppercase font-semibold text-sm tracking-wide opacity-50 -mt-2 pb-4">{isEditMode ? "Edit" : "Create"} Collection</h2>
           <CollectionNameEdit initialValue={collectionName} onChange={(newCollectionName: string) => setCollectionName(newCollectionName)} />
 
