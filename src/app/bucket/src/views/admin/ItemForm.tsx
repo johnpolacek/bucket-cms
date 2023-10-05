@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect, useRef } from "react"
 import { Button, Label } from "../../ui"
-import { Collection, CollectionData, CollectionItemData, CollectionReferenceField, ItemFormData, SelectField } from "../../types"
+import { Collection, CollectionItemData, CollectionReferenceField, ItemFormData, SelectField } from "../../types"
 import * as FieldTypes from "../../field-types"
 import { AllFieldTypes } from "../../field-types"
 import { TextData } from "../../field-types/Text"
@@ -158,7 +158,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
           <div className="p-8 sm:border bg-white sm:rounded-xl sm:shadow max-w-[480px] mx-auto">
             <h2 className="text-xl uppercase pb-8 text-center opacity-50">
               {itemToEdit ? "Edit " : " New "}
-              {collectionData.collectionName}
+              {collectionName}
             </h2>
 
             {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
