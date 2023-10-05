@@ -3,8 +3,8 @@ import Link from "next/link"
 
 const Footer = () => {
   return (
-    <footer className="pt-4 pb-8 sm:px-4 border-t bg-gradient-to-b from-gray-50 via-white opacity-70 to-white">
-      <div className="max-w-[1100px] px-4 mx-auto">
+    <footer className="pt-8 pb-12 sm:px-8 border-t bg-gradient-to-b from-gray-50 via-white opacity-70 to-white">
+      <div className="max-w-[1024px] px-4 mx-auto">
         <div className="flex flex-col items-center sm:flex-row gap-2 sm:gap-8">
           <p className="text-gray-600">© {new Date().getFullYear()} Bucket CMS</p>
           <Link className="text-blue-600" href="/privacy">

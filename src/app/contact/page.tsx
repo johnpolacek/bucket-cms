@@ -13,7 +13,6 @@ export default function Contact() {
           <ContactForm />
         </TransitionWrapper>
       </div>
-      <Footer />
     </main>
   )
 }

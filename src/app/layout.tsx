@@ -1,11 +1,9 @@
 import "./globals.css"
 import "prismjs/themes/prism.css"
 import Header from "./demo/components/ui/header"
+import Footer from "./demo/components/ui/footer"
 
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-
-const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Bucket CMS",
@@ -18,9 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className={inter.className}>
-        <Header />
-        {children}
+      <body>
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   )

@@ -7,11 +7,11 @@ export function AdminFooter({ showAuthenticationWarning }: { showAuthenticationW
   const { bucketName } = useBucketName()
 
   return bucketName ? (
-    <footer className="fixed flex justify-end bottom-0 left-0 w-full">
+    <footer className="fixed flex justify-end bottom-0 left-0 w-full z-20">
       <div className={cn("text-xs px-4 py-2 text-red-700 opacity-70 font-mono font-bold", showAuthenticationWarning ? "bg-red-200" : "bg-transparent")}>
         {showAuthenticationWarning ? "Authentication requirement bypassed for localhost" : ""}
       </div>
-      <div className="text-xs bg-gray-200 px-4 py-2 text-gray-700 opacity-70 font-mono font-bold">{bucketName}</div>
+      <div className="text-xs bg-[rgba(0,0,0,0.125)] px-4 py-2 text-gray-700 opacity-70 font-mono font-bold">{bucketName}</div>
     </footer>
   ) : null
 }
