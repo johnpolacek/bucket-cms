@@ -7,8 +7,10 @@ import BucketProvider from "./src/views/providers/BucketProvider"
 export default async function BucketLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(options)
 
+  const textWrapStyle: any = { textWrap: "balance" }
+
   return (
-    <main className={`flex flex-col grow justify-center items-center relative w-full h-full`}>
+    <div className={`flex flex-col grow justify-center items-center relative w-full h-full`} style={textWrapStyle}>
       {session?.user?.name || process.env.NODE_ENV === "development" ? (
         <BucketProvider>{children}</BucketProvider>
       ) : (
@@ -18,6 +20,6 @@ export default async function BucketLayout({ children }: { children: React.React
         </div>
       )}
       <AdminFooter showAuthenticationWarning={!session?.user?.name && process.env.NODE_ENV === "development"} />
-    </main>
+    </div>
   )
 }
