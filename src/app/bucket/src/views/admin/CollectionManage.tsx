@@ -57,7 +57,7 @@ function CollectionManage({
                 )}
               </Button>
               <div className={cn("border-t transition-all ease-in-out grow", showDocs ? "w-full sm:w-1/2" : "w-full")}>
-                {items.length === 0 && <CollectionManageEmpty collectionData={collectionData} onFinish={onFinish} onCreateItem={onCreateItem} />}
+                {items.length === 0 && <CollectionManageEmpty collectionData={collectionData} onDelete={onFinish} onCreateItem={onCreateItem} />}
                 {items.map((item) => (
                   <CollectionManageItem item={item} onEdit={() => setEditItem(item)} collectionData={collectionData} />
                 ))}
