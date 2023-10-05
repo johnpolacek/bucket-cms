@@ -27,7 +27,7 @@ function AdminHome() {
                 setCreateItemInCollection(collectionData)
               }}
               onManage={setManageCollection}
-              onDelete={() => setManageCollection(undefined)}
+              onFinish={() => setManageCollection(undefined)}
               collectionData={manageCollection}
             />
           ) : (

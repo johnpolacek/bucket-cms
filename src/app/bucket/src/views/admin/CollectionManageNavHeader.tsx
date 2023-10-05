@@ -3,7 +3,15 @@ import { Button } from "../../ui"
 import { CollectionData } from "../../types"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../ui"
 
-function CollectionManageNavHeader({ otherCollections, onSelectCollection }: { otherCollections?: CollectionData[]; onSelectCollection: (collection: CollectionData) => void }) {
+function CollectionManageNavHeader({
+  otherCollections,
+  onSelectCollection,
+  onFinish,
+}: {
+  otherCollections?: CollectionData[]
+  onSelectCollection: (collection: CollectionData) => void
+  onFinish: () => void
+}) {
   if (!otherCollections) {
     return null
   }

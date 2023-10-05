@@ -15,13 +15,13 @@ function CollectionManage({
   collections,
   collectionData,
   onManage,
-  onDelete,
+  onFinish,
   onCreateItem,
 }: {
   collections: CollectionData[] | null
   collectionData: CollectionData
   onManage: (collection: CollectionData) => void
-  onDelete: () => void
+  onFinish: () => void
   onCreateItem: (collection: CollectionData) => void
 }) {
   const { collection: collectionFieldData, error: collectionError } = useCollectionFieldData(collectionData.collectionName)
@@ -32,7 +32,7 @@ function CollectionManage({
 
   return (
     <>
-      <CollectionManageNavHeader otherCollections={collections?.filter((c) => c.collectionName !== collectionData.collectionName)} onSelectCollection={onManage} />
+      <CollectionManageNavHeader otherCollections={collections?.filter((c) => c.collectionName !== collectionData.collectionName)} onSelectCollection={onManage} onFinish={onFinish} />
       {!editItem && !loading && (
         <div className="flex items-center justify-center w-full mt-8 sm:mt-0">
           <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="sm:px-8 w-full">
@@ -57,7 +57,7 @@ function CollectionManage({
                 )}
               </Button>
               <div className={cn("border-t transition-all ease-in-out grow", showDocs ? "w-full sm:w-1/2" : "w-full")}>
-                {items.length === 0 && <CollectionManageEmpty collectionData={collectionData} onDelete={onDelete} onCreateItem={onCreateItem} />}
+                {items.length === 0 && <CollectionManageEmpty collectionData={collectionData} onFinish={onFinish} onCreateItem={onCreateItem} />}
                 {items.map((item) => (
                   <CollectionManageItem item={item} onEdit={() => setEditItem(item)} collectionData={collectionData} />
                 ))}
