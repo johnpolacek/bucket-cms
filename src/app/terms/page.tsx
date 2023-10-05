@@ -1,14 +1,9 @@
-import Header from "../demo/components/ui/header"
-import GithubLink from "../demo/components/ui/github-link"
-import { BrandImage, PageHeading } from "../bucket/src/views/brand"
+import { PageHeading } from "../bucket/src/views/brand"
 import TransitionWrapper from "../bucket/src/views/admin/TransitionWrapper"
 
 export default function Contact() {
   return (
     <main>
-      <Header>
-        <GithubLink />
-      </Header>
       <div className="py-12 flex justify-center ">
         <TransitionWrapper>
           <div className="prose max-w-[960px] px-4 pb-16">
