@@ -5,7 +5,7 @@ import CollectionForm from "./CollectionForm"
 import { useCollectionFieldData } from "../../hooks"
 
 function CollectionEdit({ collectionData, onCancel, onComplete }: { collectionData: CollectionData; onCancel: () => void; onComplete: () => void }) {
-  const { collection } = useCollectionFieldData(collectionData)
+  const { collection } = useCollectionFieldData(collectionData.collectionName)
   console.log({ collectionData })
   return <>{collection && <CollectionForm collection={collection} onCancel={onCancel} onComplete={onComplete} />}</>
 }
