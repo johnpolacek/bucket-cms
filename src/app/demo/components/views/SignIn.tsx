@@ -1,8 +1,6 @@
 "use client"
 import React, { useState } from "react"
 import { signIn } from "next-auth/react"
-import Header from "../ui/header"
-import GithubLink from "../ui/github-link"
 import { Button } from "../ui/button"
 import { BrandImage, PageHeading } from "@/app/bucket/src/views/brand"
 import { cn } from "../ui/utils"
@@ -11,9 +9,6 @@ function SignIn({ isTestEnv }: { isTestEnv: boolean }) {
   const [isLoading, setIsLoading] = useState(false)
   return (
     <div className={cn("flex flex-col grow min-h-screen transition-all delay-100 duration-1000 ease-out opacity-100", isLoading && "opacity-0")}>
-      <Header>
-        <GithubLink />
-      </Header>
       <div className="grow text-center border-t py-12">
         <BrandImage />
         <PageHeading>Welcome to Bucket</PageHeading>
