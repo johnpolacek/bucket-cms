@@ -32,9 +32,8 @@ function useSubmitCollection(): SubmitCollectionResponse {
       }
     } catch (error: any) {
       setSubmitError(error.message || "Sorry, there was an error.")
-      return false // Submission failed
-    } finally {
       setIsSubmitting(false)
+      return false // Submission failed
     }
   }
 

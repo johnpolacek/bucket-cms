@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, Button, Input, Label } from "../../ui"
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, Button, Input, Label } from "../../ui"
 import TransitionWrapper from "./TransitionWrapper"
 import CollectionFieldTypeChooser from "./CollectionFieldTypeChooser"
 import { FieldKeys } from "../../types"

@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "../../ui"
 import { Collection, Field, FieldBlank, SelectField, CollectionReferenceField, FieldKeys } from "../../types"
 import ItemFormPreview from "./ItemFormPreview"
@@ -13,7 +14,7 @@ import CollectionFormFieldSort from "./CollectionFormFieldSort"
 import { useFetchCollectionsCount, useSubmitCollection } from "../../hooks"
 import { Transition } from "@headlessui/react"
 
-function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
+function CollectionForm({ collection = null }: { collection?: Collection | null }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
   const [fields, setFields] = useState<(Field | FieldBlank)[]>([])
   const [errors, setErrors] = useState<ErrorState>({})
@@ -21,6 +22,8 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
 
   const [collections, loading, fetchError] = useFetchCollectionsCount(true)
   const [submitCollection, isSubmitting, submitError] = useSubmitCollection()
+
+  const router = useRouter()
 
   useEffect(() => {
     if (collection) {
@@ -83,10 +86,12 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     if (validateForm()) {
       const success = await submitCollection(collectionName, fields, isEditMode)
       if (success) {
-        onComplete()
+        router.push("../")
       }
     }
   }
+
+  console.log({ fields })
 
   return (
     <>
@@ -98,7 +103,6 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           {collectionName ? (
             <CollectionItemNameSelect
               onSelect={(itemName) => {
-                console.log("CollectionItemNameSelect onSelect", itemName)
                 setFields([{ name: itemName, typeName: "Text" }])
               }}
             />
@@ -111,11 +115,10 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
           )}
         </>
       ) : (
-        <div className={cn("flex flex-col gap-8 items-center transition-all duration-500", fields.length > 0 ? "opacity-100" : "opacity-0")}>
-          <h2 className="uppercase font-semibold text-sm tracking-wide opacity-50 -mt-2 pb-4">{isEditMode ? "Edit" : "Create"} Collection</h2>
+        <div className={cn("flex flex-col gap-8 py-4 items-center transition-all duration-500", fields.length > 0 ? "opacity-100" : "opacity-0")}>
           <CollectionNameEdit initialValue={collectionName} onChange={(newCollectionName: string) => setCollectionName(newCollectionName)} />
 
-          <div className={cn("px-8 bg-white rounded border w-full max-w-[1100px] mx-auto mt-4 sm:grid sm:grid-cols-2 gap-12 lg:scale-110")}>
+          <div className={cn("px-8 bg-white rounded border w-full max-w-[1100px] mx-auto sm:grid sm:grid-cols-2 gap-12 lg:scale-110")}>
             {collections && (
               <div className="flex flex-col gap-2 py-8 px-4">
                 <CollectionFormFieldSort collections={collections} fields={fields} setFields={setFields} />
@@ -138,7 +141,7 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
                 {submitError && <div className="py-4 text-red-500 text-sm">{submitError}</div>}
 
                 <div className="flex justify-end gap-4 mt-12 mb-8">
-                  <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={onCancel}>
+                  <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={() => router.push("../")}>
                     Cancel
                   </Button>
                   <Button className="bg-blue-600 text-white hover:bg-blue-700" size="lg" disabled={isSubmitting} onClick={handleSubmit}>
