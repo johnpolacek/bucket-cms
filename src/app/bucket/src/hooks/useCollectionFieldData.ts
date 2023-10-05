@@ -2,14 +2,14 @@ import { useState, useEffect } from "react"
 import * as FieldTypes from "../field-types"
 import { Collection, CollectionFieldsData, Field } from "../types"
 
-export const useCollectionFieldData = (collectionData: { collectionName: string }) => {
+export const useCollectionFieldData = (collectionName: string) => {
   const [collection, setCollection] = useState<Collection | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchCollectionAndPopulate = async () => {
       try {
-        const response = await fetch(`/api/bucket/collection/read?collectionName=${collectionData.collectionName}`)
+        const response = await fetch(`/api/bucket/collection/read?collectionName=${collectionName}`)
         const collectionFieldsData: CollectionFieldsData = await response.json()
 
         const typedFields: Field[] = collectionFieldsData.fields.map((field) => {
@@ -33,7 +33,7 @@ export const useCollectionFieldData = (collectionData: { collectionName: string 
     }
 
     fetchCollectionAndPopulate()
-  }, [collectionData.collectionName])
+  }, [collectionName])
 
   return { collection, error }
 }

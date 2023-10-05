@@ -33,7 +33,7 @@ function AdminHome() {
           ) : (
             <>
               {createItemInCollection ? (
-                <ItemForm collectionData={createItemInCollection} onCancel={() => setCreateItemInCollection(undefined)} onComplete={() => setCreateItemInCollection(undefined)} />
+                <ItemForm collectionName={createItemInCollection.collectionName} onCancel={() => setCreateItemInCollection(undefined)} onComplete={() => setCreateItemInCollection(undefined)} />
               ) : isCreatingCollection ? (
                 <CollectionForm
                   onCancel={() => setIsCreatingCollection(false)}

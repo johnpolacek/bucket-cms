@@ -14,10 +14,10 @@ interface CollectionNameIndexPair {
   index: number
 }
 
-function ItemForm({ collectionData, onCancel, onComplete, itemToEdit }: { collectionData: CollectionData; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
-  const { collection, error } = useCollectionFieldData(collectionData)
+function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
+  const { collection, error } = useCollectionFieldData(collectionName)
   const [formData, setFormData] = useState<ItemFormData | undefined>({
-    collectionName: collectionData.collectionName,
+    collectionName: collectionName,
     fields: [],
   })
   const [errors, setErrors] = useState<{ errorMessage?: string }>({})

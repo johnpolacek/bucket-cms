@@ -22,7 +22,7 @@ function CollectionManage({
   onFinish: () => void
   onCreateItem: (collection: CollectionData) => void
 }) {
-  const { collection: collectionFieldData, error: collectionError } = useCollectionFieldData(collectionData)
+  const { collection: collectionFieldData, error: collectionError } = useCollectionFieldData(collectionData.collectionName)
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [confirmDeleteItemId, setConfirmDeleteItemId] = useState<string | null>(null)
   const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
@@ -218,7 +218,7 @@ function CollectionManage({
 
       {editItem && (
         <div className="py-4">
-          <ItemForm collectionData={collectionData} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
+          <ItemForm collectionName={collectionData.collectionName} itemToEdit={editItem} onCancel={handleCancelEdit} onComplete={handleCompleteEdit} />
         </div>
       )}
     </>
