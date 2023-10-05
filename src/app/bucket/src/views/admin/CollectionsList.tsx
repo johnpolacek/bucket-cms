@@ -16,6 +16,7 @@ function CollectionsList({
   onManage: (collection: CollectionData) => void
   collections: CollectionData[]
 }) {
+  const [confirmDeleteCollection, setConfirmDeleteCollection] = useState("")
   const [collections, setCollections] = useState(initialCollections)
   const { isDeleting, deleteError, deleteCollection, selectedCollectionForDeletion, setSelectedCollectionForDeletion } = useDeleteCollection()
 
@@ -61,37 +62,51 @@ function CollectionsList({
                         {collection.collectionName}
                         {collection.itemCount > 0 && <span className="ml-1 font-mono text-sm opacity-60">({collection.itemCount})</span>}
                       </div>
-                      <div className="flex gap-3 pr-4 sm:w-[320px] justify-end -mr-4 sm:mr-0">
+                      <div className="flex gap-3 pr-4 sm:w-[320px] justify-end items-center -mr-4 sm:mr-0">
                         {selectedCollectionForDeletion === collection.collectionName && isDeleting ? (
                           <span className="ml-2 text-gray-500 italic">Deleting...</span>
                         ) : (
                           <>
-                            <Button
-                              onClick={() => onCreateItem(collection)}
-                              className={cn("w-[90px]", collection.itemCount > 0 ? "text-green-600 hover:text-green-600" : "bg-green-500 hover:bg-green-600 text-white")}
-                              variant={collection.itemCount > 0 ? "outline" : "default"}
-                            >
-                              + New
-                            </Button>
-                            {collection.itemCount === 0 ? (
-                              <Link href={`./admin/collection/${collection.collectionName.replace(/\s+/g, "_")}/edit`}>
-                                <Button className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
-                                  Edit
+                            {confirmDeleteCollection === collection.collectionName ? (
+                              <>
+                                <span className="mr-2 font-bold italic">Delete?</span>
+                                <Button variant="ghost" className="text-red-600" onClick={() => handleDeleteCollection(collection.collectionName)} disabled={isDeleting}>
+                                  Yes
                                 </Button>
-                              </Link>
+                                <Button variant="outline" className="mr-12" onClick={() => setConfirmDeleteCollection("")} disabled={isDeleting}>
+                                  No
+                                </Button>
+                              </>
                             ) : (
-                              <Button onClick={() => onManage(collection)} className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
-                                Manage
-                              </Button>
+                              <>
+                                <Button
+                                  onClick={() => onCreateItem(collection)}
+                                  className={cn("w-[90px]", collection.itemCount > 0 ? "text-green-600 hover:text-green-600" : "bg-green-500 hover:bg-green-600 text-white")}
+                                  variant={collection.itemCount > 0 ? "outline" : "default"}
+                                >
+                                  + New
+                                </Button>
+                                {collection.itemCount === 0 ? (
+                                  <Link href={`./admin/collection/${collection.collectionName.replace(/\s+/g, "_")}/edit`}>
+                                    <Button className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
+                                      Edit
+                                    </Button>
+                                  </Link>
+                                ) : (
+                                  <Button onClick={() => onManage(collection)} className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
+                                    Manage
+                                  </Button>
+                                )}
+                                <Button
+                                  aria-label={collection.itemCount === 0 ? `Delete ${collection.collectionName}` : ""}
+                                  variant="ghost"
+                                  className={cn("text-2xl px-2", collection.itemCount === 0 ? "text-red-500 hover:text-red-700" : "opacity-0 pointer-events-none")}
+                                  onClick={() => setConfirmDeleteCollection(collection.collectionName)}
+                                >
+                                  ×
+                                </Button>
+                              </>
                             )}
-                            <Button
-                              aria-label={`Delete ${collection.collectionName}`}
-                              variant="ghost"
-                              className="text-2xl px-2 text-red-500 hover:text-red-700"
-                              onClick={() => handleDeleteCollection(collection.collectionName)}
-                            >
-                              ×
-                            </Button>
                           </>
                         )}
                       </div>

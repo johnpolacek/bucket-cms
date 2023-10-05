@@ -2,6 +2,7 @@
 import React, { useState } from "react"
 import { Label, Input, Button } from "../../ui"
 import TransitionWrapper from "./TransitionWrapper"
+import Link from "next/link"
 
 function CollectionNameSelect({ onSelect }: { onSelect: (collectionName: string) => void }) {
   const [collectionName, setCollectionName] = useState("")
@@ -31,6 +32,9 @@ function CollectionNameSelect({ onSelect }: { onSelect: (collectionName: string)
           Next <span className="font-thin scale-150 relative -top-[2px] left-3">»</span>
         </Button>
         <p className="text-sm text-center opacity-70 pt-8">Some examples of collection names are Case Studies, Testimonials, Featured Products, FAQs or Speaker Profiles</p>
+      </div>
+      <div className="text-center py-8 text-blue-500">
+        <Link href="../../">Cancel</Link>
       </div>
     </TransitionWrapper>
   )

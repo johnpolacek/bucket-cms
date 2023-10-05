@@ -1,10 +1,10 @@
 import CollectionForm from "../../../../src/views/admin/CollectionForm"
 import { Collection } from "../../../../src/types"
+import { readCollectionSchema } from "@/app/api/bucket/s3/operations"
 
 export default async function EditCollectionPage({ params }: { params: { collectionSlug: string } }) {
   const collectionName = params.collectionSlug.replace(/_/g, " ")
-  const response = await fetch(`/api/bucket/collection/read?collectionName=${collectionName}`)
-  const collection: Collection = await response.json()
+  const collection: Collection | null = await readCollectionSchema(collectionName)
 
   return (
     <div className="pb-32">

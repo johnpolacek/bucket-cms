@@ -86,7 +86,11 @@ function CollectionForm({ collection = null }: { collection?: Collection | null 
     if (validateForm()) {
       const success = await submitCollection(collectionName, fields, isEditMode)
       if (success) {
-        router.push("../")
+        if (collection) {
+          router.push("../../../")
+        } else {
+          router.push("../")
+        }
       }
     }
   }
@@ -94,7 +98,7 @@ function CollectionForm({ collection = null }: { collection?: Collection | null 
   return (
     <>
       <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0" enterTo="opacity-100">
-        <h3 className="text-center font-semibold text-3xl mt-4 sm:mt-0">{collection ? "Edit" : "Create"} Collection</h3>
+        <h3 className="text-center font-semibold text-3xl pt-8 sm:mt-0">{collection ? "Edit" : "Create"} Collection</h3>
       </Transition>
       {fields.length === 0 ? (
         <>
@@ -139,7 +143,7 @@ function CollectionForm({ collection = null }: { collection?: Collection | null 
                 {submitError && <div className="py-4 text-red-500 text-sm">{submitError}</div>}
 
                 <div className="flex justify-end gap-4 mt-12 mb-8">
-                  <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={() => router.push("../")}>
+                  <Button size="lg" disabled={isSubmitting} variant="ghost" onClick={() => router.push(collection ? "../../../" : "../")}>
                     Cancel
                   </Button>
                   <Button className="bg-blue-600 text-white hover:bg-blue-700" size="lg" disabled={isSubmitting} onClick={handleSubmit}>

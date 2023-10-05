@@ -29,7 +29,7 @@ function CollectionFieldEditDialog({ fieldType, onComplete }: { fieldType: Field
         </AlertDialogCancel>
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center uppercase text-sm tracking-wide opacity-60 pb-4">Edit Field Type</AlertDialogTitle>
-          <AlertDialogDescription className="flex flex-col justify-center items-center grow h-full">
+          <div className="flex flex-col justify-center items-center grow h-full">
             <CollectionFieldTypeChooser
               initial={fieldType}
               onChoose={(selected) => {
@@ -37,7 +37,7 @@ function CollectionFieldEditDialog({ fieldType, onComplete }: { fieldType: Field
                 onComplete(selected)
               }}
             />
-          </AlertDialogDescription>
+          </div>
         </AlertDialogHeader>
       </AlertDialogContent>
     </AlertDialog>

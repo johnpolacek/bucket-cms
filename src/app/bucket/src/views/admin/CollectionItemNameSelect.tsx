@@ -2,14 +2,15 @@
 import React, { useState } from "react"
 import TransitionWrapper from "./TransitionWrapper"
 import { Label, Input, Button } from "../../ui"
+import Link from "next/link"
 
 function CollectionItemNameSelect({ onSelect }: { onSelect: (itemName: string) => void }) {
   const [itemName, setItemName] = useState("")
 
   return (
     <TransitionWrapper>
-      <div className="p-12 bg-white shadow rounded border w-full max-w-[540px] mx-auto mt-8 flex flex-col justify-center items-center gap-4">
-        <Label htmlFor="itemName" className="block text-2xl font-bold text-blue-600 text-center max-w-[360px]">
+      <div className="p-12 bg-white shadow rounded border w-full max-w-[640px] mx-auto mt-8 flex flex-col justify-center items-center gap-4">
+        <Label htmlFor="itemName" className="block text-2xl font-bold text-blue-600 text-center max-w-[480px]">
           Choose a label to identify items in your collection
         </Label>
         <Input
@@ -36,6 +37,9 @@ function CollectionItemNameSelect({ onSelect }: { onSelect: (itemName: string) =
           Next <span className="font-thin scale-150 relative -top-[2px] left-3">»</span>
         </Button>
         <p className="text-sm text-center opacity-70 pt-4 max-w-[360px] mx-auto">Examples of collection item labels would be Name, Title, Full Name, Email, Product SKU, ID or Username.</p>
+      </div>
+      <div className="text-center py-8 text-blue-500">
+        <Link href="../../">Cancel</Link>
       </div>
     </TransitionWrapper>
   )
