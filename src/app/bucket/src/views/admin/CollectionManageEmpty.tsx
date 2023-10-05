@@ -4,10 +4,10 @@ import { CollectionData } from "../../types"
 import { useDeleteCollection } from "../../hooks"
 
 function CollectionManageEmpty({ collectionData, onDelete, onCreateItem }: { collectionData: CollectionData; onDelete: () => void; onCreateItem: (collection: CollectionData) => void }) {
-  const { isDeleting, deleteError, deleteCollection, confirmDeleteCollection, setConfirmDeleteCollection } = useDeleteCollection(collectionData)
+  const { isDeleting, deleteError, deleteCollection, selectedCollectionForDeletion, setSelectedCollectionForDeletion } = useDeleteCollection()
 
   const handleDeleteCollection = async () => {
-    await deleteCollection()
+    await deleteCollection(collectionData.collectionName)
     if (!deleteError) {
       onDelete()
     } else {
@@ -27,20 +27,20 @@ function CollectionManageEmpty({ collectionData, onDelete, onCreateItem }: { col
         + Create First Item
       </Button>
       <div className="pt-8">
-        {confirmDeleteCollection ? (
+        {selectedCollectionForDeletion === collectionData.collectionName ? (
           <div className="inline-flex flex-col sm:flex-row items-center">
             <span className="mr-2 font-bold italic">Confirm delete collection?</span>
             <div className="flex">
               <Button variant="ghost" className="text-red-600 ml-2" onClick={handleDeleteCollection} disabled={isDeleting}>
                 Yes
               </Button>
-              <Button variant="outline" className="ml-2" onClick={() => setConfirmDeleteCollection(false)} disabled={isDeleting}>
+              <Button variant="outline" className="ml-2" onClick={() => setSelectedCollectionForDeletion(null)} disabled={isDeleting}>
                 No
               </Button>
             </div>
           </div>
         ) : (
-          <Button variant="ghost" className="text-red-500" onClick={() => setConfirmDeleteCollection(true)}>
+          <Button variant="ghost" className="text-red-500" onClick={() => setSelectedCollectionForDeletion(collectionData.collectionName)}>
             Delete {collectionData.collectionName}
           </Button>
         )}
