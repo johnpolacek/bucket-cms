@@ -10,7 +10,7 @@ function CollectionNameSelect({ onSelect }: { onSelect: (collectionName: string)
     <TransitionWrapper>
       <div className="p-12 bg-white shadow rounded border w-full max-w-[640px] mx-auto mt-8 flex flex-col justify-center items-center gap-4">
         <Label htmlFor="collectionName" className="block text-2xl font-bold text-blue-600">
-          Choose a name for your collection
+          Enter a collection name
         </Label>
         <Input
           className="text-lg text-center h-auto py-3 max-w-[360px]"
@@ -19,7 +19,7 @@ function CollectionNameSelect({ onSelect }: { onSelect: (collectionName: string)
           autoComplete="off"
           value={collectionName}
           onChange={(e) => setCollectionName(e.target.value)}
-          placeholder="Enter collection name"
+          placeholder=""
           autoFocus={true}
           onKeyDown={(e) => {
             if (e.key === "Enter") {

@@ -11,6 +11,7 @@ import CollectionFieldNewDialog from "./CollectionFieldNewDialog"
 import { cn } from "../../ui/utils"
 import CollectionFormFieldSort from "./CollectionFormFieldSort"
 import { useFetchCollectionsCount, useSubmitCollection } from "../../hooks"
+import { Transition } from "@headlessui/react"
 
 function CollectionForm({ collection = null, onCancel, onComplete }: { collection?: Collection | null; onCancel: () => void; onComplete: () => void }) {
   const [collectionName, setCollectionName] = useState<string>(collection ? collection.name : "")
@@ -87,10 +88,11 @@ function CollectionForm({ collection = null, onCancel, onComplete }: { collectio
     }
   }
 
-  console.log("CollectionForm", { collectionName, fields })
-
   return (
     <>
+      <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0" enterTo="opacity-100">
+        <h3 className="text-center font-semibold text-3xl mt-4 sm:mt-0">{collection ? "Edit" : "Create"} Collection</h3>
+      </Transition>
       {fields.length === 0 ? (
         <>
           {collectionName ? (
