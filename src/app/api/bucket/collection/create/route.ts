@@ -4,10 +4,10 @@ import { PutObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3"
 import { Collection } from "../../../../bucket/src/types"
 import { checkPrivateWriteAccess } from "@/app/bucket/src/util"
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<void | NextResponse> {
   const { error, response } = await checkPrivateWriteAccess()
   if (error) {
-    return response
+    return NextResponse.json({ error }, { status: 403 })
   }
 
   const s3 = initializeS3Client()

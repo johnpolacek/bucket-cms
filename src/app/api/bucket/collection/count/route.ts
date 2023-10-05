@@ -3,7 +3,7 @@ import { checkPublicReadAccess } from "@/app/bucket/src/util"
 import { ListObjectsV2Command } from "@aws-sdk/client-s3"
 import { initializeS3Client, getBucketName } from "../../s3/util"
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<void | NextResponse> {
   const collectionName = req.nextUrl.searchParams.get("collectionName")
 
   if (!collectionName) {
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 
   const { error, response } = await checkPublicReadAccess(collectionName)
   if (error) {
-    return response
+    return NextResponse.json({ error }, { status: 403 })
   }
 
   const s3 = initializeS3Client()

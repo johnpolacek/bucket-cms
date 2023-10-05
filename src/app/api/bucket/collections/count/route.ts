@@ -3,10 +3,10 @@ import { getBucketName } from "../../s3/util"
 import { readCollectionCounts } from "../../s3/operations"
 import { checkPublicReadAccess } from "@/app/bucket/src/util"
 
-export async function GET() {
+export async function GET(): Promise<void | NextResponse> {
   const { error, response } = await checkPublicReadAccess()
   if (error) {
-    return response
+    return NextResponse.json({ error }, { status: 403 })
   }
 
   const bucketNamePublic = await getBucketName(true)

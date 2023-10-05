@@ -3,10 +3,10 @@ import { NextResponse } from "next/server"
 import { getBucketName } from "../../s3/util"
 import { readCollections } from "../../s3/operations"
 
-export async function GET() {
+export async function GET(): Promise<void | NextResponse> {
   const { error, response } = await checkPublicReadAccess()
   if (error) {
-    return response
+    return NextResponse.json({ error }, { status: 403 })
   }
 
   const bucketName = await getBucketName()

@@ -3,7 +3,7 @@ import { checkPublicWriteAccess } from "../../../../../app/bucket/src/util"
 import { readCollectionSchema, updateCollectionItem } from "../../s3/operations"
 import { validateFields } from "../../../../../app/bucket/src/util"
 
-export async function PUT(req: NextRequest) {
+export async function PUT(req: NextRequest): Promise<void | NextResponse> {
   if (req.method === "PUT") {
     try {
       const json = await req.json()
@@ -11,7 +11,7 @@ export async function PUT(req: NextRequest) {
 
       const { error, response } = await checkPublicWriteAccess(collectionName)
       if (error) {
-        return response
+        return NextResponse.json({ error }, { status: 403 })
       }
 
       // Fetch the collection schema

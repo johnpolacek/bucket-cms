@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { ConfigValidation } from "@/app/bucket/src/types"
 
-export async function GET() {
+export async function GET(): Promise<void | NextResponse> {
   const hasAWSAccess = Boolean(process.env.AWS_ACCESS_KEY_ID)
   const hasAWSSecret = Boolean(process.env.AWS_SECRET_ACCESS_KEY)
   const hasAWSRegion = Boolean(process.env.AWS_REGION)

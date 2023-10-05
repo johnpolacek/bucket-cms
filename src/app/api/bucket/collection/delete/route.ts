@@ -3,10 +3,10 @@ import { initializeS3Client, getBucketName } from "../../s3/util"
 import { DeleteObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3"
 import { checkPrivateWriteAccess } from "@/app/bucket/src/util"
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE(req: NextRequest): Promise<void | NextResponse> {
   const { error, response } = await checkPrivateWriteAccess()
   if (error) {
-    return response
+    return NextResponse.json({ error }, { status: 403 })
   }
 
   const s3 = initializeS3Client()

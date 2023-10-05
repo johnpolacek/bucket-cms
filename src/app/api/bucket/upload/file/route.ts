@@ -6,7 +6,7 @@ import { checkPublicUploadAccess } from "@/app/bucket/src/util"
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024 // 20 MB
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<void | NextResponse> {
   const s3 = initializeS3Client()
 
   const formData = await req.formData()
@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
   const { error, response } = await checkPublicUploadAccess()
   if (error) {
-    return response
+    return NextResponse.json({ error }, { status: 403 })
   }
 
   if (!file) {

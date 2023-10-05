@@ -3,7 +3,7 @@ import { readCollectionItems } from "../../s3/operations"
 import { CollectionItemData } from "../../../../../app/bucket/src/types"
 import { checkPublicReadAccess } from "@/app/bucket/src/util"
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<void | NextResponse> {
   const collectionName = req.nextUrl.searchParams.get("collectionName")
   const token = req.nextUrl.searchParams.get("token") || undefined
 
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   const { error, response } = await checkPublicReadAccess(collectionName)
   if (error) {
-    return response
+    return NextResponse.json({ error }, { status: 403 })
   }
 
   try {

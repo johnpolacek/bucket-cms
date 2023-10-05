@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { getBucketName } from "../../s3/util"
 
-export async function GET() {
+export async function GET(): Promise<void | NextResponse> {
   const bucketName = await getBucketName()
 
   try {
