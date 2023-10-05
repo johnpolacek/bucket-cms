@@ -15,7 +15,6 @@ function CollectionsIntro() {
         setIsCreatingCollection(true)
       }
     }
-
     window.addEventListener("keydown", handleKeyDown)
 
     return () => {
@@ -26,12 +25,7 @@ function CollectionsIntro() {
   return (
     <div className="py-16">
       {isCreatingCollection ? (
-        <CollectionForm
-          onCancel={() => setIsCreatingCollection(false)}
-          onComplete={() => {
-            window.location.reload()
-          }}
-        />
+        <CollectionForm />
       ) : (
         <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="flex flex-col items-center gap-4">
           <BrandImage />
