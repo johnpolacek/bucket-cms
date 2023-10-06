@@ -8,13 +8,14 @@ import { TextData } from "../../field-types/Text"
 import { Transition } from "@headlessui/react"
 import { isZodObjectOrArray, getDefaultDataFromSchema, validateFields } from "../../util"
 import { useCollectionFieldData, useFetchItemIds } from "../../hooks"
+import { useRouter } from "next/navigation"
 
 interface CollectionNameIndexPair {
   name: string
   index: number
 }
 
-function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: () => void; onComplete: () => void; itemToEdit?: CollectionItemData }) {
+function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: string; onComplete: string; itemToEdit?: CollectionItemData }) {
   const { collection, error } = useCollectionFieldData(collectionName)
   const [formData, setFormData] = useState<ItemFormData | undefined>({
     collectionName: collectionName,
@@ -24,6 +25,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { fetchItemsIds, error: fetchError } = useFetchItemIds()
+  const router = useRouter()
 
   const initializeFormData = (collection: Collection) => ({
     collectionName: collection.name,
@@ -138,7 +140,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       const responseData = await response.json()
 
       if (responseData.success) {
-        onComplete()
+        router.push(onComplete)
       } else {
         setErrors({ errorMessage: responseData.error || "An error occurred while saving the item." })
         setIsSubmitting(false)
@@ -205,7 +207,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
                   })}
                 </div>
                 <div className="flex justify-end gap-4 mt-8">
-                  <Button variant="ghost" onClick={onCancel}>
+                  <Button variant="ghost" onClick={() => router.push(onCancel)}>
                     Cancel
                   </Button>
                   <Button className="w-[140px] text-center bg-blue-500 hover:bg-blue-600" onClick={handleSubmit} disabled={isSubmitting}>

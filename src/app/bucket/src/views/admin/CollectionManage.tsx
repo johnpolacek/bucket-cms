@@ -10,6 +10,7 @@ import { cn } from "../../ui/utils"
 import CollectionManageItem from "./CollectionManageItem"
 import CollectionManageNavHeader from "./CollectionManageNavHeader"
 import CollectionManageEmpty from "./CollectionManageEmpty"
+import Link from "next/link"
 
 function CollectionManage({
   collections,
@@ -59,7 +60,7 @@ function CollectionManage({
               <div className={cn("border-t transition-all ease-in-out grow", showDocs ? "w-full sm:w-1/2" : "w-full")}>
                 {items.length === 0 && <CollectionManageEmpty collectionData={collectionData} onDelete={onFinish} onCreateItem={onCreateItem} />}
                 {items.map((item) => (
-                  <CollectionManageItem item={item} onEdit={() => setEditItem(item)} collectionData={collectionData} />
+                  <CollectionManageItem key={item.itemId} item={item} onEdit={() => setEditItem(item)} collectionData={collectionData} />
                 ))}
                 {items.length > 0 && (
                   <div className="w-full text-right my-4">

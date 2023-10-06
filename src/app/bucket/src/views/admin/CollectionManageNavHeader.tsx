@@ -24,10 +24,10 @@ function CollectionManageNavHeader({
       {otherCollections && otherCollections.length && (
         <div className="-mt-8 sm:-mt-16 inline-block">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant="outline" className="text-gray-600 pr-6">
+            <DropdownMenuTrigger className="flex items-center justify-center overflow-hidden h-[36px] border shadow-sm rounded text-gray-600 pl-4 pr-6">
+              <>
                 Go to... <span className="text-2xl pt-4 opacity-70 font-thin scale-x-125 -rotate-90">‹</span>
-              </Button>
+              </>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {otherCollections?.map((c: CollectionData, index) => (

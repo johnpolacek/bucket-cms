@@ -12,7 +12,7 @@ function CollectionManageItem({ item, onEdit, collectionData }: { item: Collecti
 
   const onConfirmDelete = async () => {
     await deleteItem(item.itemId)
-    if (!deleteError) {
+    if (deleteError) {
       setError("Could not delete item. Please try again.")
     } else {
       setIsDeleted(true)
@@ -24,7 +24,7 @@ function CollectionManageItem({ item, onEdit, collectionData }: { item: Collecti
   }
 
   return (
-    <div key={item.itemId} className="flex justify-between items-center border-b py-4 px-2 pr-8 sm:px-8 gap-2">
+    <div className="flex justify-between items-center border-b py-4 px-2 pr-8 sm:px-8 gap-2">
       <div className="sm:pr-12 py-4 sm:py-0 text-center sm:text-left">{item.itemName}</div>
       {error && <div className="text-red-600 italic">{error}</div>}
       <div>

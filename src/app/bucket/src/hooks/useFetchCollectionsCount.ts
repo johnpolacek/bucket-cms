@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { CollectionData } from "../types"
 
-function useFetchCollectionsCount(shouldFetch: boolean, refreshToken?: number): [CollectionData[] | null, boolean, Error | null, string | null] {
+function useFetchCollectionsCount(shouldFetch: boolean): [CollectionData[] | null, boolean, Error | null, string | null] {
   const [collections, setCollections] = useState<CollectionData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
