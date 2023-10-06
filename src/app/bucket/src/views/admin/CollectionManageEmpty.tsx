@@ -2,12 +2,13 @@
 import { Button } from "../../ui"
 import { CollectionData } from "../../types"
 import { useDeleteCollection } from "../../hooks"
+import { useRouter } from "next/router"
 
-function CollectionManageEmpty({ collectionData, onDelete, onCreateItem }: { collectionData: CollectionData; onDelete: () => void; onCreateItem: (collection: CollectionData) => void }) {
+function CollectionManageEmpty({ collectionName, onDelete, onCreateItem }: { collectionName: string; onDelete: () => void; onCreateItem: (collection: CollectionData) => void }) {
   const { isDeleting, deleteError, deleteCollection, selectedCollectionForDeletion, setSelectedCollectionForDeletion } = useDeleteCollection()
 
   const handleDeleteCollection = async () => {
-    await deleteCollection(collectionData.collectionName)
+    await deleteCollection(collectionName)
     if (!deleteError) {
       onDelete()
     } else {
@@ -16,18 +17,20 @@ function CollectionManageEmpty({ collectionData, onDelete, onCreateItem }: { col
     }
   }
 
+  const router = useRouter()
+
   return (
     <div className="py-16 w-full text-center text-lg italic border-b">
       <div className="pb-6 opacity-60">This collection is empty...</div>
       <Button
-        onClick={() => onCreateItem(collectionData)}
+        onClick={() => router.push("./admin/collection/" + collectionName.replace(/\s+/g, "_") + "/new")}
         variant="outline"
         className="bg-green-500 text-white text-xl h-auto py-4 px-6 hover:bg-green-400 hover:scale-110 hover:text-white transition-all ease-in-out"
       >
         + Create First Item
       </Button>
       <div className="pt-8">
-        {selectedCollectionForDeletion === collectionData.collectionName ? (
+        {selectedCollectionForDeletion === collectionName ? (
           <div className="inline-flex flex-col sm:flex-row items-center">
             <span className="mr-2 font-bold italic">Confirm delete collection?</span>
             <div className="flex">
@@ -40,8 +43,8 @@ function CollectionManageEmpty({ collectionData, onDelete, onCreateItem }: { col
             </div>
           </div>
         ) : (
-          <Button variant="ghost" className="text-red-500" onClick={() => setSelectedCollectionForDeletion(collectionData.collectionName)}>
-            Delete {collectionData.collectionName}
+          <Button variant="ghost" className="text-red-500" onClick={() => setSelectedCollectionForDeletion(collectionName)}>
+            Delete {collectionName}
           </Button>
         )}
       </div>

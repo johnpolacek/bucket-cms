@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react"
 import { CollectionData, CollectionItemData } from "../types"
 
-function useFetchCollectionItems(collectionData: CollectionData) {
+function useFetchCollectionItems(collectionName: string) {
   const [items, setItems] = useState<Array<CollectionItemData>>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const fetchItems = async () => {
     try {
-      const response = await fetch(`/api/bucket/items/read?collectionName=${collectionData.collectionName}`)
+      const response = await fetch(`/api/bucket/items/read?collectionName=${collectionName}`)
       if (!response.ok) {
         throw new Error("Failed to fetch items")
       }
@@ -23,7 +23,7 @@ function useFetchCollectionItems(collectionData: CollectionData) {
 
   useEffect(() => {
     fetchItems()
-  }, [collectionData.collectionName])
+  }, [collectionName])
 
   return { items, loading, error, refresh: fetchItems }
 }

@@ -4,8 +4,8 @@ import { Button } from "../../ui"
 import { CollectionData, CollectionItemData } from "../../types"
 import { useDeleteCollectionItem } from "../../hooks"
 
-function CollectionManageItem({ item, onEdit, collectionData }: { item: CollectionItemData; onEdit: (item: CollectionItemData) => void; collectionData: CollectionData }) {
-  const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionData)
+function CollectionManageItem({ item, onEdit, collectionName }: { item: CollectionItemData; onEdit: (item: CollectionItemData) => void; collectionName: string }) {
+  const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionName)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
   const [error, setError] = useState<string | null>(null)

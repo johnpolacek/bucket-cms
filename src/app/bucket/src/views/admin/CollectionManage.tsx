@@ -1,44 +1,43 @@
 "use client"
 import React, { useState } from "react"
-import ItemForm from "./ItemForm"
+import { useRouter } from "next/router"
 import { Button } from "../../ui"
-import { CollectionData, CollectionItemData } from "../../types"
+import { Collection, CollectionData, CollectionItemData } from "../../types"
 import { Transition } from "@headlessui/react"
-import { useCollectionFieldData, useFetchCollectionItems } from "../../hooks"
+import { useFetchCollectionItems } from "../../hooks"
 import CollectionDataDocumentation from "../dev/CollectionDataDocumentation"
 import { cn } from "../../ui/utils"
 import CollectionManageItem from "./CollectionManageItem"
 import CollectionManageNavHeader from "./CollectionManageNavHeader"
 import CollectionManageEmpty from "./CollectionManageEmpty"
-import Link from "next/link"
+import ItemForm from "./ItemForm"
 
 function CollectionManage({
+  collection,
   collections,
-  collectionData,
   onManage,
   onFinish,
   onCreateItem,
 }: {
+  collection: Collection
   collections: CollectionData[] | null
-  collectionData: CollectionData
   onManage: (collection: CollectionData) => void
   onFinish: () => void
   onCreateItem: (collection: CollectionData) => void
 }) {
-  const { collection: collectionFieldData, error: collectionError } = useCollectionFieldData(collectionData.collectionName)
   const [editItem, setEditItem] = useState<CollectionItemData | null>(null)
   const [showDocs, setShowDocs] = useState(window.innerWidth > 768)
-
-  const { items, loading, error, refresh } = useFetchCollectionItems(collectionData)
+  const router = useRouter()
+  const { items, loading, error, refresh } = useFetchCollectionItems(collection.name)
 
   return (
     <>
-      <CollectionManageNavHeader otherCollections={collections?.filter((c) => c.collectionName !== collectionData.collectionName)} onSelectCollection={onManage} onFinish={onFinish} />
+      <CollectionManageNavHeader otherCollections={collections?.filter((c) => c.collectionName !== collection.name)} onSelectCollection={onManage} onFinish={onFinish} />
       {!editItem && !loading && (
         <div className="flex items-center justify-center w-full mt-8 sm:mt-0">
           <Transition appear={true} show={true} enter="transition-all duration-300" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0" className="sm:px-8 w-full">
             <h3 className="w-full text-center uppercase tracking-wide opacity-50 text-sm">Manage</h3>
-            <h4 className="w-full text-center font-semibold text-4xl pb-6">{collectionData.collectionName}</h4>
+            <h4 className="w-full text-center font-semibold text-4xl pb-6">{collection.name}</h4>
             <div className={cn("flex w-full max-w-[1280px] relative mx-auto sm:my-4 p-4 sm:p-12 sm:divide-x sm:border rounded-xl sm:shadow transition-all ease-in-out", showDocs ? "gap-12" : "gap-8")}>
               <Button
                 onClick={() => setShowDocs(!showDocs)}
@@ -58,13 +57,13 @@ function CollectionManage({
                 )}
               </Button>
               <div className={cn("border-t transition-all ease-in-out grow", showDocs ? "w-full sm:w-1/2" : "w-full")}>
-                {items.length === 0 && <CollectionManageEmpty collectionData={collectionData} onDelete={onFinish} onCreateItem={onCreateItem} />}
+                {items.length === 0 && <CollectionManageEmpty collectionName={collection.name} onDelete={onFinish} onCreateItem={onCreateItem} />}
                 {items.map((item) => (
-                  <CollectionManageItem key={item.itemId} item={item} onEdit={() => setEditItem(item)} collectionData={collectionData} />
+                  <CollectionManageItem key={item.itemId} item={item} onEdit={() => setEditItem(item)} collectionName={collection.name} />
                 ))}
                 {items.length > 0 && (
                   <div className="w-full text-right my-4">
-                    <Button onClick={() => onCreateItem(collectionData)} variant="outline" className="text-green-600">
+                    <Button onClick={() => router.push("./collection/" + collection.name.replace(/\s+/g, "_") + "/item/new")} variant="outline" className="text-green-600">
                       + New
                     </Button>
                   </div>
@@ -79,7 +78,7 @@ function CollectionManage({
                   showDocs ? "absolute z-10 top-0 left-0 sm:static w-full sm:block sm:w-1/2 grow" : "hidden w-auto shrink"
                 )}
               >
-                {collectionFieldData && showDocs && <CollectionDataDocumentation collection={collectionFieldData} />}
+                {collection && showDocs && <CollectionDataDocumentation collection={collection} />}
               </div>
             </div>
           </Transition>
@@ -87,15 +86,7 @@ function CollectionManage({
       )}
       {editItem && (
         <div className="py-4">
-          <ItemForm
-            collectionName={collectionData.collectionName}
-            itemToEdit={editItem}
-            onCancel={() => setEditItem(null)}
-            onComplete={() => {
-              setEditItem(null)
-              refresh()
-            }}
-          />
+          <ItemForm collectionName={collection.name} itemToEdit={editItem} onCancel="../" onComplete="../" />
         </div>
       )}
     </>

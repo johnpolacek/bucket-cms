@@ -13,10 +13,9 @@ export async function GET(): Promise<void | NextResponse> {
   const bucketNamePrivate = await getBucketName(false)
 
   try {
-    const publicCollectionCounts = await readCollectionCounts(bucketNamePublic)
-    const privateCollectionCounts = await readCollectionCounts(bucketNamePrivate)
+    const collections = await readCollectionCounts()
 
-    return NextResponse.json({ collections: [...publicCollectionCounts, ...privateCollectionCounts] }, { status: 200 })
+    return NextResponse.json({ collections }, { status: 200 })
   } catch (error: any) {
     console.error("Error fetching collections from S3:", error) // Log the error for debugging
 

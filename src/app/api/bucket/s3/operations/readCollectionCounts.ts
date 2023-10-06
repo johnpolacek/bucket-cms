@@ -1,19 +1,19 @@
 import { ListObjectsV2Command } from "@aws-sdk/client-s3"
-import { initializeS3Client } from "../util"
+import { initializeS3Client, getBucketName } from "../util"
+import { CollectionData } from "@/app/bucket/src/types"
 
-export async function readCollectionCounts(bucketName: string) {
-  const s3 = initializeS3Client()
+async function getCollectionNames(bucketName: string, s3: any): Promise<string[]> {
   const command = new ListObjectsV2Command({
     Bucket: bucketName,
-    Prefix: "collections/", // The prefix for the files
+    Prefix: "collections/",
   })
   const response = await s3.send(command)
 
-  // Extract file names (keys) from the response
-  const collectionNames = response.Contents?.map((item) => item.Key?.replace("collections/", "").replace(".json", "")) || []
+  return response.Contents?.map((item: { Key?: string }) => item.Key?.replace("collections/", "").replace(".json", "")).filter((name: string | undefined): name is string => name !== undefined) || []
+}
 
-  // Fetch item counts for each collection
-  const collectionsWithCounts = await Promise.all(
+async function fetchCollectionCounts(bucketName: string, collectionNames: string[], s3: any): Promise<CollectionData[]> {
+  return await Promise.all(
     collectionNames.map(async (collectionName) => {
       const itemCommand = new ListObjectsV2Command({
         Bucket: bucketName,
@@ -24,5 +24,19 @@ export async function readCollectionCounts(bucketName: string) {
       return { collectionName, itemCount }
     })
   )
-  return collectionsWithCounts
+}
+
+async function getCollectionsWithCountsForBucket(isPublic: boolean, s3: any): Promise<CollectionData[]> {
+  const bucketName = await getBucketName(isPublic)
+  const collectionNames = await getCollectionNames(bucketName, s3)
+  return await fetchCollectionCounts(bucketName, collectionNames, s3)
+}
+
+export async function readCollectionCounts(): Promise<CollectionData[]> {
+  const s3 = initializeS3Client()
+
+  const collectionsWithCountsPublic = await getCollectionsWithCountsForBucket(true, s3)
+  const collectionsWithCountsPrivate = await getCollectionsWithCountsForBucket(false, s3)
+
+  return [...collectionsWithCountsPublic, ...collectionsWithCountsPrivate]
 }
