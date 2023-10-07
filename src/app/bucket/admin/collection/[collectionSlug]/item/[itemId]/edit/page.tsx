@@ -3,7 +3,7 @@ import { CollectionItemData } from "@/app/bucket/src/types"
 import { readCollectionItem } from "@/app/api/bucket/s3/operations"
 import { PageHeading } from "@/app/bucket/src/views/brand"
 
-export default async function EditCollectionPage({ params }: { params: { collectionSlug: string; itemId: string } }) {
+export default async function EditItemPage({ params }: { params: { collectionSlug: string; itemId: string } }) {
   const collectionName = params.collectionSlug.replace(/_/g, " ")
   const itemId = params.itemId
   const itemData: CollectionItemData = await readCollectionItem(collectionName, itemId)

@@ -1,7 +1,7 @@
 import ItemForm from "@/app/bucket/src/views/admin/ItemForm"
 import { PageHeading } from "@/app/bucket/src/views/brand"
 
-export default async function EditCollectionPage({ params }: { params: { collectionSlug: string } }) {
+export default async function NewItemPage({ params }: { params: { collectionSlug: string } }) {
   const collectionName = params.collectionSlug.replace(/_/g, " ")
 
   return (
