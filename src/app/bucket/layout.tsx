@@ -7,10 +7,8 @@ import BucketProvider from "./src/views/providers/BucketProvider"
 export default async function BucketLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(options)
 
-  const textWrapStyle: any = { textWrap: "balance" }
-
   return (
-    <div className={`flex flex-col grow justify-start items-center relative w-full h-full md:pt-4`} style={textWrapStyle}>
+    <div className={`flex flex-col grow justify-start items-center relative w-full h-full md:pt-4`}>
       {session?.user?.name || process.env.NODE_ENV === "development" ? (
         <BucketProvider>{children}</BucketProvider>
       ) : (

@@ -11,9 +11,11 @@ import DocsSectionItems from "./DocsSectionItems"
 function Docs({ collections }: { collections: CollectionFieldsData[] }) {
   return (
     <>
+      <div className="px-8 pb-16">
+        <DocsSectionIntroduction />
+      </div>
       <h2 className="px-8 text-sm font-semibold text-blue-500 uppercase tracking-widest">Overview</h2>
       <div className="flex flex-col gap-12 px-8">
-        <DocsSectionIntroduction />
         <DocsSectionAdmin />
         <DocsSectionCollections />
         <DocsSectionFields />
