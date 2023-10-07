@@ -157,12 +157,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       {fetchError && <div className="py-4 text-red-500 text-sm">{fetchError}</div>}
       {collection && (
         <Transition appear={true} show={true} enter="transition-all duration-150" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0">
-          <div className="p-8 sm:border bg-white sm:rounded-xl sm:shadow max-w-[480px] mx-auto">
-            <h2 className="text-xl uppercase pb-8 text-center opacity-50">
-              {itemToEdit ? "Edit " : " New "}
-              {collectionName}
-            </h2>
-
+          <div className="p-8 sm:border bg-white sm:rounded-xl sm:shadow w-full sm:w-[480px] mx-auto">
             {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
 
             {collection && formData?.fields && (

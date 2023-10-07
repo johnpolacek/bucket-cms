@@ -1,12 +1,11 @@
 import ItemForm from "@/app/bucket/src/views/admin/ItemForm"
-import { PageHeading } from "@/app/bucket/src/views/brand"
 
 export default async function EditCollectionPage({ params }: { params: { collectionSlug: string } }) {
   const collectionName = params.collectionSlug.replace(/_/g, " ")
+  const itemId = params.itemId
 
   return (
-    <div className="pb-32 flex flex-col items-center gap-8">
-      <PageHeading>New {collectionName} Item</PageHeading>
+    <div className="pb-32">
       <ItemForm collectionName={collectionName} onCancel="../../../../admin" onComplete="../../../../admin" />
     </div>
   )

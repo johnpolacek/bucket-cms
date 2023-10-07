@@ -10,7 +10,7 @@ export default async function BucketLayout({ children }: { children: React.React
   const textWrapStyle: any = { textWrap: "balance" }
 
   return (
-    <div className={`flex flex-col grow justify-center items-center relative w-full h-full`} style={textWrapStyle}>
+    <div className={`flex flex-col grow justify-start items-center relative w-full h-full md:pt-4`} style={textWrapStyle}>
       {session?.user?.name || process.env.NODE_ENV === "development" ? (
         <BucketProvider>{children}</BucketProvider>
       ) : (

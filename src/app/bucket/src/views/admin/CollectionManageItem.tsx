@@ -1,10 +1,11 @@
 "use client"
 import React, { useState } from "react"
+import Link from "next/link"
 import { Button } from "../../ui"
-import { CollectionData, CollectionItemData } from "../../types"
+import { CollectionItemData } from "../../types"
 import { useDeleteCollectionItem } from "../../hooks"
 
-function CollectionManageItem({ item, onEdit, collectionName }: { item: CollectionItemData; onEdit: (item: CollectionItemData) => void; collectionName: string }) {
+function CollectionManageItem({ item, collectionName }: { item: CollectionItemData; collectionName: string }) {
   const { isDeleting, deleteError, deleteItem } = useDeleteCollectionItem(collectionName)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
@@ -23,15 +24,19 @@ function CollectionManageItem({ item, onEdit, collectionName }: { item: Collecti
     return null
   }
 
+  console.log("CollectionManageItem", { item })
+
   return (
     <div className="flex justify-between items-center border-b py-4 px-2 pr-8 sm:px-8 gap-2">
       <div className="sm:pr-12 py-4 sm:py-0 text-center sm:text-left">{item.itemName}</div>
       {error && <div className="text-red-600 italic">{error}</div>}
       <div>
         {!confirmDelete && (
-          <Button variant="outline" className="text-blue-600" onClick={() => onEdit(item)}>
-            edit
-          </Button>
+          <Link href={`./item/${item.itemId}/edit`}>
+            <Button variant="outline" className="text-blue-600">
+              edit
+            </Button>
+          </Link>
         )}
         {confirmDelete ? (
           <div className="inline-flex flex-col sm:flex-row items-center -mr-8">

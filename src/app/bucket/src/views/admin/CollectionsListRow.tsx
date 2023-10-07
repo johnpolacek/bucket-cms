@@ -5,20 +5,12 @@ import { CollectionData } from "../../types"
 import { cn } from "../../ui/utils"
 import Link from "next/link"
 import { useDeleteCollection } from "../../hooks"
+import { useRouter } from "next/navigation"
 
-function CollectionsListRow({
-  collection,
-  onDelete,
-  onCreateItem,
-  onManage,
-}: {
-  collection: CollectionData
-  onDelete: (collection: CollectionData) => void
-  onCreateItem: (collection: CollectionData) => void
-  onManage: (collection: CollectionData) => void
-}) {
+function CollectionsListRow({ collection, onDelete }: { collection: CollectionData; onDelete: (collection: CollectionData) => void }) {
   const [confirmDeleteCollection, setConfirmDeleteCollection] = useState(false)
   const { isDeleting, deleteError, deleteCollection, selectedCollectionForDeletion } = useDeleteCollection()
+  const router = useRouter()
 
   const handleDeleteCollection = async () => {
     await deleteCollection(collection.collectionName)
@@ -55,7 +47,6 @@ function CollectionsListRow({
               <>
                 <Link href={`./admin/collection/${collection.collectionName.replace(/\s+/g, "_")}/item/new`}>
                   <Button
-                    onClick={() => onCreateItem(collection)}
                     className={cn("w-[90px]", collection.itemCount > 0 ? "text-green-600 hover:text-green-600" : "bg-green-500 hover:bg-green-600 text-white")}
                     variant={collection.itemCount > 0 ? "outline" : "default"}
                   >
@@ -69,9 +60,11 @@ function CollectionsListRow({
                     </Button>
                   </Link>
                 ) : (
-                  <Button onClick={() => onManage(collection)} className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
-                    Manage
-                  </Button>
+                  <Link href={`./admin/collection/${collection.collectionName.replace(/\s+/g, "_")}/manage`}>
+                    <Button className="w-[90px] text-blue-600 hover:text-blue-600" variant="outline">
+                      Manage
+                    </Button>
+                  </Link>
                 )}
                 <Button
                   aria-label={collection.itemCount === 0 ? `Delete ${collection.collectionName}` : ""}

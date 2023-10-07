@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { CollectionData, CollectionItemData } from "../types"
+import { CollectionItemData } from "../types"
 
 function useFetchCollectionItems(collectionName: string) {
   const [items, setItems] = useState<Array<CollectionItemData>>([])
@@ -25,7 +25,7 @@ function useFetchCollectionItems(collectionName: string) {
     fetchItems()
   }, [collectionName])
 
-  return { items, loading, error, refresh: fetchItems }
+  return { items, loading, error }
 }
 
 export { useFetchCollectionItems }

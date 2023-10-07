@@ -1,16 +1,15 @@
 "use client"
 import { Button } from "../../ui"
-import { CollectionData } from "../../types"
 import { useDeleteCollection } from "../../hooks"
 import { useRouter } from "next/router"
 
-function CollectionManageEmpty({ collectionName, onDelete, onCreateItem }: { collectionName: string; onDelete: () => void; onCreateItem: (collection: CollectionData) => void }) {
+function CollectionManageEmpty({ collectionName }: { collectionName: string }) {
   const { isDeleting, deleteError, deleteCollection, selectedCollectionForDeletion, setSelectedCollectionForDeletion } = useDeleteCollection()
 
   const handleDeleteCollection = async () => {
     await deleteCollection(collectionName)
     if (!deleteError) {
-      onDelete()
+      router.push("../")
     } else {
       console.error(deleteError)
       alert("An error occurred while trying to delete the collection. Please try again.")

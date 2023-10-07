@@ -7,15 +7,7 @@ import Link from "next/link"
 import CollectionsEmpty from "./CollectionsEmpty"
 import CollectionsListRow from "./CollectionsListRow"
 
-function CollectionsList({
-  onCreateItem,
-  onManage,
-  collections: initialCollections,
-}: {
-  onCreateItem: (collection: CollectionData) => void
-  onManage: (collection: CollectionData) => void
-  collections: CollectionData[]
-}) {
+function CollectionsList({ collections: initialCollections }: { collections: CollectionData[] }) {
   const [collections, setCollections] = useState(initialCollections)
 
   const onDeleteCollection = async (collection: CollectionData) => {
@@ -34,7 +26,7 @@ function CollectionsList({
               <div className="sm:my-8 sm:border bg-white p-8 sm:rounded-xl sm:shadow">
                 <div className="border-t">
                   {collections.map((collection: CollectionData) => (
-                    <CollectionsListRow key={collection.collectionName} collection={collection} onManage={onManage} onCreateItem={onCreateItem} onDelete={onDeleteCollection} />
+                    <CollectionsListRow key={collection.collectionName} collection={collection} onDelete={onDeleteCollection} />
                   ))}
                 </div>
               </div>
