@@ -91,6 +91,13 @@ export interface ItemFormData {
   fields: ItemFormFieldData[]
 }
 
+export interface ItemPayload {
+  collectionName: string
+  itemName: string
+  data: any
+  itemId?: string
+}
+
 export interface CollectionData {
   collectionName: string
   itemCount: number

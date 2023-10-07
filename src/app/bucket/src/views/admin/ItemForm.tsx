@@ -1,19 +1,15 @@
 "use client"
 import React, { useState, useEffect, useRef } from "react"
-import { Button, Label } from "../../ui"
-import { Collection, CollectionItemData, CollectionReferenceField, ItemFormData, SelectField } from "../../types"
-import * as FieldTypes from "../../field-types"
+import { Collection, CollectionItemData, CollectionReferenceField, ItemFormData, ItemPayload, SelectField } from "../../types"
+import { getDefaultDataFromSchema, validateFields, getCollectionNamesFromFields } from "../../util"
+import { useCollectionFieldData, useFetchItemIds, useCreateItem, useUpdateItem } from "../../hooks"
 import { AllFieldTypes } from "../../field-types"
 import { TextData } from "../../field-types/Text"
+import * as FieldTypes from "../../field-types"
 import { Transition } from "@headlessui/react"
-import { isZodObjectOrArray, getDefaultDataFromSchema, validateFields } from "../../util"
-import { useCollectionFieldData, useFetchItemIds } from "../../hooks"
+import ItemFormField from "./ItemFormField"
 import { useRouter } from "next/navigation"
-
-interface CollectionNameIndexPair {
-  name: string
-  index: number
-}
+import { Button } from "../../ui"
 
 function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collectionName: string; onCancel: string; onComplete: string; itemToEdit?: CollectionItemData }) {
   const { collection, error } = useCollectionFieldData(collectionName)
@@ -26,6 +22,8 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { fetchItemsIds, error: fetchError } = useFetchItemIds()
   const router = useRouter()
+  const { createItem } = useCreateItem()
+  const { updateItem } = useUpdateItem()
 
   const initializeFormData = (collection: Collection) => ({
     collectionName: collection.name,
@@ -51,17 +49,9 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
   useEffect(() => {
     if (collection && !hasLoadedCollectionReferences.current) {
       // Check if collection is not null and the effect hasn't run before
-      hasLoadedCollectionReferences.current = true // Set the ref to true so the effect won't run again
+      hasLoadedCollectionReferences.current = true
 
-      const collectionNames = collection.fields.reduce<CollectionNameIndexPair[]>((acc, field, index) => {
-        if (field.typeName === "CollectionReference") {
-          const collectionReferenceField = field as CollectionReferenceField
-          if (collectionReferenceField.options && collectionReferenceField.options.length > 0) {
-            acc.push({ name: collectionReferenceField.options[0], index })
-          }
-        }
-        return acc
-      }, [])
+      const collectionNames = getCollectionNamesFromFields(collection.fields)
 
       ;(async () => {
         for (const { name, index } of collectionNames) {
@@ -93,13 +83,6 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
 
     setIsSubmitting(true)
 
-    type ItemPayload = {
-      collectionName: string
-      itemName: string
-      data: any
-      itemId?: string
-    }
-
     const payload: ItemPayload = {
       collectionName: formData.collectionName,
       itemName: (formData.fields[0].data as TextData).value,
@@ -114,30 +97,13 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
       payload.itemId = itemToEdit.itemId
     }
 
-    let apiEndpoint
-    let requestMethod
-
-    if (itemToEdit) {
-      apiEndpoint = "/api/bucket/item/update"
-      requestMethod = "PUT"
-    } else {
-      apiEndpoint = "/api/bucket/item/create"
-      requestMethod = "POST"
-    }
-
     try {
-      const response = await fetch(apiEndpoint, {
-        method: requestMethod,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to save the item")
+      let responseData
+      if (itemToEdit) {
+        responseData = await updateItem(payload)
+      } else {
+        responseData = await createItem(payload)
       }
-      const responseData = await response.json()
 
       if (responseData.success) {
         router.push(onComplete)
@@ -159,47 +125,26 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
         <Transition appear={true} show={true} enter="transition-all duration-150" enterFrom="opacity-0 translate-y-4" enterTo="opacity-100 translate-y-0">
           <div className="p-8 sm:border bg-white sm:rounded-xl sm:shadow w-full sm:w-[480px] mx-auto">
             {errors.errorMessage && <div className="py-4 text-red-500 text-sm">{errors.errorMessage}</div>}
-
-            {collection && formData?.fields && (
-              <div className="">
+            {formData?.fields && (
+              <>
                 <div className="flex flex-col gap-8">
-                  {formData?.fields.map((field, index) => {
-                    const fieldTypeKey = collection.fields[index].typeName as keyof typeof FieldTypes
-                    const fieldType = FieldTypes[fieldTypeKey]
-
-                    if (!fieldType) {
-                      return (
-                        <div key={index} className="text-red-500">
-                          Field type not found!
-                        </div>
-                      )
-                    }
-
-                    let fieldDataShape = isZodObjectOrArray(fieldType.schema) ? fieldType.schema.shape : null
-
-                    return (
-                      <div key={index} className="flex flex-col gap-2">
-                        <Label className="block opacity-70 font-medium">{field.name}</Label>
-                        {isZodObjectOrArray(fieldType.schema) ? (
-                          fieldType.renderAdmin({
-                            data: field.data as typeof fieldDataShape,
-                            setData: (updatedData) => {
-                              setFormData((prev) => {
-                                if (!prev) return prev
-                                const newData = { ...prev }
-                                newData.fields[index].data = updatedData
-                                return newData
-                              })
-                            },
-                            options: field.options || [],
-                          })
-                        ) : (
-                          <div className="p-2 bg-red-100 text-red-700 border border-red-300 rounded">Error: Invalid field type schema.</div>
-                        )}
-                        {fieldErrors[index] && <div className="text-red-500 text-sm">{fieldErrors[index]}</div>}
-                      </div>
-                    )
-                  })}
+                  {formData?.fields.map((field, index) => (
+                    <ItemFormField
+                      key={index}
+                      collection={collection}
+                      field={field}
+                      fieldErrors={fieldErrors}
+                      index={index}
+                      onSetData={(updatedData) => {
+                        setFormData((prev) => {
+                          if (!prev) return prev
+                          const newData = { ...prev }
+                          newData.fields[index].data = updatedData
+                          return newData
+                        })
+                      }}
+                    />
+                  ))}
                 </div>
                 <div className="flex justify-end gap-4 mt-8">
                   <Button variant="ghost" onClick={() => router.push(onCancel)}>
@@ -209,7 +154,7 @@ function ItemForm({ collectionName, onCancel, onComplete, itemToEdit }: { collec
                     {isSubmitting ? "Saving..." : "Save Item"}
                   </Button>
                 </div>
-              </div>
+              </>
             )}
           </div>
         </Transition>
