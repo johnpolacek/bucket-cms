@@ -59,8 +59,8 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
           <>
             <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">Setting Up Your IAM User</h3>
             <p>
-              To get started with Bucket CMS, the simplest way is to create an IAM (Identity and Access Management) user on AWS with the AmazonS3FullAccess policy attached. This policy grants full
-              access to S3 services and resources. Bucket CMS is designed to run on your own server configuration and does not require any external access to function.
+              To get started with Bucket CMS, create an IAM (Identity and Access Management) user on AWS with the AmazonS3FullAccess policy attached. This policy grants full access to S3 services and
+              resources. Bucket CMS is designed to run on your own server configuration and does not require any external access to function.
             </p>
             <ol>
               <li>

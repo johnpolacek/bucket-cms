@@ -8,7 +8,7 @@ export default async function BucketLayout({ children }: { children: React.React
   const session = await getServerSession(options)
 
   return (
-    <div className={`flex flex-col grow justify-start items-center relative w-full h-full md:pt-4`}>
+    <div className="flex flex-col grow justify-start items-center relative w-full h-full">
       {session?.user?.name || process.env.NODE_ENV === "development" ? (
         <BucketProvider>{children}</BucketProvider>
       ) : (

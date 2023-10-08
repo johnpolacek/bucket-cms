@@ -1,13 +1,6 @@
-import React, { useEffect } from "react"
 import DocsSection from "./DocsSection"
-import Prism from "prismjs"
-import "prismjs/components/prism-typescript"
 
 function DocsSectionCollections() {
-  useEffect(() => {
-    Prism.highlightAll()
-  }, [])
-
   return (
     <DocsSection id="collections" title="Collections">
       <p>A Collection is a set of related Items. Think of it as a table in a database. Each Collection has a defined schema that is determined by the Fields added by the admin user.</p>

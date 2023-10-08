@@ -6,11 +6,11 @@ function DocsSectionAdmin() {
     <DocsSection id="admin" title="Admin">
       <p>
         In Bucket CMS's admin interface, users have the ability to create and define Collections, establish data structures through Fields, and manage individual Items and their associated static
-        assets. The seamless integration with{" "}
+        assets. All data and file assets are stored securely on{" "}
         <a className="text-blue-600" href="https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/">
           Amazon S3
-        </a>{" "}
-        ensures that all data changes are stored securely and efficiently, making it both easy to use and robust.
+        </a>
+        .
       </p>
       <h5 className="font-bold -mb-3">Managing Collections, Items and Assets</h5>
       <p>
