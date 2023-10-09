@@ -12,11 +12,11 @@ This License Agreement ("Agreement") is between the Licensee (either an individu
 
 ## 2. Grant of License for Non-commercial Use
 
-Subject to the terms and conditions of this Agreement and the accompanying Terms of Service, [Your Company] hereby grants to the Licensee a non-exclusive, non-transferable license to use Bucket CMS **free of charge** for non-commercial purposes. This means that you can use Bucket CMS without any cost for personal, educational, research, charitable, or other non-commercial activities.
+Subject to the terms and conditions of this Agreement and the accompanying Terms of Service, Bucket CMS hereby grants to the Licensee a non-exclusive, non-transferable license to use Bucket CMS **free of charge** for non-commercial purposes. This means that you can use Bucket CMS without any cost for personal, educational, research, charitable, or other non-commercial activities.
 
 ## 3. Commercial Use License
 
-For Commercial Use of Bucket CMS, a license fee is required per Project. The fee is due once the Project starts generating revenue. The specifics of the fee, including the amount and payment terms, will be as specified by Bucket CMS at the time of the license purchase. [Your Company] may, at its sole discretion, waive the license fee for a particular Project.
+For Commercial Use of Bucket CMS, a license fee is required per Project. The fee is due once the Project starts generating revenue. The specifics of the fee, including the amount and payment terms, will be as specified by Bucket CMS at the time of the license purchase. Bucket CMS may, at its sole discretion, waive the license fee for a particular Project.
 
 ## 4. Terms of Service Compliance
 
@@ -32,7 +32,7 @@ Without prejudice to any other rights, Bucket CMS may terminate this Agreement i
 
 ## 7. No Warranties
 
-[Your Company] expressly disclaims any warranty for Bucket CMS. Bucket CMS is provided 'As Is' without any express or implied warranty of any kind, including but not limited to any warranties of merchantability, non-infringement, or fitness of a particular purpose.
+Bucket CMS expressly disclaims any warranty for Bucket CMS. Bucket CMS is provided 'As Is' without any express or implied warranty of any kind, including but not limited to any warranties of merchantability, non-infringement, or fitness of a particular purpose.
 
 ## 8. Limitation of Liability
 
