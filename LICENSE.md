@@ -16,7 +16,7 @@ Subject to the terms and conditions of this Agreement and the accompanying Terms
 
 ## 3. Commercial Use License
 
-For Commercial Use of Bucket CMS, a license fee is required per Project. The fee is due once the Project starts generating revenue. The specifics of the fee, including the amount and payment terms, will be as specified by Bucket CMS at the time of the license purchase. Bucket CMS may, at its sole discretion, waive the license fee for a particular Project.
+For Commercial Use of Bucket CMS, a perpetual license fee is required per Project. This license includes all future versions of Bucket CMS. The fee is due once the Project starts generating revenue. The specifics of the fee, including the amount and payment terms, will be as specified by Bucket CMS at the time of the license purchase. Bucket CMS may, at its sole discretion, waive the license fee for a particular Project. This license can be transferred or assigned to another party.
 
 ## 4. Terms of Service Compliance
 
@@ -38,6 +38,22 @@ Bucket CMS expressly disclaims any warranty for Bucket CMS. Bucket CMS is provid
 
 In no event shall Bucket CMS be liable for any damages (including, without limitation, lost profits, business interruption, or lost information) rising out of Licensee's use of or inability to use Bucket CMS, even if Bucket CMS has been advised of the possibility of such damages.
 
-## 9. Entire Agreement
+## 9. Technical Support
+
+Bucket CMS does not provide any technical support of any kind for the licensed software.
+
+## 10. Governing Law
+
+This Agreement shall be governed by and construed in accordance with the laws of the State of Illinois, United States.
+
+## 11. Entire Agreement
 
 This Agreement constitutes the entire agreement between the parties concerning the subject matter hereof.
+
+## 12. Amendment
+
+This Agreement may only be amended or modified with the mutual consent of both parties in writing.
+
+## 13. Non-waiver
+
+Failure by either party to exercise any of its rights under, or to enforce any provision of, this Agreement will not be deemed a waiver or forfeiture of such rights or ability to enforce such provision.

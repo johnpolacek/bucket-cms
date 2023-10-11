@@ -39,6 +39,11 @@ const Header = async () => {
               Contact
             </Button>
           </Link>
+          <Link href="/pricing">
+            <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
+              Pricing
+            </Button>
+          </Link>
         </div>
       </div>
       {session?.user?.name ? <UserDropdownMenu user={session?.user?.name} /> : <GithubLink />}
