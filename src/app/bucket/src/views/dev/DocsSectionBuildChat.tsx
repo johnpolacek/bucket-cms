@@ -31,7 +31,7 @@ function DocsSectionBuildChat({ collection, type }: { collection: CollectionFiel
   function generateComponent() {
     setComponentData("")
     setIsGenerating(true)
-    console.log(enrichedPrompt)
+
     useStreamingDataFromPrompt({
       prompt: enrichedPrompt,
       onData: (data) => {

@@ -1,5 +1,10 @@
 import { PageHeading } from "../bucket/src/views/brand"
 import TransitionWrapper from "../bucket/src/views/admin/TransitionWrapper"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Bucket CMS | Privacy Policy",
+}
 
 export default function Contact() {
   return (

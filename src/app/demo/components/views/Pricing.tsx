@@ -29,6 +29,7 @@ function Pricing() {
               </p>
               <h2 className="font-bold text-xl mb-4">per Commercial Project</h2>
               <p>Commercial licenses are currently available at a reduced price during this limited-time public beta.</p>
+              <p className="text-sm opacity-70 pt-4">If you're not completely satisfied with your purchase, we offer a full refund within 30 days of your purchase date.</p>
               <div className="inline-block bg-white text-blue-600 text-xl px-8 py-3 rounded-lg mt-8">Purchase License</div>
             </Link>
           </div>

@@ -24,7 +24,7 @@ const Header = async () => {
         </div>
       </Link>
       <HeaderMobileMenu />
-      <div className="hidden sm:flex grow items-center justify-between sm:pl-16">
+      <div className="hidden sm:flex grow items-center justify-between sm:pl-16 print:hidden">
         <div className="flex justify-start gap-4">
           <Link href="/bucket/docs">
             <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
@@ -46,7 +46,7 @@ const Header = async () => {
           </Link>
         </div>
       </div>
-      {session?.user?.name ? <UserDropdownMenu user={session?.user?.name} /> : <GithubLink />}
+      <div className="print:hidden">{session?.user?.name ? <UserDropdownMenu user={session?.user?.name} /> : <GithubLink />}</div>
     </header>
   )
 }

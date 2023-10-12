@@ -24,8 +24,6 @@ function CollectionManageItem({ item, collectionName }: { item: CollectionItemDa
     return null
   }
 
-  console.log("CollectionManageItem", { item })
-
   return (
     <div className="flex justify-between items-center border-b py-4 px-2 pr-8 sm:px-8 gap-2">
       <div className="sm:pr-12 py-4 sm:py-0 text-center sm:text-left">{item.itemName}</div>

@@ -1,5 +1,10 @@
 import { PageHeading } from "../bucket/src/views/brand"
 import TransitionWrapper from "../bucket/src/views/admin/TransitionWrapper"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Bucket CMS | Terms of Service",
+}
 
 export default function Contact() {
   return (
@@ -20,7 +25,7 @@ export default function Contact() {
               viewed by other users of the Service and through third party services and websites.
             </p>
             <p>
-              You may use the Service only if you can form a binding contract with [Your Company] and are not a person barred from receiving services under the laws of the United States or other
+              You may use the Service only if you can form a binding contract with Bucket CMS and are not a person barred from receiving services under the laws of the United States or other
               applicable jurisdiction. You may use the Service only in compliance with these Terms and all applicable local, state, national, and international laws, rules, and regulations.
             </p>
             <h2 id="3-service-usage">3. Service Usage</h2>
@@ -43,8 +48,8 @@ export default function Contact() {
               any and all media or distribution methods (now known or later developed).
             </p>
             <p>
-              You agree that this license includes the right for [Your Company] to provide, promote, and improve the Service and to make Content submitted to or through the Service available to other
-              companies, organizations or individuals who partner with [Your Company] for the syndication, broadcast, distribution or publication of such Content on other media and services.
+              You agree that this license includes the right for Bucket CMS to provide, promote, and improve the Service and to make Content submitted to or through the Service available to other
+              companies, organizations or individuals who partner with Bucket CMS for the syndication, broadcast, distribution or publication of such Content on other media and services.
             </p>
             <h2 id="5-data-storage-and-security">5. Data Storage and Security</h2>
             <p>
@@ -54,8 +59,8 @@ export default function Contact() {
             </p>
             <h2 id="6-copyright-policy">6. Copyright Policy</h2>
             <p>
-              [Your Company] respects the intellectual property rights of others and expects users of the Service to do the same. We will respond to notices of alleged copyright infringement that
-              comply with applicable law and are properly provided to us.
+              Bucket CMS respects the intellectual property rights of others and expects users of the Service to do the same. We will respond to notices of alleged copyright infringement that comply
+              with applicable law and are properly provided to us.
             </p>
             <h2 id="7-changes-to-terms-of-service">7. Changes to Terms of Service</h2>
             <p>

@@ -5,7 +5,6 @@ import type { StripeError } from "@stripe/stripe-js"
 import * as React from "react"
 import { useStripe, useElements, PaymentElement, Elements } from "@stripe/react-stripe-js"
 import { Label, Input, Button } from "@/app/bucket/src/ui"
-import * as config from "../config"
 import getStripe from "../utils/get-stripejs"
 import { createPaymentIntent } from "../actions/stripe"
 
@@ -48,12 +47,10 @@ function CheckoutForm(): JSX.Element {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     try {
       e.preventDefault()
-      // Abort if form isn't valid
       if (!e.currentTarget.reportValidity()) return
       if (!elements || !stripe) return
 
       setPayment({ status: "processing" })
-
       const formData = new FormData(e.currentTarget)
       const cardholderName = formData.get("cardholderName") as string
       const email = formData.get("email") as string
@@ -63,12 +60,10 @@ function CheckoutForm(): JSX.Element {
       if (submitError) {
         setPayment({ status: "error" })
         setErrorMessage(submitError.message ?? "An unknown error occurred")
-
         return
       }
 
       const { client_secret: clientSecret } = await createPaymentIntent()
-
       const { error: confirmError } = await stripe!.confirmPayment({
         elements,
         clientSecret,
@@ -80,6 +75,7 @@ function CheckoutForm(): JSX.Element {
               email: email,
             },
           },
+          receipt_email: email,
         },
       })
 
@@ -89,7 +85,6 @@ function CheckoutForm(): JSX.Element {
       }
     } catch (err) {
       const { message } = err as StripeError
-
       setPayment({ status: "error" })
       setErrorMessage(message ?? "An unknown error occurred")
     }
@@ -131,9 +126,9 @@ export default function ElementsForm(): JSX.Element {
             fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
           },
         },
-        currency: config.CURRENCY,
+        currency: "usd",
         mode: "payment",
-        amount: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
+        amount: 10000,
       }}
     >
       <CheckoutForm />

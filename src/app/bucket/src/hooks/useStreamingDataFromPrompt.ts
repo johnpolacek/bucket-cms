@@ -36,7 +36,7 @@ export const useStreamingDataFromPrompt = async ({
       ...payload,
     }),
   })
-  console.log({ response })
+
   if (!response.ok) {
     throw new Error(response.statusText)
   }
@@ -76,7 +76,7 @@ export const useStreamingDataFromPrompt = async ({
   }
 
   if (done && onDone) {
-    console.log("useStreamingDataFromPrompt onDone")
+    console.log("useStreamingDataFromPrompt done")
     onDone(responseString)
   }
   return

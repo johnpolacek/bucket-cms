@@ -3,7 +3,6 @@ import { getStream } from "../util"
 
 export async function POST(req: NextRequest) {
   const { messages } = await req.json()
-  console.log("api/bucket/ai/stream request", { messages })
   const systemMessage = {
     role: "system",
     content:

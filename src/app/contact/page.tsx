@@ -2,6 +2,11 @@ import Footer from "../demo/components/ui/footer"
 import { BrandImage, PageHeading } from "../bucket/src/views/brand"
 import ContactForm from "../demo/components/views/ContactForm"
 import TransitionWrapper from "../bucket/src/views/admin/TransitionWrapper"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Bucket CMS | Contact",
+}
 
 export default function Contact() {
   return (
