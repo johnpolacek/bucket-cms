@@ -1,6 +1,7 @@
 import React from "react"
 
 import { ConfigValidation } from "../../types"
+import { BrandImage } from "../brand"
 
 const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValidation }) => {
   const hostname = typeof window !== "undefined" ? window.location.hostname : "unknown"
@@ -8,8 +9,9 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
 
   return (
     <>
-      <div className="mt-16 py-6 px-8 text-center bg-white border rounded-lg shadow my-4 w-full max-w-[360px] mx-auto">
-        <h2 className="text-xs mb-4">
+      <div className="mt-16 py-6 px-8 text-center bg-white my-4 w-full max-w-[360px] mx-auto">
+        <BrandImage />
+        <h2 className="text-xs my-4">
           ENVIRONMENT
           <div className="text-xl font-bold">{hostname}</div>
           <p className="text-sm opacity-70 mt-2 mb-6 px-4 text-center">Looks like we need to configure environment variables.</p>
@@ -31,7 +33,7 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
           <span className="mr-2">AWS_S3_BUCKET_NAME</span>
         </div>
       </div>
-      <div className="max-w-4xl mx-auto mt-16 mb-32 px-8 prose">
+      <div className="max-w-4xl mx-auto mt-8 mb-32 px-8 prose flex flex-col gap-4">
         <h2 className="text-3xl font-bold opacity-80 mb-6">Connecting to AWS + S3</h2>
         <p className="mb-4">
           Environment variables are configurable key-value pairs that store private data like API keys, region specifications, and bucket names. Instead of hardcoding this sensitive information
@@ -56,13 +58,13 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
         </p>
 
         {!configValidation.hasAWSSecret && (
-          <>
-            <h3 className="text-2xl font-semibold opacity-70 mt-8 mb-4">Setting Up Your IAM User</h3>
+          <div className="prose flex flex-col gap-4">
+            <h3 className="text-2xl font-semibold opacity-70 mt-8">Setting Up Your IAM User</h3>
             <p>
               To get started with Bucket CMS, create an IAM (Identity and Access Management) user on AWS with the AmazonS3FullAccess policy attached. This policy grants full access to S3 services and
               resources. Bucket CMS is designed to run on your own server configuration and does not require any external access to function.
             </p>
-            <ol>
+            <ol className="flex flex-col gap-4">
               <li>
                 <strong>Login to AWS Console: </strong>Sign into the{" "}
                 <a className="underline text-blue-600" href="https://aws.amazon.com/">
@@ -92,7 +94,7 @@ const EnvironmentStatus = ({ configValidation }: { configValidation: ConfigValid
               </a>
               . Once you have the secret, add it to the <code>AWS_ACCESS_KEY_ID</code> and <code>AWS_SECRET_ACCESS_KEY</code> environment variables (see below).
             </p>
-          </>
+          </div>
         )}
         {!configValidation.hasAWSSecret && (
           <>
