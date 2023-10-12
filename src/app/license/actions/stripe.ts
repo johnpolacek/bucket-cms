@@ -6,13 +6,12 @@ import { redirect } from "next/navigation"
 import { headers } from "next/headers"
 
 import { CURRENCY } from "../config"
-import { formatAmountForStripe } from "../utils/stripe-helpers"
 import { stripe } from "../stripe/node-stripe"
 
-export async function createCheckoutSession(data: FormData): Promise<void> {
+export async function createCheckoutSession(): Promise<void> {
   const checkoutSession: Stripe.Checkout.Session = await stripe.checkout.sessions.create({
     mode: "payment",
-    submit_type: "donate",
+    submit_type: "pay",
     line_items: [
       {
         quantity: 1,
@@ -25,8 +24,8 @@ export async function createCheckoutSession(data: FormData): Promise<void> {
         },
       },
     ],
-    success_url: `${headers().get("origin")}/donate-with-checkout/result?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${headers().get("origin")}/donate-with-checkout`,
+    success_url: `${headers().get("origin")}/license/result?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${headers().get("origin")}/license`,
   })
 
   redirect(checkoutSession.url as string)

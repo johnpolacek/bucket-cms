@@ -4,21 +4,12 @@ import type { StripeError } from "@stripe/stripe-js"
 
 import * as React from "react"
 import { useStripe, useElements, PaymentElement, Elements } from "@stripe/react-stripe-js"
-
-import CustomDonationInput from "./CustomDonationInput"
-import StripeTestCards from "./StripeTestCards"
-
-import { formatAmountForDisplay } from "../utils/stripe-helpers"
+import { Label, Input, Button } from "@/app/bucket/src/ui"
 import * as config from "../config"
 import getStripe from "../utils/get-stripejs"
 import { createPaymentIntent } from "../actions/stripe"
 
 function CheckoutForm(): JSX.Element {
-  const [input, setInput] = React.useState<{
-    cardholderName: string
-  }>({
-    cardholderName: "",
-  })
   const [paymentType, setPaymentType] = React.useState<string>("")
   const [payment, setPayment] = React.useState<{
     status: "initial" | "processing" | "error"
@@ -54,15 +45,6 @@ function CheckoutForm(): JSX.Element {
     }
   }
 
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setInput({
-      ...input,
-      [e.currentTarget.name]: e.currentTarget.value,
-    })
-
-    elements?.update({ amount: 10000 })
-  }
-
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     try {
       e.preventDefault()
@@ -71,6 +53,10 @@ function CheckoutForm(): JSX.Element {
       if (!elements || !stripe) return
 
       setPayment({ status: "processing" })
+
+      const formData = new FormData(e.currentTarget)
+      const cardholderName = formData.get("cardholderName") as string
+      const email = formData.get("email") as string
 
       const { error: submitError } = await elements.submit()
 
@@ -81,18 +67,17 @@ function CheckoutForm(): JSX.Element {
         return
       }
 
-      // Create a PaymentIntent with the specified amount.
-      const { client_secret: clientSecret } = await createPaymentIntent(new FormData(e.target as HTMLFormElement))
+      const { client_secret: clientSecret } = await createPaymentIntent()
 
-      // Use your card Element with other Stripe.js APIs
       const { error: confirmError } = await stripe!.confirmPayment({
         elements,
         clientSecret,
         confirmParams: {
-          return_url: `${window.location.origin}/donate-with-elements/result`,
+          return_url: `${window.location.origin}/license/result`,
           payment_method_data: {
             billing_details: {
-              name: input.cardholderName,
+              name: cardholderName,
+              email: email,
             },
           },
         },
@@ -112,21 +97,23 @@ function CheckoutForm(): JSX.Element {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <fieldset className="elements-style">
-          <legend>Your payment details:</legend>
-          {paymentType === "card" ? <input placeholder="Cardholder name" className="elements-style" type="Text" name="cardholderName" onChange={handleInputChange} required /> : null}
-          <div className="FormRow elements-style">
-            <PaymentElement
-              onChange={(e) => {
-                setPaymentType(e.value.type)
-              }}
-            />
-          </div>
-        </fieldset>
-        <button className="elements-style-background" type="submit" disabled={!["initial", "succeeded", "error"].includes(payment.status) || !stripe}>
+      <form className="w-full sm:w-[360px] flex flex-col gap-4" onSubmit={handleSubmit}>
+        <div>
+          <Label>Full name</Label>
+          <Input type="text" name="cardholderName" required />
+        </div>
+        <div>
+          <Label>Email</Label>
+          <Input type="email" name="email" required />
+        </div>
+        <PaymentElement
+          onChange={(e) => {
+            setPaymentType(e.value.type)
+          }}
+        />
+        <Button className="h-auto px-8 py-3 text-lg mt-6" type="submit" disabled={!["initial", "succeeded", "error"].includes(payment.status) || !stripe}>
           Pay $100
-        </button>
+        </Button>
       </form>
       <PaymentStatus status={payment.status} />
     </>

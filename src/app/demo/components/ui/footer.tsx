@@ -14,7 +14,7 @@ const Footer = () => {
           <Link className="text-blue-600" href="/terms">
             Terms
           </Link>
-          <Link className="text-blue-600" href="https://github.com/johnpolacek/bucket-cms/blob/main/LICENSE.md">
+          <Link className="text-blue-600" href="/license">
             License
           </Link>
         </div>
