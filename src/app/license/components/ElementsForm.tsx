@@ -15,10 +15,8 @@ import { createPaymentIntent } from "../actions/stripe"
 
 function CheckoutForm(): JSX.Element {
   const [input, setInput] = React.useState<{
-    customDonation: number
     cardholderName: string
   }>({
-    customDonation: Math.round(config.MAX_AMOUNT / config.AMOUNT_STEP),
     cardholderName: "",
   })
   const [paymentType, setPaymentType] = React.useState<string>("")
@@ -62,7 +60,7 @@ function CheckoutForm(): JSX.Element {
       [e.currentTarget.name]: e.currentTarget.value,
     })
 
-    elements?.update({ amount: input.customDonation * 100 })
+    elements?.update({ amount: 10000 })
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -115,17 +113,6 @@ function CheckoutForm(): JSX.Element {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <CustomDonationInput
-          className="elements-style"
-          name="customDonation"
-          value={input.customDonation}
-          min={config.MIN_AMOUNT}
-          max={config.MAX_AMOUNT}
-          step={config.AMOUNT_STEP}
-          currency={config.CURRENCY}
-          onChange={handleInputChange}
-        />
-        <StripeTestCards />
         <fieldset className="elements-style">
           <legend>Your payment details:</legend>
           {paymentType === "card" ? <input placeholder="Cardholder name" className="elements-style" type="Text" name="cardholderName" onChange={handleInputChange} required /> : null}
@@ -138,7 +125,7 @@ function CheckoutForm(): JSX.Element {
           </div>
         </fieldset>
         <button className="elements-style-background" type="submit" disabled={!["initial", "succeeded", "error"].includes(payment.status) || !stripe}>
-          Donate {formatAmountForDisplay(input.customDonation, config.CURRENCY)}
+          Pay $100
         </button>
       </form>
       <PaymentStatus status={payment.status} />
