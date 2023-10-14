@@ -30,7 +30,7 @@ const Header = async () => {
               Documentation
             </Button>
           </Link>
-          <Link href="/bucket/admin">
+          <Link href={sessionUser ? "/bucket/admin" : "/demo"}>
             <Button>Try the Demo</Button>
           </Link>
           <Link href="/contact">

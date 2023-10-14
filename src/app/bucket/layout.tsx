@@ -2,7 +2,6 @@ import { getSessionUser } from "../api/bucket/auth/get-session-user"
 import { BrandImage } from "./src/views/brand/BrandImage"
 import { AdminFooter } from "./src/views/admin/AdminFooter"
 import BucketProvider from "./src/views/providers/BucketProvider"
-import SignIn from "../demo/components/views/SignIn"
 
 export default async function BucketLayout({ children }: { children: React.ReactNode }) {
   const sessionUser = await getSessionUser()
@@ -16,7 +15,8 @@ export default async function BucketLayout({ children }: { children: React.React
         <BucketProvider>{children}</BucketProvider>
       ) : (
         <div className="w-screen h-screen flex flex-col justify-center items-center p-8 gap-2">
-          <SignIn isTestEnv={process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"} />
+          <BrandImage />
+          <p className="pb-8 italic opacity-70">Authentication required for access</p>
         </div>
       )}
       <AdminFooter showAuthenticationWarning={isLocalhostAuth} />
