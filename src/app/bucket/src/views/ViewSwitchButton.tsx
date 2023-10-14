@@ -11,7 +11,7 @@ export const ViewSwitchButton: React.FC<ViewSwitchButtonProps> = ({ currentView 
   return (
     <Link
       href={currentView === "ADMIN" ? "/bucket/docs" : "/bucket/admin"}
-      className="absolute border-2 border-gray-200 text-sm px-3 shadow rounded-lg top-4 right-2 sm:right-4 flex items-center scale-90 sm:scale-100 bg-white hover:bg-white opacity-80 hover:opacity-100 transition-all"
+      className="absolute z-10 border-2 border-gray-200 text-sm px-3 shadow rounded-lg top-4 right-2 sm:right-4 flex items-center scale-90 sm:scale-100 bg-white hover:bg-white opacity-80 hover:opacity-100 transition-all"
     >
       {currentView === "ADMIN" ? (
         <>

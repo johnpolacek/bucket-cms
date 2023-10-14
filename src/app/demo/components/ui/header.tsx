@@ -25,7 +25,7 @@ const Header = async () => {
       <HeaderMobileMenu />
       <div className="hidden sm:flex grow items-center justify-between sm:pl-16 print:hidden">
         <div className="flex justify-start gap-4">
-          <Link href="/bucket/docs">
+          <Link href={sessionUser ? "/bucket/docs" : "/docs"}>
             <Button variant="ghost" className="text-gray-600 hover:text-blue-600">
               Documentation
             </Button>
