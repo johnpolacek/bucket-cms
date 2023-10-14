@@ -1,15 +1,14 @@
-import { getServerSession } from "next-auth/next"
-import { options } from "./options"
+import { getSessionUser } from "../api/bucket/auth/get-session-user-next-auth"
 import { BrandImage } from "./src/views/brand/BrandImage"
 import { AdminFooter } from "./src/views/admin/AdminFooter"
 import BucketProvider from "./src/views/providers/BucketProvider"
 
 export default async function BucketLayout({ children }: { children: React.ReactNode }) {
-  const session = await getServerSession(options)
+  const sessionUser = await getSessionUser()
 
   return (
     <div className="flex flex-col grow justify-start items-center relative w-full h-full bg-white">
-      {session?.user?.name || process.env.NODE_ENV === "development" ? (
+      {sessionUser || process.env.NODE_ENV === "development" ? (
         <BucketProvider>{children}</BucketProvider>
       ) : (
         <div className="w-screen h-screen flex flex-col justify-center items-center p-8 gap-2">
@@ -17,7 +16,7 @@ export default async function BucketLayout({ children }: { children: React.React
           <p className="pb-8 italic opacity-70">Authentication required for access</p>
         </div>
       )}
-      <AdminFooter showAuthenticationWarning={!session?.user?.name && process.env.NODE_ENV === "development"} />
+      <AdminFooter showAuthenticationWarning={!sessionUser && process.env.NODE_ENV === "development"} />
     </div>
   )
 }

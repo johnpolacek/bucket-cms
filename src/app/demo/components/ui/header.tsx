@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth/next"
-import { options } from "../../options"
+import { getSessionUser } from "@/app/api/bucket/auth/get-session-user-next-auth"
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -9,7 +8,7 @@ import UserDropdownMenu from "./user-dropdown-menu"
 import HeaderMobileMenu from "./header-mobile-menu"
 
 const Header = async () => {
-  const session = await getServerSession(options)
+  const sessionUser = await getSessionUser()
 
   return (
     <header className="px-4 flex flex-wrap justify-between items-center border-b">
@@ -46,7 +45,7 @@ const Header = async () => {
           </Link>
         </div>
       </div>
-      <div className="print:hidden">{session?.user?.name ? <UserDropdownMenu user={session?.user?.name} /> : <GithubLink />}</div>
+      <div className="print:hidden">{sessionUser?.name ? <UserDropdownMenu user={sessionUser.name} /> : <GithubLink />}</div>
     </header>
   )
 }

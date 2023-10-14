@@ -1,7 +1,6 @@
 import { S3Client } from "@aws-sdk/client-s3"
-import { getServerSession } from "next-auth/next"
-import { options } from "../../../../app/bucket/options"
 import { Readable } from "stream"
+import { getSessionUser } from "../auth/get-session-user-next-auth"
 
 export const initializeS3Client = (): S3Client => {
   return new S3Client({
@@ -15,10 +14,10 @@ export const initializeS3Client = (): S3Client => {
 
 export const getBucketName = async (isPublic?: boolean): Promise<string> => {
   let sandbox = ""
-  let session = await getServerSession(options)
+  const sessionUser = await getSessionUser()
 
-  if (process.env.USE_SANDBOX === "true" && session?.user?.email) {
-    sandbox = session.user.email
+  if (process.env.USE_SANDBOX === "true" && sessionUser?.email) {
+    sandbox = sessionUser.email
       .toLowerCase()
       .replace("@", "-")
       .replace(/[^a-z0-9.\-_]/g, "")
