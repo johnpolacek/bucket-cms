@@ -15,8 +15,8 @@ const Header = async () => {
     <header className="px-4 flex flex-wrap justify-between items-center border-b">
       <Link href="/">
         <div className="flex items-center cursor-pointer pl-4">
-          <div className="h-[54px] w-[54px] my-2 flex items-center overflow-hidden relative -top-[2px]">
-            <Image src="/bucket-cms-logo.png" width={54} height={54} alt="Bucket CMS Logo" />
+          <div className="h-[54px] w-[54px] scale-[.8] border rounded-full border-blue-200 my-2 flex justify-center items-end overflow-hidden relative -top-[2px]">
+            <Image className="opacity-80" src="/bucket-cms-logo.jpg" width={48} height={48} alt="Bucket CMS Logo" />
           </div>
           <h2 className="font-extrabold text-2xl text-blue-600 sm:text-2xl scale-90 hover:scale-100 transition-all ease-in-out">
             Bucket <span className="font-bold text-lg relative -left-[2px] -top-px text-blue-400">CMS</span>

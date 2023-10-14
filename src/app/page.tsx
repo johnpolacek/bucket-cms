@@ -7,11 +7,11 @@ import { BrandImage } from "./bucket/src/views/brand"
 export default function Home() {
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center gap-6 sm:gap-8 py-8 sm:py-20 px-2 sm:px-8 mb-8">
-        <div className="sm:h-72 w-full overflow-hidden -mt-12 mb-2 relative">
-          <div className="w-full h-1/4 absolute bottom-0 left-0 bg-gradient-to-t from-[rgba(255,255,255,1)] to-[rgba(255,255,255,0)] z-10"></div>
-          <div className="scale-80 sm:scale-150 relative top-8 sm:top-16">
-            <BrandImage className="border-[3px]" />
+      <main className="flex min-h-screen flex-col items-center gap-6 sm:gap-8 py-12 sm:py-20 px-2 sm:px-8 mb-8">
+        <div className="sm:h-72 w-full overflow-hidden -mt-12 -mb-4 relative">
+          <div className="w-full h-1/3 absolute bottom-0 left-0 bg-gradient-to-t from-[rgba(255,255,255,1)] via-[rgba(255,255,255,0)] to-[rgba(255,255,255,0)] z-10"></div>
+          <div className="scale-80 sm:scale-[1.33] relative top-8 sm:top-16">
+            <BrandImage className="bottom-2" />
           </div>
         </div>
         <h1 className="text-lg sm:text-xl md:text-3xl font-light text-center text-blue-500 pb-2">Maybe you don’t need a big cloud CMS...</h1>
