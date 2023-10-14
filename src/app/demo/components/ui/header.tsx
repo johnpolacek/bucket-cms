@@ -1,4 +1,4 @@
-import { getSessionUser } from "@/app/api/bucket/auth/get-session-user-next-auth"
+import { getSessionUser } from "@/app/api/bucket/auth/get-session-user"
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"

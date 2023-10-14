@@ -57,19 +57,21 @@ export default function Home() {
 
         <ExamplesView />
 
-        <div className="md:grid grid-cols-3 md:pt-8 md:my-8 max-w-[1300px] mx-auto px-4 relative -left-[2%]">
-          <div className="w-full md:w-[640px] col-span-2 border-4 border-blue-100 rounded-lg overflow-hidden mx-auto opacity-80">
-            <video width="100%" height="100%" loop muted autoPlay playsInline>
-              <source src="https://s3.amazonaws.com/bucket-cms/bucket-cms-own-your-data.mp4" type="video/mp4" />
-              <img
-                src="https://s3.amazonaws.com/bucket-cms/create-bucket-cms-cli.jpg"
-                alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
-                width="1041 "
-                height="599"
-              />
-            </video>
+        <div className="md:grid grid-cols-5 md:pt-8 md:my-8 max-w-[1300px] mx-auto px-4 relative -left-[2%]">
+          <div className="col-span-3 mx-auto opacity-80 md:pr-12">
+            <div className="w-full border-4 border-blue-100 rounded-lg overflow-hidden">
+              <video width="100%" height="100%" loop muted autoPlay playsInline>
+                <source src="https://s3.amazonaws.com/bucket-cms/bucket-cms-own-your-data.mp4" type="video/mp4" />
+                <img
+                  src="https://s3.amazonaws.com/bucket-cms/create-bucket-cms-cli.jpg"
+                  alt="The npx create-bucket-cms terminal command ads bucket cms to your Next.js project"
+                  width="1041 "
+                  height="599"
+                />
+              </video>
+            </div>
           </div>
-          <div className="flex flex-col gap-4 md:gap-8 justify-center pb-8 pt-4 md:pt-0 md:-ml-8 pr-4 items-end">
+          <div className="flex flex-col gap-4 md:gap-8 col-span-2 justify-center pb-8 pt-4 md:pt-0 pr-4 items-end">
             <h3 className="text-2xl sm:text-3xl text-center md:text-left font-bold text-blue-600">Break Free from the Cloud and Own Your Data</h3>
             <p className="md:text-lg pl-2 md:pl-0 opacity-70">
               With Bucket CMS, the admin experience lives in your project, not in the cloud. No monthly fees. All of your data gets stored securely on your own S3 bucket as structured data.

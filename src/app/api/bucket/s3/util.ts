@@ -1,6 +1,6 @@
 import { S3Client } from "@aws-sdk/client-s3"
 import { Readable } from "stream"
-import { getSessionUser } from "../auth/get-session-user-next-auth"
+import { getSessionUser } from "../auth/get-session-user"
 
 export const initializeS3Client = (): S3Client => {
   return new S3Client({

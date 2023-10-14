@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getSessionUser } from "../../auth/get-session-user-next-auth"
+import { getSessionUser } from "../../auth/get-session-user"
 import { createCollectionItem } from "../../s3/operations"
 
 export async function POST(req: NextRequest): Promise<void | NextResponse> {

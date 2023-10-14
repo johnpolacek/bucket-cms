@@ -1,4 +1,4 @@
-import { getSessionUser } from "../api/bucket/auth/get-session-user-next-auth"
+import { getSessionUser } from "../api/bucket/auth/get-session-user"
 import { BrandImage } from "./src/views/brand/BrandImage"
 import { AdminFooter } from "./src/views/admin/AdminFooter"
 import BucketProvider from "./src/views/providers/BucketProvider"
