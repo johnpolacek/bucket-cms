@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getSessionUser } from "@/app/api/bucket/auth/get-session-user"
+import { getSessionUser } from "../../../api/bucket/auth/get-session-user"
 
 export async function checkPublicReadAccess(collectionName?: string) {
   const BLOCK_API_PUBLIC_READ = process.env.BLOCK_API_PUBLIC_READ || ""

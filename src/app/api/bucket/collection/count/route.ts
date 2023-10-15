@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { checkPublicReadAccess } from "@/app/bucket/src/util"
+import { checkPublicReadAccess } from "../../../../bucket/src/util"
 import { ListObjectsV2Command } from "@aws-sdk/client-s3"
 import { initializeS3Client, getBucketName } from "../../s3/util"
 
