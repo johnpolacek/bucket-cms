@@ -15,7 +15,7 @@ export default function Home() {
           </div>
         </div>
         <h1 className="text-lg sm:text-xl md:text-3xl font-light text-center text-blue-500 pb-2">Maybe you don’t need a big cloud CMS...</h1>
-        <h2 className="text-4xl sm:text-6xl text-center font-extrabold -mt-6 text-blue-700">How about a Bucket?</h2>
+        <h2 className="text-4xl sm:text-6xl text-center font-extrabold -mt-6 text-blue-600">How about a Bucket?</h2>
         <p className="sm:text-xl opacity-70 max-w-[960px] text-center px-4 pb-8 leading-normal sm:-mt-4">
           Bucket is the world’s first AI-Powered Portable Drop-in Headless CMS designed for Next.js <span className="italic block">(no database necessary)</span>
         </p>
